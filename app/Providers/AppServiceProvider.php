@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Schema::defaultStringLength(191);
-        if(Schema::hasTable('category')){
+        if(\Schema::hasTable('category')){
               $categories=Categories::pluck('name','id')->all();
               $categories['default']='--Chọn lọai sản phẩm--'  ;
               ksort($categories);
