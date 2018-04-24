@@ -34,6 +34,14 @@
             <!-- /.box-header -->
             <!-- form start -->
           <div>
+       
+            
+       @if (Session::has('success'))
+        <div class="alert alert-success">
+          {{ Session::get('success') }}
+        </div>
+      @endif
+
             @if($errors->any())
        <div class="alert alert-danger">
         <ul style="list-style-type: none">
@@ -41,6 +49,7 @@
                 <li >{{ $error }}</li>
             @endforeach
         </ul>
+       
     </div>
         @endif
 

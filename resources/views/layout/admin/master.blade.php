@@ -48,6 +48,7 @@
   <!-- Content Wrapper. Contains page content -->
  
   <!-- /.content-wrapper -->
+       
  
   @yield('content')
   <!-- Control Sidebar -->

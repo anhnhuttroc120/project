@@ -10,6 +10,7 @@ use App\Product;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Auth;
 use  App\Http\Requests\AddProductRequest;
+use Session;
 class ProductController extends Controller
 {
    public function index(){
@@ -86,8 +87,13 @@ class ProductController extends Controller
     $product_detail->sale_off=$request->sale_off;
     $product_detail->products_id=$product->id;
     $product_detail->save();
+    return redirect()->back()->with('success','Đã  thêm sản phầm thành công');
  	
  	
  
    }
+
+
+
+
 }
