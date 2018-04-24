@@ -90,4 +90,7 @@ class ProductController extends Controller
  	
  
    }
+   public function trangchu(){
+      return view('default.pages.trangchu');
+   }
 }

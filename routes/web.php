@@ -81,3 +81,4 @@ Route::group(['prefix'=>'admin'],function(){
 
 
 });
+Route::get('/trang-chu','ProductController@trangchu');
