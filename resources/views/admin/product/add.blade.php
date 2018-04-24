@@ -33,7 +33,18 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-       
+          <div>
+            @if($errors->any())
+       <div class="alert alert-danger">
+        <ul style="list-style-type: none">
+            @foreach ($errors->all() as $error)
+                <li >{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+        @endif
+
+          </div>
        
            {!! Form::open(['url' => 'admin/product/add', 'method' => 'post','files'=>true]) !!}
               <div class="box-body">

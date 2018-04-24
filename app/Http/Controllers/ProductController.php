@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Categories;
 use App\Product_detail;
+use App\Product;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Auth;
+use  App\Http\Requests\AddProductRequest;
 class ProductController extends Controller
 {
    public function index(){
@@ -28,12 +31,19 @@ class ProductController extends Controller
    return view('admin.product.add');
    }
 
-   public function Add(Request $request){
-   	
-  	
+   public function Add(AddProductRequest $request){
+   	      
    	$color=	json_encode($request->color);
    	$size = json_encode($request->size);
-  
+      $product =new Product();
+      $product->name=$request->name;
+      $product->slug=str_slug($request->name);
+      $product->price=$request->price;
+      $product->users_id=Auth::user()->id;
+      $product->category_id=$request->category_id;
+      $product->special=$request->special;
+      $product->save();
+
    	$product_detail=new Product_detail();
    	if($request->hasFile('picture')){
    		$data=[];
@@ -74,7 +84,7 @@ class ProductController extends Controller
    
    $product_detail->description=$request->description;
     $product_detail->sale_off=$request->sale_off;
-    $product_detail->products_id=$request->id;
+    $product_detail->products_id=$product->id;
     $product_detail->save();
  	
  	

@@ -11,7 +11,7 @@
 
       <label for="exampleInputUserName">Loại sản phẩm</label>
 
-   {!! Form::select('category', $categories, null, ['class' => 'form-control']) !!}
+   {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
  </div>
  <div class="form-group">
   {!! Form::label('name', 'Giá sản phẩm') !!}
@@ -60,7 +60,7 @@
   </div>
    <div class="form-group">
                     <label>Nội Dung</label>
-                    <textarea name="des" id="demo" class="form-control ckeditor" rows="3"></textarea>
+                    <textarea name="description" id="demo" class="form-control ckeditor" rows="3"></textarea>
                 </div>
 
 
