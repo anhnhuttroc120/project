@@ -92,15 +92,9 @@ class ProductController extends Controller
  	
  
    }
-<<<<<<< HEAD
+
    public function trangchu(){
       return view('default.pages.trangchu');
    }
 }
-=======
 
-
-
-
-}
->>>>>>> 5373d7a2cdf7442102079da3fa2ae7fe2a6667db
