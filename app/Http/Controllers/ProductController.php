@@ -26,7 +26,7 @@ class ProductController extends Controller
    return view('admin.product.add');
    }
 
-   public function Add(Request $request){
+   public function Add(AddProductRequest $request){
    	        
                    
                      
