@@ -53,9 +53,12 @@
           </div>
           
        
-      {!! Form::model($product,['url' => 'admin/product/add', 'method' => 'post','files'=>true]) !!}
+      {!! Form::model($product,['url' => 'admin/product/updated/'.$product->slug, 'method' => 'post','files'=>true]) !!}
       <?php
           $colors=json_decode($product->product_detail->color);
+          $sizes=json_decode($product->product_detail->size);
+          $pictures=json_decode($product->product_detail->picture);
+            
                
            ?>
               <div class="box-body">
@@ -89,12 +92,7 @@
 </div>
  <div class="form-group">
 
-   <?php
-              echo "<pre>";
-              print_r($colors);
-              echo "</pre>";
-
-         ?>
+  
  
 
   {!! Form::label('name', 'Màu sắc') !!}
@@ -103,62 +101,60 @@
 
      {!! Form::label('name', 'Trắng') !!}
 
-     @foreach($colors as $color)
-      @if($color=='Trắng')
+     
+      @if(in_array('Trắng',$colors))
         <input type="checkbox" name="color[]" value="Trắng" checked>
-       @elseif($color=='Trắng' && !in_array('Trắng',$colors))
+       @else
         <input type="checkbox" name="color[]" value="Trắng">
             
         @endif    
-     @endforeach
+
   
 
       
 
    
      {!! Form::label('name', 'Đen') !!}
-      @foreach($colors as $color)
-      @if($color=='Đen')
+     
+     @if(in_array('Đen',$colors))
         <input type="checkbox" name="color[]" value="Đen" checked>
-       @elseif($color ='Đen' &&   !in_array('Đen',$colors))
+       @else
         <input type="checkbox" name="color[]" value="Đen">
          
      
         @endif    
-     @endforeach
+
   
     
 
 
      {!! Form::label('name', 'Hồng') !!}
   
-    
-     @foreach($colors as $color)
-      @if($color=='Hồng')
+  
+  @if(in_array('Hồng',$colors))
        
         <input type="checkbox" name="color[]" value="Hồng" checked>
-       @elseif($color !='Hồng' || in_array('Hồng',$colors))
+       @else
         <input type="checkbox" name="color[]" value="Hồng">
          
     
 
         @endif    
-     @endforeach
+   
 
   
      {!! Form::label('name', 'Xanh') !!}
 
-     @foreach($colors as $color)
-      @if($color=='Xanh')
+  @if(in_array('Xanh',$colors))
        
             <input type="checkbox" name="color[]" value="Xanh" checked>
-       @elseif($color !='Xanh' || in_array('Hồng',$colors))
+       @else
         <input type="checkbox" name="color[]" value="Xanh">
        
     
 
         @endif    
-     @endforeach
+  
 
 
 
@@ -166,16 +162,16 @@
 
   
      {!! Form::label('name', 'Tím') !!}
-      @foreach($colors as $color)
-      @if($color=='Tím')
-       
+     
+     
+        @if(in_array('Tím',$colors))
                  <input type="checkbox" name="color[]" value="Tím" checked>
-       @elseif($color !='Tím' || in_array('Hồng',$colors))
+       @else
         <input type="checkbox" name="color[]" value="Tím">
       
 
         @endif    
-     @endforeach
+
 
    
    
@@ -192,17 +188,46 @@
   {!! Form::label('name', 'Kích thước') !!}
   <div class="form-controls">
       {!! Form::label('name', 'Size S') !!}
+    @if(in_array('S',$sizes))
+
+    {!! Form::checkbox('size[]', 'S',true) !!}
+    @else
     {!! Form::checkbox('size[]', 'S') !!}
-      {!! Form::label('name', 'Size M') !!}
+    @endif
+
+  {!! Form::label('name', 'Size M') !!}
+       @if(in_array('M',$sizes))
+
+    {!! Form::checkbox('size[]', 'M',true) !!}
+    @else
     {!! Form::checkbox('size[]', 'M') !!}
+    @endif
+     
+
+
+
       {!! Form::label('name', 'Size L') !!}
+       @if(in_array('L',$sizes))
+
+    {!! Form::checkbox('size[]', 'L',true) !!}
+    @else
     {!! Form::checkbox('size[]', 'L') !!}
+    @endif
+     
+
       {!! Form::label('name', 'Size XL') !!}
+       @if(in_array('XL',$sizes))
+
+    {!! Form::checkbox('size[]', 'XL',true) !!}
+    @else
     {!! Form::checkbox('size[]', 'XL') !!}
+    @endif
+     
+ 
   </div>
    <div class="form-group">
                     <label>Nội Dung</label>
-                    <textarea name="description" id="demo" class="form-control ckeditor" rows="3"></textarea>
+                    <textarea name="description" id="demo" class="form-control ckeditor" rows="3" value="{{$product->product_detail->description}}">{{$product->product_detail->description}}</textarea>
                 </div>
 
 
@@ -211,34 +236,58 @@
           {{ Session::get('notice') }}
         </div>
       @endif 
+     
    <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 1</label>
       <input type="file" id="exampleInputFile" name="picture[]">
-
+      @if(isset($pictures[0]))
+      <img src="images/product/{{$pictures[0]}}" alt="">
+      
+      
+      @endif
       
   </div>
+
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 2</label>
       <input type="file" id="exampleInputFile" name="picture[]">
+       @if(isset($pictures[1]))
+      <img src="images/product/{{$pictures[1]}}" alt="">
+      
+      
+      @endif
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 3</label>
       <input type="file" id="exampleInputFile" name="picture[]">
+     @if(isset($pictures[2]))
+      <img src="images/product/{{$pictures[2]}}" alt="">
+      
+      
+      @endif
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 4</label>
       <input type="file" id="exampleInputFile" name="picture[]">
-
+@if(isset($pictures[3]))
+      <img src="images/product/{{$pictures[3]}}" alt="">
+      
+      
+      @endif
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 5</label>
       <input type="file" id="exampleInputFile" name="picture[]">
-
+    @if(isset($pictures[4]))
+      <img src="images/product/{{$pictures[4]}}" alt="">
+      
+      
+      @endif
       
   </div>
  

@@ -27,11 +27,7 @@
   </div>
 </div>
  <div class="form-group">
-  <?PHP
-        
-        
-
-   ?>
+ 
 
   {!! Form::label('name', 'Màu sắc') !!}
   <div class="form-controls">

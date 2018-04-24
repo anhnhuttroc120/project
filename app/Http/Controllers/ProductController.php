@@ -15,13 +15,32 @@ class ProductController extends Controller
 {
    public function index(){
    		$products=Product::paginate(4);
+        
 
-           
-
-         return view('admin.product.list',compact('products'));
+         return view('admin.product.list',compact(['products','category_id']));
 	  		
 	  	
 	  
+   }
+   public function category($category_id){
+   
+       if(isset($category_id)){
+       
+         
+             if($category_id=='default'){
+                     $products=Product::paginate(1)->appends(request()->query());
+
+          
+           }else{
+                   $products=Product::where('category_id',$category_id)->paginate(1)->appends(request()->query());;
+   // ->appends(request()->query());
+            }
+            
+     
+              return view('admin.product.list',compact(['products','category_id']));
+               }
+             
+
    }
    public function getAdd(){
    	$categories=Categories::pluck('name','id')->all();
@@ -100,7 +119,11 @@ class ProductController extends Controller
              return view('admin.product.update',compact('product'));      
 
    }
-
+public function Update(Request $request,$slug){
+      echo "<pre>";
+      print_r($request->all());
+      echo "</pre>";
+}
 
 
 
