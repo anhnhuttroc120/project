@@ -35,6 +35,7 @@
 
             <!-- /.box-header -->
             <div class="box-body">
+              {!!Form::open(['url' => 'admin/product/add', 'method' => 'post','files'=>true])!!}
               <table id="example1" class="table table-bordered table-striped">
                 <thead  >
                 <tr>
@@ -52,22 +53,24 @@
                   ?>
                @foreach($products as $product)
                   <?php
-                    $picture=  $product->product_detail->picture;
-                       $picture=json_decode($picture) ; 
+                  $price=explode('.',$product->price);
+
+                       $picture=json_decode($product->product_detail->picture);
+
                         
-                        $price=explode('.',$product->price);
+                        
                    ?>
                 <tr>
                   <td>{{$product->id}}</td>
                   <td>{{$product['name']}}</td>
-                  <td><img src="images/product/{{$picture[0]}}" style="width: 50px;height: 50px;" alt=""></td>
+                  <td> <img src="images/product/{{$picture[0]}}" style="width: 50px;height: 50px;" alt="23"></td>
                   <td>{{$product->category->name}} </td>
                   <td style="float: right;">{{number_format($price[0])}}đ</td>
                   <td style="width: 50px;" ><a  style="color: red";  href=""><i class="fa fa-trash"></i></a>
                   <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href="{{url('admin/product/updated/'.$product->slug)}}"><i class="fa fa-edit"></i></a>  </td>
           
                 </tr>
-                  <?php $i++ ?>
+                  
                 @endforeach  
          
   
@@ -79,6 +82,7 @@
 
                
               </table>
+              {!!Form::close() !!}
                <div style="float:right" >
                     {!! $products->links() !!}
 

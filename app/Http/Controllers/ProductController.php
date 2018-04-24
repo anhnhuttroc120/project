@@ -15,6 +15,9 @@ class ProductController extends Controller
 {
    public function index(){
    		$products=Product::paginate(4);
+
+           
+
          return view('admin.product.list',compact('products'));
 	  		
 	  	
@@ -30,8 +33,8 @@ class ProductController extends Controller
    	        
                    
                      
-   	echo $color=	json_encode($request->color).'<BR>';
-  echo 	$size = json_encode($request->size).'<br>';
+   	 $color=	json_encode($request->color);
+   	$size = json_encode($request->size);
      
       $product =new Product();
       $product->name=$request->name;
