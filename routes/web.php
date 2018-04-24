@@ -74,7 +74,10 @@ Route::group(['prefix'=>'admin'],function(){
 
 		Route::get('add','ProductController@getAdd');
 		Route::post('add','ProductController@Add')->name('add');
-		rOUTE::get('list','ProductController@index');
+		Route::get('list','ProductController@index');
+		Route::get('updated/{slug}','ProductController@getUpdate');
+		Route::get('category/{id}','ProductController@category');
+		Route::post('updated/{slug}','ProductController@Update');
 
 	});
 

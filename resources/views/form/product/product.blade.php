@@ -11,7 +11,7 @@
 
       <label for="exampleInputUserName">Loại sản phẩm</label>
 
-   {!! Form::select('category', $categories, null, ['class' => 'form-control']) !!}
+   {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
  </div>
  <div class="form-group">
   {!! Form::label('name', 'Giá sản phẩm') !!}
@@ -27,18 +27,41 @@
   </div>
 </div>
  <div class="form-group">
+ 
+
   {!! Form::label('name', 'Màu sắc') !!}
   <div class="form-controls">
-  	  {!! Form::label('name', 'Trắng') !!}
-	  {!! Form::checkbox('color[]', 'Trắng') !!}
-	    {!! Form::label('name', 'Đen') !!}
-	  {!! Form::checkbox('color[]', 'Đen') !!}
-	    {!! Form::label('name', 'Hồng') !!}
-	  {!! Form::checkbox('color[]', 'Hồng') !!}
-	    {!! Form::label('name', 'Xanh') !!}
-	  {!! Form::checkbox('color[]', 'Xanh') !!}
-	   {!! Form::label('name', 'Tím') !!}
-	  {!! Form::checkbox('color[]', 'Tím') !!}
+  
+     {!! Form::label('name', 'Trắng') !!}
+    {!! Form::checkbox('color[]', 'Trắng') !!}
+
+   
+
+   
+     {!! Form::label('name', 'Đen') !!}
+    {!! Form::checkbox('color[]', 'Đen') !!}
+    
+
+
+     {!! Form::label('name', 'Hồng') !!}
+    {!! Form::checkbox('color[]', 'Hồng') !!}
+  
+
+  
+     {!! Form::label('name', 'Xanh') !!}
+    {!! Form::checkbox('color[]', 'Xanh') !!}
+ 
+
+
+  
+
+  
+     {!! Form::label('name', 'Tím') !!}
+    {!! Form::checkbox('color[]', 'Tím') !!}
+   
+   
+
+
   </div>
 </div>
 <div class="form-group">
@@ -60,7 +83,7 @@
   </div>
    <div class="form-group">
                     <label>Nội Dung</label>
-                    <textarea name="des" id="demo" class="form-control ckeditor" rows="3"></textarea>
+                    <textarea name="description" id="demo" class="form-control ckeditor" rows="3"></textarea>
                 </div>
 
 
