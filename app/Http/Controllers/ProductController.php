@@ -14,14 +14,8 @@ use Session;
 class ProductController extends Controller
 {
    public function index(){
-   		$products=Product_detail::all()->toArray();
-	  		foreach ($products as $key => $product) {
-	  				$pictures=json_decode($product['picture']);
-	  				$colors=json_decode($product['color']);
-	  				$sizes=json_decode($product['size']);
-
-	  		
-	  		}
+   		$products=Product::paginate(4);
+         return view('admin.product.list',compact('products'));
 	  		
 	  	
 	  
@@ -32,10 +26,13 @@ class ProductController extends Controller
    return view('admin.product.add');
    }
 
-   public function Add(AddProductRequest $request){
-   	      
-   	$color=	json_encode($request->color);
-   	$size = json_encode($request->size);
+   public function Add(Request $request){
+   	        
+                   
+                     
+   	echo $color=	json_encode($request->color).'<BR>';
+  echo 	$size = json_encode($request->size).'<br>';
+     
       $product =new Product();
       $product->name=$request->name;
       $product->slug=str_slug($request->name);
@@ -91,6 +88,14 @@ class ProductController extends Controller
  	
  	
  
+   }
+   public function getUpdate($slug){
+         
+           $product=Product::where('slug',$slug)->first();
+              
+
+             return view('admin.product.update',compact('product'));      
+
    }
 
    public function trangchu(){

@@ -13,7 +13,7 @@ class Product extends Model
     	return $this->belongsTo('App\Categories','category_id','id');
     }
     public function product_detail(){
-    	return $this->belongsTo('App\Product_detail','product_detail_id','id');
+    	return $this->hasOne('App\Product_detail','products_id','id');
     }
     public function user(){
     	return $this->belongsTo('App\User','users_id','id');

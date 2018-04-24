@@ -12,6 +12,6 @@ class Product_detail extends Model
     protected $lifestamp=true;
 
     public function product(){
-    	return $this->hasOne('App\Product','product_detail_id','id');
+    	return $this->belongsTo('App\Product','products_id','id');
     }
 }

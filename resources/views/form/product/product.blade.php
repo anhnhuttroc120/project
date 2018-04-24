@@ -27,18 +27,79 @@
   </div>
 </div>
  <div class="form-group">
+  <?PHP
+        
+        $color= ($product->product_detail->color);
+        $colors=json_decode($color);
+            
+        
+
+   ?>
+
   {!! Form::label('name', 'Màu sắc') !!}
   <div class="form-controls">
-  	  {!! Form::label('name', 'Trắng') !!}
-	  {!! Form::checkbox('color[]', 'Trắng') !!}
-	    {!! Form::label('name', 'Đen') !!}
-	  {!! Form::checkbox('color[]', 'Đen') !!}
-	    {!! Form::label('name', 'Hồng') !!}
-	  {!! Form::checkbox('color[]', 'Hồng') !!}
-	    {!! Form::label('name', 'Xanh') !!}
-	  {!! Form::checkbox('color[]', 'Xanh') !!}
-	   {!! Form::label('name', 'Tím') !!}
-	  {!! Form::checkbox('color[]', 'Tím') !!}
+    @foreach($colors as $color1)
+    @if($color1=='Trắng')
+     {!! Form::label('name', 'Trắng') !!}
+    {!! Form::checkbox('color[]', 'Trắng',true) !!}
+     @else  
+       {!! Form::label('name', 'Trắng') !!}
+    {!! Form::checkbox('color[]', 'Trắng') !!}
+    @endif
+    @endforeach
+
+    {{-- @foreach($colors as $color1)
+    @if($color1=='Đen')
+     {!! Form::label('name', 'Đen') !!}
+    {!! Form::checkbox('color[]', 'Đen',true) !!}
+    @else
+     
+    {!! Form::checkbox('color[]', 'Đen') !!}
+
+    @endif
+    @endforeach
+
+
+    @foreach($colors as $color)
+     @if($color=='Hồng')
+     {!! Form::label('name', 'Hồng') !!}
+    {!! Form::checkbox('color[]', 'Hồng',true) !!}
+    @else
+    
+    {!! Form::checkbox('color[]', 'Hồng') !!}
+
+    @endif
+    @endforeach
+
+
+    @foreach($colors as $color)
+     @if($color=='Xanh')
+     {!! Form::label('name', 'Xanh') !!}
+    {!! Form::checkbox('color[]', 'Xanh',true) !!}
+    @else
+     
+    {!! Form::checkbox('color[]', 'Xanh') !!}
+
+    @endif
+    @endforeach
+
+
+  
+
+    @foreach($colors as $color)
+     @if($color=='Tím')
+     {!! Form::label('name', 'Tím') !!}
+    {!! Form::checkbox('color[]', 'Tím',true) !!}
+    @else
+    
+    {!! Form::checkbox('color[]', 'Tím') !!}
+
+    @endif
+    @endforeach
+
+ --}}
+
+
   </div>
 </div>
 <div class="form-group">
