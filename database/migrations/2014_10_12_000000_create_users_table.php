@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('is_admin');
             $table->string('fullname');
             $table->text('phone');
+            $table->text('maActive');
             $table->text('address');
             $table->rememberToken();
             $table->timestamps();
