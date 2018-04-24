@@ -51,11 +51,197 @@
         @endif
 
           </div>
+          
        
-           {!! Form::model($product,['url' => 'admin/product/add', 'method' => 'post','files'=>true]) !!}
+      {!! Form::model($product,['url' => 'admin/product/add', 'method' => 'post','files'=>true]) !!}
+      <?php
+          $colors=json_decode($product->product_detail->color);
+               
+           ?>
               <div class="box-body">
-             @include('form.product.product')
+           <div class="form-group">
+  {!! Form::label('name', 'Tến sản phẩm') !!}
+  <div class="form-controls">
+    {!! Form::text('name', null, ['class' => 'form-control']) !!}
+  </div>
+</div>
+
+
+
+<div class="form-group">
+
+      <label for="exampleInputUserName">Loại sản phẩm</label>
+
+   {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
+ </div>
+ <div class="form-group">
+  {!! Form::label('name', 'Giá sản phẩm') !!}
+  <div class="form-controls">
+    {!! Form::text('price', null, ['class' => 'form-control']) !!}
+  </div>
+
+</div>
+<div class="form-group">
+  {!! Form::label('name', 'Sản phẩm đặc biệt') !!}
+  <div class="form-controls">
+    {!! Form::select('special',$special, null, ['class' => 'form-control']) !!}
+  </div>
+</div>
+ <div class="form-group">
+
+   <?php
+              echo "<pre>";
+              print_r($colors);
+              echo "</pre>";
+
+         ?>
+ 
+
+  {!! Form::label('name', 'Màu sắc') !!}
+  <div class="form-controls">
       
+
+     {!! Form::label('name', 'Trắng') !!}
+
+     @foreach($colors as $color)
+      @if($color=='Trắng')
+        <input type="checkbox" name="color[]" value="Trắng" checked>
+       @elseif($color=='Trắng' && !in_array('Trắng',$colors))
+        <input type="checkbox" name="color[]" value="Trắng">
+            
+        @endif    
+     @endforeach
+  
+
+      
+
+   
+     {!! Form::label('name', 'Đen') !!}
+      @foreach($colors as $color)
+      @if($color=='Đen')
+        <input type="checkbox" name="color[]" value="Đen" checked>
+       @elseif($color ='Đen' &&   !in_array('Đen',$colors))
+        <input type="checkbox" name="color[]" value="Đen">
+         
+     
+        @endif    
+     @endforeach
+  
+    
+
+
+     {!! Form::label('name', 'Hồng') !!}
+  
+    
+     @foreach($colors as $color)
+      @if($color=='Hồng')
+       
+        <input type="checkbox" name="color[]" value="Hồng" checked>
+       @elseif($color !='Hồng' || in_array('Hồng',$colors))
+        <input type="checkbox" name="color[]" value="Hồng">
+         
+    
+
+        @endif    
+     @endforeach
+
+  
+     {!! Form::label('name', 'Xanh') !!}
+
+     @foreach($colors as $color)
+      @if($color=='Xanh')
+       
+            <input type="checkbox" name="color[]" value="Xanh" checked>
+       @elseif($color !='Xanh' || in_array('Hồng',$colors))
+        <input type="checkbox" name="color[]" value="Xanh">
+       
+    
+
+        @endif    
+     @endforeach
+
+
+
+  
+
+  
+     {!! Form::label('name', 'Tím') !!}
+      @foreach($colors as $color)
+      @if($color=='Tím')
+       
+                 <input type="checkbox" name="color[]" value="Tím" checked>
+       @elseif($color !='Tím' || in_array('Hồng',$colors))
+        <input type="checkbox" name="color[]" value="Tím">
+      
+
+        @endif    
+     @endforeach
+
+   
+   
+
+
+  </div>
+</div>
+<div class="form-group">
+  {!! Form::label('name', 'Giảm giá') !!}
+  <div class="form-controls">
+    {!! Form::text('sale_off', null, ['class' => 'form-control']) !!}
+  </div>
+  <div class="form-group">
+  {!! Form::label('name', 'Kích thước') !!}
+  <div class="form-controls">
+      {!! Form::label('name', 'Size S') !!}
+    {!! Form::checkbox('size[]', 'S') !!}
+      {!! Form::label('name', 'Size M') !!}
+    {!! Form::checkbox('size[]', 'M') !!}
+      {!! Form::label('name', 'Size L') !!}
+    {!! Form::checkbox('size[]', 'L') !!}
+      {!! Form::label('name', 'Size XL') !!}
+    {!! Form::checkbox('size[]', 'XL') !!}
+  </div>
+   <div class="form-group">
+                    <label>Nội Dung</label>
+                    <textarea name="description" id="demo" class="form-control ckeditor" rows="3"></textarea>
+                </div>
+
+
+    @if (Session::has('notice'))
+        <div class="alert alert-danger">
+          {{ Session::get('notice') }}
+        </div>
+      @endif 
+   <div class="form-group">
+      <label for="exampleInputFile">Hình ảnh 1</label>
+      <input type="file" id="exampleInputFile" name="picture[]">
+
+      
+  </div>
+  <div class="form-group">
+      <label for="exampleInputFile">Hình ảnh 2</label>
+      <input type="file" id="exampleInputFile" name="picture[]">
+
+      
+  </div>
+  <div class="form-group">
+      <label for="exampleInputFile">Hình ảnh 3</label>
+      <input type="file" id="exampleInputFile" name="picture[]">
+
+      
+  </div>
+  <div class="form-group">
+      <label for="exampleInputFile">Hình ảnh 4</label>
+      <input type="file" id="exampleInputFile" name="picture[]">
+
+      
+  </div>
+  <div class="form-group">
+      <label for="exampleInputFile">Hình ảnh 5</label>
+      <input type="file" id="exampleInputFile" name="picture[]">
+
+      
+  </div>
+ 
                 
               </div>
               <!-- /.box-body -->
