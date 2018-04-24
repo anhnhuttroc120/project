@@ -128,42 +128,25 @@ public function Update(Request $request,$id){
        $product->slug=str_slug($request->name);
        $product->special=$request->special;
        $product->users_id=Auth::user()->id;
-       echo '<pre>';
-       print_r($request->all());
-       echo '</pre>';
       
-       
        $product_detail=Product_detail::where('products_id',$product->id)->first();
      
        $product_detail->description=$request->description;
        $product_detail->sale_off=$request->sale_off;
        $product_detail->products_id=$product->id;
       
-     
-       if(!empty($request->size)){
-        $product_detail->size=json_encode($request->size);
+       $product_detail->size=isset($request->size) ?json_encode($request->size):'';
 
-       }else{
-        $product_detail->size='';
-       }
-      
-   
-        if(!empty($request->color)){
-                $product_detail->color=json_encode($request->color);
-        }else{
-          $product_detail->color='';
-        }
-  
-      
+      $product_detail->color=isset($request->color) ?json_encode($request->color):'';
+       
       $oldImage=json_decode($product_detail->picture,true);
      
      
-      
-      $arrTemp=[1=>1,2=>2,3=>3,4=>4,5=>5]; // tạo mảng để so sánh mảng hình ảnh mới để truy xuất ra key cũ phục v
+      $arrTemp=[1=>1,2=>2,3=>3,4=>4,5=>5]; // tạo mảng để so sánh mảng hình ảnh mới để truy xuất ra vị trí key của hình ảnh  không đc  sửa
      
    
 
-      //Xử lý xóa ảnh, thêm ảnh trong database và file upload
+      //Xử lý xóa ảnh, thêm ảnh trong database ,zoom ảnh , file upload
         if($request->hasFile('picture'))
 
         {
@@ -189,10 +172,10 @@ public function Update(Request $request,$id){
              }
          
 
-             $img= Image::make('images/product/'.$picture)->resize('286','381');
+             $img= Image::make('images/product/'.$picture)->resize('286','381');  //zoom ảnh
              $img->save();
 
-              $listImage[$key]=$picture;
+              $listImage[$key]=$picture; //gắn tên ảnh mới zô mảng
              
 
            }
@@ -201,15 +184,13 @@ public function Update(Request $request,$id){
                 if(!array_key_exists($key, $listImage))
                 {
                   if(array_key_exists($key,$oldImage)){
-                   $listImage[$key]=$oldImage[$key];
+                   $listImage[$key]=$oldImage[$key]; // hình cũ không  sửa, gắn lại vô mảng
                   }
                   
                 }
            }
-           $product_detail->picture=json_encode($listImage);
-          
-          
-
+           $product_detail->picture=json_encode($listImage); // chuyển mảng thành jsson lưu vô ông nội database
+     
               
         }
          $product_detail->save();
