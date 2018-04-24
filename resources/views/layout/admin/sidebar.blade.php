@@ -57,8 +57,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/charts/chartjs.html"><i class="fa fa fa-check"></i> Danh sách chuyên mục</a></li>
-            <li><a href="pages/charts/morris.html"><i class="fa fa fa-check"></i> Thêm chuyên mục</a></li>
+            <li><a href=""><i class="fa fa fa-check"></i> Danh sách chuyên mục</a></li>
+            <li><a href=""><i class="fa fa fa-check"></i> Thêm chuyên mục</a></li>
            
           </ul>
         </li><!-- end chuyên mục -->
@@ -83,8 +83,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa fa-check"></i> Danh sách </a></li>
-            <li><a href="pages/forms/advanced.html"><i class="fa fa fa-check"></i> Thêm</a></li>
+            <li><a href="{{url('admin/product/list')}}"><i class="fa fa fa-check"></i> Danh sách </a></li>
+            <li><a href="{{url('admin/product/add')}}"><i class="fa fa fa-check"></i> Thêm</a></li>
            
           </ul>
         </li> <!-- end nhóm người dùng -->
