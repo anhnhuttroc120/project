@@ -27,36 +27,26 @@
   </div>
 </div>
  <div class="form-group">
-<<<<<<< HEAD
- 
-  {!! Form::label('name', 'Màu sắc') !!}
-  <div class="form-controls">
-=======
-  <?PHP
-        
-        
 
-   ?>
+ 
+  
 
   {!! Form::label('name', 'Màu sắc') !!}
   <div class="form-controls">
   
->>>>>>> a79af00f9271c1de9d6c4039e097b5c027792436
+
      {!! Form::label('name', 'Trắng') !!}
     {!! Form::checkbox('color[]', 'Trắng') !!}
 
    
-<<<<<<< HEAD
-=======
+
 
    
->>>>>>> a79af00f9271c1de9d6c4039e097b5c027792436
+
      {!! Form::label('name', 'Đen') !!}
     {!! Form::checkbox('color[]', 'Đen') !!}
     
 
-
-<<<<<<< HEAD
    
      {!! Form::label('name', 'Hồng') !!}
     {!! Form::checkbox('color[]', 'Hồng') !!}
@@ -67,34 +57,21 @@
      {!! Form::label('name', 'Xanh') !!}
     {!! Form::checkbox('color[]', 'Xanh') !!}
    
-=======
-     {!! Form::label('name', 'Hồng') !!}
-    {!! Form::checkbox('color[]', 'Hồng') !!}
+
+    
   
 
   
-     {!! Form::label('name', 'Xanh') !!}
-    {!! Form::checkbox('color[]', 'Xanh') !!}
+    
+
+    
  
->>>>>>> a79af00f9271c1de9d6c4039e097b5c027792436
 
-
-  
-
-<<<<<<< HEAD
-   
-     {!! Form::label('name', 'Tím') !!}
-    {!! Form::checkbox('color[]', 'Tím') !!}
-    
-
- }}
-=======
   
      {!! Form::label('name', 'Tím') !!}
     {!! Form::checkbox('color[]', 'Tím') !!}
    
    
->>>>>>> a79af00f9271c1de9d6c4039e097b5c027792436
 
 
   </div>
