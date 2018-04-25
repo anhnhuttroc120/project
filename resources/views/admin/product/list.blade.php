@@ -5,10 +5,12 @@
 
 <link rel="stylesheet" href="AdminLTE-2.4.3/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 {{-- <link rel="stylesheet" href="team1/team1.css"> --}}
+<link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
 
 @endsection
 @section('content')
  <div class="content-wrapper">
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -16,9 +18,9 @@
     <!--     <small>advanced tables</small> -->
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li><a href="#">Người dùng</a></li>
-        <li class="active"> Danh sách người dùng</li>
+        <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="{{url('admin/product/list')}}">Sản phẩm</a></li>
+        <li class="active"> Danh sách sản phẩm</li>
       </ol>
     </section>
 
@@ -35,12 +37,16 @@
 
             <!-- /.box-header -->
             <div class="box-body">
+                <div id="dialog-confirm" title="Thông báo!" style="display: none;">
+      <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
+  </div>  
+
               {!!Form::open(['url' => 'admin/product/category', 'method' => 'post','files'=>true,'id'=>'admin-form'])!!}
                 
               <select name="category_id" id="">
               
                 @foreach($categories as $key => $category)
-                @if($category_id==$key)
+                @if(!empty($category_id) && $category_id== $key)
                 <option selected value="{{$key}}">{{$category}}</option>
                 @else
                 <option  value="{{$key}}">{{$category}}</option>
@@ -60,25 +66,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <?php $i=1;
-                  ?>
+                 
                @foreach($products as $product)
                   <?php
                   $price=explode('.', $product->price);
+                        if(!empty($product->product_detail->picture)){
 
-                       $picture=json_decode($product->product_detail->picture);
+                             $pictures=json_decode($product->product_detail->picture,true); //CHUYEN VE 1  mảng
+                             $randomKey=array_rand($pictures,1); // lay ngẫynhieen key trong mảng pictures
 
-                        
-                        
-                   ?>
-                <tr char="item-{{$product->id}}">
+                        }
+            
+                       
+                       ?> 
+                   
+                <tr id="item-{{$product->id}}">
                   <td>{{$product->id}}</td>
                   <td>{{$product['name']}}</td>
-                  <td> <img src="images/product/{{$picture[0]}}" style="width: 50px;height: 50px;" alt="23"></td>
+                  <td> @if(!empty($pictures)) <img src="images/product/{{$pictures[$randomKey]}}" style="width: 50px;height: 50px;" alt="23">@else{!! '<span class="btn btn-warning">Chưa có ảnh</span>'!!} @endif</td>
                   <td>{{$product->category->name}} </td>
                   <td style="float: right;">{{number_format($price[0])}}đ</td>
-                  <td style="width: 50px;" ><a  style="color: red";  href=""><i class="fa fa-trash"></i></a>
-                  <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href="{{url('admin/product/updated/'.$product->slug)}}"><i class="fa fa-edit"></i></a>  </td>
+                  <td style="width: 50px;" ><a  style="color: red";  href="javascript:deleteItem({{$product->id}})"><i class="fa fa-trash"></i></a>
+                  <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href="{{url('admin/product/updated/'.$product->id)}}"><i class="fa fa-edit"></i></a>  </td>
           
                 </tr>
                   
@@ -116,8 +125,8 @@
 <!-- Bootstrap 3.3.7 -->
 <script src="AdminLTE-2.4.3/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DataTables -->
-<!-- <script src="AdminLTE-2.4.3/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="AdminLTE-2.4.3/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<script src="AdminLTE-2.4.3/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="AdminLTE-2.4.3/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="AdminLTE-2.4.3/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -146,11 +155,16 @@
               var category_id = $(this).val();
               
               var url =  '{{url('admin/product/category/')}}' + '/' + category_id;
+             
               $(location).attr('href', url);
 
         });
     });
 </script>
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="js/delete.js"></script>
+
 @endsection
 
 

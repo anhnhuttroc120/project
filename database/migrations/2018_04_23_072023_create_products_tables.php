@@ -17,7 +17,10 @@ class CreateProductsTables extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('slug');
-            $table->decimal('price',15,2);
+
+
+            $table->decimal('price',50,0);
+
             $table->tinyInteger('special');
             
             $table->integer('users_id');

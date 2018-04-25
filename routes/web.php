@@ -11,7 +11,6 @@
 |
 */
 
-
 // Route::get('category','PagesController@category');
 // Route::get('timkiem','PagesController@timkiem');
 // Route::get('chitiet',function(){
@@ -30,9 +29,8 @@
 // });
 
 
-// Route::get('/',function(){
-// 	return view('admin.index');
-// });
+	
+
 // Route::get('table',function(){
 // 	return view('admin.user.list');
 // });
@@ -45,9 +43,7 @@
 
 
 
-
    //customer side
-
 
 Route::get('dang-ki','PagesConTroller@getRegister');
 Route::post('dang-ki','PagesConTroller@postRegister');
@@ -56,9 +52,7 @@ Route::post('dang-nhap','PagesConTroller@postDangNhap');
 Route::get('trang-chu','PagesController@index');
 Route::get('dang-xuat','PagesController@logOut');
 
-                
-
-
+    
 
 Auth::routes();
 
@@ -68,8 +62,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //admin side
 
+Route::get('admin/dang-nhap','UserController@getDangNhap')->name('login');
+Route::post('admin/dang-nhap','UserController@postDangNhap');
+Route::get('admin/dang-xuat','UserController@logOut');
 
-Route::group(['prefix'=>'admin'],function(){
+Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
+	Route::get('index','UserController@index');
+
 	Route::group(['prefix'=>'product'],function(){
 
 		Route::get('add','ProductController@getAdd');
@@ -78,9 +77,11 @@ Route::group(['prefix'=>'admin'],function(){
 		Route::get('list','ProductController@index');
 		Route::get('updated/{slug}','ProductController@getUpdate');
 		Route::get('category/{id}','ProductController@category');
-		Route::post('updated/{slug}','ProductController@Update');
+		Route::patch('updated/{id}','ProductController@Update');
+		Route::get('delete/{id}','ProductController@delete');
 
 	});
+
 
 
 

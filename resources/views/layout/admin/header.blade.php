@@ -68,8 +68,9 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="img/user/1.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Chào ! Nam soái ca</span>
+              <span class="hidden-xs">Chào !  {{Auth::user()->fullname}}</span>
             </a>
+            
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
@@ -80,18 +81,26 @@
                   <small>Member since Nov. 2012</small>
                 </p>
               </li>
+
               <!-- Menu Body -->
               
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="{{url('admin/profile')}}" class="btn btn-default btn-flat">Thông tin tài khoản</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{{url('admin/changePass')}}" class="btn btn-default btn-flat">Đổi mật khẩu</a>
                 </div>
               </li>
             </ul>
+          </li>
+           <li class="dropdown tasks-menu">
+            <a href="{{url('admin/dang-xuat')}}" class="" >
+           
+             Đăng xuất
+            </a>
+            
           </li>
           <!-- Control Sidebar Toggle Button -->
          

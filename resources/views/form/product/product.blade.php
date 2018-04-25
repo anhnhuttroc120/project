@@ -79,31 +79,31 @@
       @endif 
    <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 1</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[1]">
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 2</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[2]">
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 3</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[3]">
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 4</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[4]">
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 5</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[5]">
 
       
   </div>
