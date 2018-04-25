@@ -35,11 +35,22 @@
 
             <!-- /.box-header -->
             <div class="box-body">
-              {!!Form::open(['url' => 'admin/product/add', 'method' => 'post','files'=>true])!!}
+              {!!Form::open(['url' => 'admin/product/category', 'method' => 'post','files'=>true,'id'=>'admin-form'])!!}
+                
+              <select name="category_id" id="">
+              
+                @foreach($categories as $key => $category)
+                @if($category_id==$key)
+                <option selected value="{{$key}}">{{$category}}</option>
+                @else
+                <option  value="{{$key}}">{{$category}}</option>
+                @endif
+                @endforeach
+              </select>
               <table id="example1" class="table table-bordered table-striped">
                 <thead  >
-                <tr>
-                  <th style="width: 13%;">Số thứ tự</th>
+                <tr >
+                  <th style="width: 13%;">Mã sản phẩm </th>
                   <th style="width: 13%;">Tên sản phẩm</th>
                   <th style="width: 13%;">Hình ảnh</th>
                   <th style="width: 13%;">Loại sản phẩm</th>
@@ -53,14 +64,14 @@
                   ?>
                @foreach($products as $product)
                   <?php
-                  $price=explode('.',$product->price);
+                  $price=explode('.', $product->price);
 
                        $picture=json_decode($product->product_detail->picture);
 
                         
                         
                    ?>
-                <tr>
+                <tr char="item-{{$product->id}}">
                   <td>{{$product->id}}</td>
                   <td>{{$product['name']}}</td>
                   <td> <img src="images/product/{{$picture[0]}}" style="width: 50px;height: 50px;" alt="23"></td>
@@ -84,7 +95,8 @@
               </table>
               {!!Form::close() !!}
                <div style="float:right" >
-                    {!! $products->links() !!}
+                    {!! $products->appends(request()->query()) !!}
+                    {{--  --}}
 
                 </div>
             </div>
@@ -127,6 +139,17 @@
       'autoWidth'   : true
     })
   })
+</script>
+<script>
+    $(document).ready(function(){
+        $('select[name=category_id]').change(function(){
+              var category_id = $(this).val();
+              
+              var url =  '{{url('admin/product/category/')}}' + '/' + category_id;
+              $(location).attr('href', url);
+
+        });
+    });
 </script>
 @endsection
 
