@@ -53,11 +53,26 @@
           </div>
           
        
-      {!! Form::model($product,['url' => 'admin/product/updated/'.$product->slug, 'method' => 'post','files'=>true]) !!}
+      {!! Form::model($product,['url' => 'admin/product/updated/'.$product->id, 'method' => 'patch','files'=>true]) !!}
       <?php
-          $colors=json_decode($product->product_detail->color);
-          $sizes=json_decode($product->product_detail->size);
-          $pictures=json_decode($product->product_detail->picture);
+           if(!empty($product->product_detail->color)){
+             $colors=json_decode($product->product_detail->color);
+           }else{
+             $colors=[];  
+
+           }
+
+        
+         if(!empty($product->product_detail->size)){
+            $sizes=json_decode($product->product_detail->size);
+         }else{
+            $sizes=[];
+         
+           
+         } 
+          
+          $pictures=json_decode($product->product_detail->picture,true);
+
             
                
            ?>
@@ -124,10 +139,6 @@
      
         @endif    
 
-  
-    
-
-
      {!! Form::label('name', 'Hồng') !!}
   
   
@@ -152,12 +163,7 @@
         <input type="checkbox" name="color[]" value="Xanh">
        
     
-
         @endif    
-  
-
-
-
   
 
   
@@ -173,21 +179,18 @@
         @endif    
 
 
-   
-   
-
-
   </div>
 </div>
 <div class="form-group">
   {!! Form::label('name', 'Giảm giá') !!}
   <div class="form-controls">
-    {!! Form::text('sale_off', null, ['class' => 'form-control']) !!}
+    {!! Form::text('sale_off', $product->product_detail->sale_off, ['class' => 'form-control']) !!}
   </div>
   <div class="form-group">
   {!! Form::label('name', 'Kích thước') !!}
   <div class="form-controls">
       {!! Form::label('name', 'Size S') !!}
+   
     @if(in_array('S',$sizes))
 
     {!! Form::checkbox('size[]', 'S',true) !!}
@@ -195,34 +198,38 @@
     {!! Form::checkbox('size[]', 'S') !!}
     @endif
 
+
   {!! Form::label('name', 'Size M') !!}
+ 
        @if(in_array('M',$sizes))
 
     {!! Form::checkbox('size[]', 'M',true) !!}
     @else
     {!! Form::checkbox('size[]', 'M') !!}
     @endif
+  
      
 
 
 
       {!! Form::label('name', 'Size L') !!}
-       @if(in_array('L',$sizes))
+       
+     @if(in_array('L',$sizes))
 
     {!! Form::checkbox('size[]', 'L',true) !!}
     @else
     {!! Form::checkbox('size[]', 'L') !!}
     @endif
-     
-
+  
+  
       {!! Form::label('name', 'Size XL') !!}
-       @if(in_array('XL',$sizes))
+      @if(in_array('XL',$sizes))
 
     {!! Form::checkbox('size[]', 'XL',true) !!}
     @else
     {!! Form::checkbox('size[]', 'XL') !!}
     @endif
-     
+
  
   </div>
    <div class="form-group">
@@ -239,9 +246,9 @@
      
    <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 1</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
-      @if(isset($pictures[0]))
-      <img src="images/product/{{$pictures[0]}}" alt="">
+      <input type="file" id="exampleInputFile" name="picture[1]">
+      @if(isset($pictures[1]))
+      <img src="images/product/{{$pictures[1]}}" alt="">
       
       
       @endif
@@ -250,19 +257,8 @@
 
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 2</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
-       @if(isset($pictures[1]))
-      <img src="images/product/{{$pictures[1]}}" alt="">
-      
-      
-      @endif
-
-      
-  </div>
-  <div class="form-group">
-      <label for="exampleInputFile">Hình ảnh 3</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
-     @if(isset($pictures[2]))
+      <input type="file" id="exampleInputFile" name="picture[2]">
+       @if(isset($pictures[2]))
       <img src="images/product/{{$pictures[2]}}" alt="">
       
       
@@ -271,10 +267,21 @@
       
   </div>
   <div class="form-group">
-      <label for="exampleInputFile">Hình ảnh 4</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
-@if(isset($pictures[3]))
+      <label for="exampleInputFile">Hình ảnh 3</label>
+      <input type="file" id="exampleInputFile" name="picture[3]">
+     @if(isset($pictures[3]))
       <img src="images/product/{{$pictures[3]}}" alt="">
+      
+      
+      @endif
+
+      
+  </div>
+  <div class="form-group">
+      <label for="exampleInputFile">Hình ảnh 4</label>
+      <input type="file" id="exampleInputFile" name="picture[4]">
+@if(isset($pictures[4]))
+      <img src="images/product/{{$pictures[4]}}" alt="">
       
       
       @endif
@@ -282,9 +289,9 @@
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 5</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
-    @if(isset($pictures[4]))
-      <img src="images/product/{{$pictures[4]}}" alt="">
+      <input type="file" id="exampleInputFile" name="picture[5]">
+    @if(isset($pictures[5]))
+      <img src="images/product/{{$pictures[5]}}" alt="">
       
       
       @endif

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use Session;
+use Mail;
 use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
@@ -27,7 +28,17 @@ class PagesController extends Controller
                     $data['is_admin']=0;
     				$data['created_by']='';
                     $email=$data['email'];
-    				User::create($data);
+                       $data['maActive']=  csrf_token();
+                    
+                  User::create($data);
+    			
+                   
+                    Mail::send('email.dangki',$data,function($message){
+                            $message->from('namdosatdn@gmail.com');
+                            $message->to('boyquay_timgirlnhinhanh_dn2006@yahoo.com.vn','conan Vu')->subject('Xac nhan email');
+                    });
+                    echo 'da gui mail thanh cong';
+
     			return view('default.notice.resgiter',compact('email'))->with('success','Bạn đã đăng kí thành công, Vui lòng vào email xác nhận tài khoản');			
     }
     public function getDangNhap(){
