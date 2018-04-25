@@ -76,11 +76,7 @@
                              $randomKey=array_rand($pictures,1); // lay ngẫynhieen key trong mảng pictures
 
                         }
-                     
-
-               
-
-                        
+            
                        
                        ?> 
                    

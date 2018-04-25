@@ -77,7 +77,7 @@ Route::group(['prefix'=>'admin'],function(){
 		Route::get('list','ProductController@index');
 		Route::get('updated/{slug}','ProductController@getUpdate');
 		Route::get('category/{id}','ProductController@category');
-		Route::post('updated/{id}','ProductController@Update');
+		Route::patch('updated/{id}','ProductController@Update');
 		Route::get('delete/{id}','ProductController@delete');
 
 	});

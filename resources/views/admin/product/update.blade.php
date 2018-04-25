@@ -53,7 +53,7 @@
           </div>
           
        
-      {!! Form::model($product,['url' => 'admin/product/updated/'.$product->id, 'method' => 'post','files'=>true]) !!}
+      {!! Form::model($product,['url' => 'admin/product/updated/'.$product->id, 'method' => 'patch','files'=>true]) !!}
       <?php
            if(!empty($product->product_detail->color)){
              $colors=json_decode($product->product_detail->color);

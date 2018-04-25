@@ -10,6 +10,7 @@ use App\Product;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Auth;
 use  App\Http\Requests\AddProductRequest;
+use  App\Http\Requests\EditProductRequest;
 use Session;
 class ProductController extends Controller
 {
@@ -28,7 +29,7 @@ class ProductController extends Controller
              $products=Product::paginate(1)->appends(request()->query());
 
            }else{
-             $products=Product::where('category_id',$category_id)->paginate(1)->appends(request()->query());;
+             $products=Product::where('category_id',$category_id)->paginate(1)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
 
             }
              return view('admin.product.list',compact(['products','category_id']));
@@ -66,9 +67,7 @@ class ProductController extends Controller
    		$data=[];
    			
    		$files=$request->file('picture');
-          
-
-   		
+      
    			foreach ($files as $key => $file) {
    				$name= $file->getClientOriginalName(); //lay tên ảnh gốc
    				$extension=$file->getClientOriginalExtension(); // lấy extion ảnh
@@ -120,7 +119,11 @@ class ProductController extends Controller
     return view('admin.product.update', compact('product'));      
 
    }
-public function Update(Request $request,$id){
+public function Update(Request $request,$id,Product $product){
+
+        $this->validate($request,[
+          'name'=>'required|unique:products,name,'.$id.',id','category_id'=>'required|numeric','price'=>'numeric|required','sale_off'=>'numeric|required','description'=>'required'
+        ]);
        $product=Product::find($id);
        $product->category_id=$request->category_id; 
        $product->name=$request->name;
@@ -128,6 +131,7 @@ public function Update(Request $request,$id){
        $product->slug=str_slug($request->name);
        $product->special=$request->special;
        $product->users_id=Auth::user()->id;
+       $product->save();
       
        $product_detail=Product_detail::where('products_id',$product->id)->first();
      
@@ -135,9 +139,9 @@ public function Update(Request $request,$id){
        $product_detail->sale_off=$request->sale_off;
        $product_detail->products_id=$product->id;
       
-       $product_detail->size=isset($request->size) ?json_encode($request->size):'';
+       $product_detail->size=isset($request->size) ? json_encode($request->size):'';
 
-      $product_detail->color=isset($request->color) ?json_encode($request->color):'';
+      $product_detail->color=isset($request->color) ? json_encode($request->color):'';
        
       $oldImage=json_decode($product_detail->picture,true);
      
@@ -146,7 +150,7 @@ public function Update(Request $request,$id){
      
    
 
-      //Xử lý xóa ảnh, thêm ảnh trong database ,zoom ảnh , file upload
+      //Xử lý xóa ảnh, ,zoom ảnh ,  upload ảnh
         if($request->hasFile('picture'))
 
         {
@@ -184,12 +188,12 @@ public function Update(Request $request,$id){
                 if(!array_key_exists($key, $listImage))
                 {
                   if(array_key_exists($key,$oldImage)){
-                   $listImage[$key]=$oldImage[$key]; // hình cũ không  sửa, gắn lại vô mảng
+                   $listImage[$key]=$oldImage[$key]; // tên hình cũ không  sửa, gắn lại vô mảng
                   }
                   
                 }
            }
-           $product_detail->picture=json_encode($listImage); // chuyển mảng thành jsson lưu vô ông nội database
+           $product_detail->picture=json_encode($listImage); // chuyển mảng thành json lưu vô ông nội database
      
               
         }
