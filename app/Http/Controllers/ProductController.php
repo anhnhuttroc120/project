@@ -26,10 +26,10 @@ class ProductController extends Controller
        if(isset($category_id)){
        
           if($category_id=='default'){      
-             $products=Product::paginate(1)->appends(request()->query());
+             $products=Product::paginate(4)->appends(request()->query());
 
            }else{
-             $products=Product::where('category_id',$category_id)->paginate(1)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
+             $products=Product::where('category_id',$category_id)->paginate(4)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
 
             }
              return view('admin.product.list',compact(['products','category_id']));
@@ -104,22 +104,18 @@ class ProductController extends Controller
     $product_detail->products_id=$product->id;
     $product_detail->save();
     return redirect()->back()->with('success','Đã  thêm sản phầm thành công');
- 	
- 	
+  	
  
    }
    public function getUpdate($id){
          
-     $product=Product::find($id);
-     if(empty($product->product_detail->size)){
-        $product->product_detail->size=[];
-     }
-              
+     $product=Product::findOrFail($id);
+       
 
     return view('admin.product.update', compact('product'));      
 
    }
-public function Update(Request $request,$id,Product $product){
+public function Update(Request $request,$id){
 
         $this->validate($request,[
           'name'=>'required|unique:products,name,'.$id.',id','category_id'=>'required|numeric','price'=>'numeric|required','sale_off'=>'numeric|required','description'=>'required'
@@ -146,10 +142,8 @@ public function Update(Request $request,$id,Product $product){
       $oldImage=json_decode($product_detail->picture,true);
      
      
-      $arrTemp=[1=>1,2=>2,3=>3,4=>4,5=>5]; // tạo mảng để so sánh mảng hình ảnh mới để truy xuất ra vị trí key của hình ảnh  không đc  sửa
+      $arrTemp=[1=>1,2=>2,3=>3,4=>4,5=>5]; // tạo mảng để so sánh mảng hình ảnh mới để truy xuất ra vị trí key của hình ảnh cũ  không đc  sửa
      
-   
-
       //Xử lý xóa ảnh, ,zoom ảnh ,  upload ảnh
         if($request->hasFile('picture'))
 
@@ -161,9 +155,10 @@ public function Update(Request $request,$id,Product $product){
            foreach ($files as $key => $file) {
               $name=$file->getClientOriginalName();
               $extension=$file->getClientOriginalExtension(); // lấy extision ảnh
-           if($extension !='jpg' && $extension!='png' && $extension!='jpeg' &&  $extension!='gif'){
+              if($extension !='jpg' && $extension!='png' && $extension!='jpeg' &&  $extension!='gif'){
             return redirect()->back()->with('notice','Kiểu ảnh không phù hợp');
           }
+          // xóa ảnh khi người dùng thao tác=> láy đc key hình  người dùng tác động ,và truy xuất database xóa ảnh  cũ vừa mới tác động
             $picture=str_random(6).'_'.$name;
              $file->move('images/product',$picture);
              if(array_key_exists($key, $oldImage)){
@@ -174,19 +169,17 @@ public function Update(Request $request,$id,Product $product){
                }
 
              }
-         
-
-             $img= Image::make('images/product/'.$picture)->resize('286','381');  //zoom ảnh
+      
+             $img= Image::make('images/product/'.$picture)->resize('286','381');  //điều chỉnh ảnh
              $img->save();
 
               $listImage[$key]=$picture; //gắn tên ảnh mới zô mảng
-             
-
+       
            }
 
            foreach ($arrTemp as $key => $value) {
-                if(!array_key_exists($key, $listImage))
-                {
+                if(!array_key_exists($key, $listImage)) 
+                 {
                   if(array_key_exists($key,$oldImage)){
                    $listImage[$key]=$oldImage[$key]; // tên hình cũ không  sửa, gắn lại vô mảng
                   }
@@ -219,15 +212,12 @@ public function delete($id){
          if(file_exists('images/product/'.$picture))
          {
                unlink('images/product/'.$picture);
-         }
-        
-    }
+         }      
+      }
  
     }
     $product_detail->delete();
     
-  
-
 
 }
 

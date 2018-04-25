@@ -23,7 +23,7 @@ class EditProductRequest extends FormRequest
      */
     public function rules()
     {
-        return ['name'=>'required|unique:products,name,'.$product->id.'','category_id'=>'required|numeric','price'=>'numeric|required','sale_off'=>'numeric|required','description'=>'required'
+        return ['name'=>'required|unique:products,name','category_id'=>'required|numeric','price'=>'numeric|required','sale_off'=>'numeric|required','description'=>'required'
             //
         ];
     }

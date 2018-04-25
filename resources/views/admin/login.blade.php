@@ -25,26 +25,28 @@
 			<div class="m wbg">
 				<h1>Administration Đăng Nhập</h1>
                 <!-- ERROR -->
+                @if(Session::has('notice'))
 				<div id="system-message-container">
                     <dl id="system-message">
                         <dt class="error">Error</dt>
                         <dd class="error message">
                             <ul>
-                                <li>Tài khoản hoặc mật khẩu không đúng</li>
+
+                                <li>{{Session::get('notice')}}</li>
                             </ul>
                         </dd>
                     </dl>
                 </div>
-				
+				@endif
                 <div id="section-box">
 					<div class="m">
-						<form action="check" method="post" id="form-login">
-                            {!! Form::open(['url'=>'check','method'=>'post','id'=>'form-login'])!!}
+						
+                            {!! Form::open(['url'=>'admin/dang-nhap','method'=>'post','id'=>'form-login'])!!}
 							<fieldset class="loginform">
                                 <label>Tài Khoản</label>
                                 <input name="username" id="mod-login-username" type="text" class="inputbox" size="15" />
                                 <label id="mod-login-password-lbl" for="mod-login-password">Mật khẩu</label>
-                                 <input name="passwordd" id="mod-login-password" type="password" class="inputbox" size="15" />
+                                 <input name="password" id="mod-login-password" type="password" class="inputbox" size="15" />
                                 <div class="button-holder">
                                     <div class="button1">
                                         <div class="next">
@@ -54,12 +56,12 @@
                                 </div>
 								<div class="clr"></div>
                             </fieldset>
-						</form>
+						{!!Form::close() !!}
 						<div class="clr"></div>
 					</div>
 				</div>
 		
-            	<p>Sử dụng tài khoàn và mật khẩu để đăng nhập website</p>
+            	<p>Sử dụng tài khoàn và mật khẩu chính xác  để đăng nhập Trang Quản trị Administration </p>
             	<p><a href="http://localhost/joomla/">Go to site home page.</a></p>
 				<div id="lock"></div>
 			</div>
