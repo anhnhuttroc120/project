@@ -22,9 +22,11 @@ class ProductController extends Controller
 	  	
 	  
    }
-   public function category($category_id){
+   public function category($category_id)
+   {
    
-       if(isset($category_id)){
+       if(isset($category_id))
+       {
        
          
              if($category_id=='default'){
@@ -32,13 +34,13 @@ class ProductController extends Controller
 
           
            }else{
-                   $products=Product::where('category_id',$category_id)->paginate(1)->appends(request()->query());;
+                   $products=Product::where('category_id', $category_id)->paginate(1)->appends(request()->query());;
    // ->appends(request()->query());
             }
             
      
-              return view('admin.product.list',compact(['products','category_id']));
-               }
+              return view('admin.product.list',compact(['products',   'category_id']));
+      }
              
 
    }
@@ -48,7 +50,7 @@ class ProductController extends Controller
    return view('admin.product.add');
    }
 
-   public function Add(Request $request){
+   public function Add(AddProductRequest $request){
    	        
                    
                      
