@@ -22,13 +22,12 @@ class ProductController extends Controller
 
     public function category($category_id)
    {
-   
         if (isset($category_id)){
-            if($category_id=='default'){      
-             $products=Product::paginate(1)->appends(request()->query());
-             return view('admin.product.list',compact(['products',   'category_id']));
+            if($category_id == 'default'){      
+                $products = Product::paginate(1)->appends(request()->query());
+                 return view('admin.product.list',compact(['products',   'category_id']));
             } else {
-             $products = Product::where('category_id', $category_id)->paginate(1)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
+                $products = Product::where('category_id', $category_id)->paginate(1)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
                 return view('admin.product.list', compact(['products' , 'category_id']));
                 }
         }
@@ -51,11 +50,11 @@ class ProductController extends Controller
    	    if($request->hasFile('picture')){
        	    $dataImage=[];
        		$files=$request->file('picture');
-       		foreach ($files as $key => $file) {
+       	    foreach ($files as $key => $file) {
        		   $name        = $file->getClientOriginalName(); //lay tên ảnh gốc
        		   $extension   = $file->getClientOriginalExtension(); // lấy extion ảnh
    		       if($extension != 'jpg' && $extension !='png' && $extension!='jpeg' &&  $extension!='gif'){
-   			  return redirect()->back()->with('notice','Kiểu ảnh không phù hợp');
+   			      return redirect()->back()->with('notice','Kiểu ảnh không phù hợp');
    		       	}
     			$picture = str_random(6).'_'.$name;  			
     			$file->move('images/product',$picture);
@@ -75,7 +74,7 @@ class ProductController extends Controller
         $data['products_id']  = $product->id; 
         Product_detail::create($data); 
         return back()->with('success', 'Đã thêm sản phầm thành công');
-  }
+    } 
 
     public function getUpdate($id)
     { 
@@ -106,7 +105,7 @@ class ProductController extends Controller
                 $name=$file->getClientOriginalName();
                 $extension=$file->getClientOriginalExtension(); // lấy extision ảnh
                 if($extension !='jpg' && $extension != 'png' && $extension !='jpeg' &&  $extension !='gif'){
-                return redirect()->back()->with('notice','Kiểu ảnh không phù hợp');
+                return back()->with('notice','Kiểu ảnh không phù hợp');
                 }
                 $picture=str_random(6).'_'.$name;
                 $file->move('images/product',$picture);
@@ -130,26 +129,24 @@ class ProductController extends Controller
             $data['picture'] = json_encode($listImage); // chuyển mảng thành json lưu vô ông nội database   
         }
         $product->detail->update($data);
-        return redirect()->back()->with('success', 'Bạn Đã thay đổi thành công sản phầm có mã số ID ' .$product->id); 
+        return back()->with('success', 'Bạn Đã thay đổi thành công sản phầm có mã số ID ' .$product->id); 
     }
 
     public function delete($id)
     {
-    $product = Product::findOrFail($id); //tim san phảm xóa
-    $product_detail = Product_detail::where('products_id', $id)->first(); //tìm thong tin chi tiet san phẩm
-    $product->delete(); //xóa sản phẩm
-        if(!empty($product_detail->picture)){//kiểm tra hình ảnh có tồn tại gắn vào mảng
-        $pictures = json_decode($product_detail->picture);
+    $product = Product::findOrFail($id); //tim san phảm xóa //tìm thong tin chi tiet san phẩm //xóa sản phẩm
+        if(!empty($product->detail->picture)){ //kiểm tra hình ảnh có tồn tại gắn vào mảng
+        $pictures = json_decode($product->detail->picture);
         }
         if(!empty($pictures)){
-            foreach ($pictures as $key => $picture){ //lặp mảng xóa
+            foreach ($pictures as $key => $picture){ //lặp mảng xóa trong thư mục upload file
                 if(file_exists('images/product/'.$picture)){
-             
                  unlink('images/product/'.$picture);
                 }     
             }
         }
-    $product_detail->delete();
+    $product->delete();
+    $product->detail->delete();   
     }   
 
 }

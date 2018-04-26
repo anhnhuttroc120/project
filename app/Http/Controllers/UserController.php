@@ -103,10 +103,17 @@ class UserController extends Controller
 		$data['status'] 	= 1;
 		$data['crtead_by']	= Auth::user()->fullname;
 		$oldImage 			= $user->picture;
-		if($request->hasFile('picture')){    //ngươi dùng đã thay đổi file
+	
+		if($request->hasFile('picture')){ 
+
+		   //ngươi dùng đã thay đổi file
 			$file = $request->file('picture');
+			echo '<pre>';
+			print_r($file);
+			echo '</pre>';
+				
 			$name = $file->getClientOriginalName();
-			$extension = $file->getClientOriginalExtension();
+			$extension = $file->getClientOriginalExtension();	
 			if($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg' &&  $extension != 'gif'){
    				return redirect()->back()->with('notice', 'Kiểu ảnh không phù hợp');
    			}
@@ -117,13 +124,14 @@ class UserController extends Controller
    			if(file_exists('images/user/'.$oldImage)){
    				unlink('images/user/'.$oldImage);
    			}	
-   			$user->picture = $newpicture;
+   			$data['picture'] = $newpicture;
 		} else{ //  người dùng k thay đổi hình
-			$user->picture = $oldImage;
+			$data['picture'] = $oldImage;
 			}
+
 		
 		$user->update($data);
-		return back()->with('success','Sửa thành công');
+		return back()->with('success', 'Sửa thành công');
 	}
  
 }
