@@ -51,8 +51,7 @@ Route::get('dang-nhap','PagesConTroller@getDangNhap');
 Route::post('dang-nhap','PagesConTroller@postDangNhap');
 Route::get('trang-chu','PagesController@index');
 Route::get('dang-xuat','PagesController@logOut');
-
-    
+   
 
 Auth::routes();
 
@@ -64,24 +63,18 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('admin/dang-nhap','UserController@getDangNhap')->name('login');
 Route::post('admin/dang-nhap','UserController@postDangNhap');
-Route::get('admin/dang-xuat','UserController@logOut');
-
-Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
+Route::get('admin/dang-xuat', 'UserController@logOut');
+Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::get('index','UserController@index');
-
-	Route::group(['prefix'=>'product'],function(){
-
+	Route::group(['prefix'=>'product'], function(){
 		Route::get('add','ProductController@getAdd');
 		Route::post('add','ProductController@Add')->name('add');
-
 		Route::get('list','ProductController@index');
 		Route::get('updated/{slug}','ProductController@getUpdate');
 		Route::get('category/{id}','ProductController@category');
 		Route::patch('updated/{id}','ProductController@Update');
 		Route::get('delete/{id}','ProductController@delete');
-
 	});
-
 	Route::group(['prefix'=>'user'],function(){
 		Route::get('list','UserController@listUser');
 		Route::get('add','UserController@getAdd');
@@ -94,6 +87,6 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
 
 
 });
-Route::get('/trang-chu','ProductController@trangchu');
+// Route::get('/trang-chu','ProductController@trangchu');
 //them
 		

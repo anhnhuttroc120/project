@@ -11,29 +11,27 @@ use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
 {
-  public function index(){
-  	
-  
+  public function index()
+  {
   	return view('default.pages.trangchu');
 
   }
-      public function getRegister(){
-    	return view('default.pages.dangki');
-    }
-    public function postRegister(){
+  public function getRegister()
+  {
 
-
-    		
-    				$data=$request->all();
-                    $data['status']=0;
-                    $data['picture']='';
-                    $data['is_admin']=0;
-    				$data['created_by']='';
-                    $email=$data['email'];
-                       $data['maActive']=  csrf_token();
-                    
-                  User::create($data);
-    			
+    return view('default.pages.dangki');
+  }
+  public function postRegister(CreateRequest $request)
+  {
+    				
+    $data=$request->all();            
+    $data['status'] = 0;
+    $data['picture'] = '';
+    $data['is_admin'] = 0;
+    $data['created_by'] ='';
+    $data['maActive'] = csrf_token(); 
+    User::create($data); // them vo database
+	
                    
                     // Mail::send('email.dangki',$data,function($message){
                     //         $message->from('namdosatdn@gmail.com');
@@ -41,24 +39,26 @@ class PagesController extends Controller
                     // });
                     // echo 'da gui mail thanh cong';
 
-    			return view('default.notice.resgiter',compact('email'))->with('success','Bạn đã đăng kí thành công, Vui lòng vào email xác nhận tài khoản');			
-    }
-    public function getDangNhap(){
-    	return view('default.pages.dangnhap');
-    }
-     public function postDangNhap(Request $request){
-     	$username=$request->username;
-     	$password=$request->password;
-     	if(Auth::attempt(['password'=>$password,'username'=>$username,'status'=>1])){
-     		return redirect()->intended('trang-chu');
-     	}else{
+    return view('default.notice.resgiter')->with('success','Bạn đã đăng kí thành công, Vui lòng vào email xác nhận tài khoản');			
+  }
+  public function getDangNhap(){
+    return view('default.pages.dangnhap');
+  }
+  public function postDangNhap(Request $request)
+  {
+ 	  $username = $request->username;
+ 	  $password = $request->password;
+    if(Auth::attempt(['password' => $password, 'username'=>$username, 'status'=>1])){
+      return redirect()->intended('trang-chu');
+    } else {
      		 return redirect()->back()->with('notice','Thông tin đăng nhập không chính xác! Hãy kiểm tra tài khoản và mật khẩu của bạn');
      	}
     	
-    }
-    public function logOut(){
-    	 Auth::logout();
-    	 return redirect()->back();
-    }
+  }
+  public function logOut()
+  {
+    Auth::logout();
+    return redirect()->back();
+  }
 
 }

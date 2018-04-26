@@ -16,13 +16,12 @@ class checkLogin
      */
     public function handle($request, Closure $next)
     {
-       if(Auth::check()){
-          
-                return $next($request);
+       if(Auth::check()){     
+            return $next($request);
          
-        }else{
+        } else {
 
             return redirect()->intended('admin/dang-nhap');
-      }
-}
+            }
+    }
 }
