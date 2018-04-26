@@ -70,9 +70,9 @@
                @foreach($products as $product)
                   <?php
                   $price=explode('.', $product->price);
-                        if(!empty($product->product_detail->picture)){
+                        if(!empty($product->detail->picture)){
 
-                             $pictures=json_decode($product->product_detail->picture,true); //CHUYEN VE 1  mảng
+                             $pictures=json_decode($product->detail->picture,true); //CHUYEN VE 1  mảng
                              $randomKey=array_rand($pictures,1); // lay ngẫynhieen key trong mảng pictures
 
                         }
