@@ -82,10 +82,18 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
 
 	});
 
-
+	Route::group(['prefix'=>'user'],function(){
+		Route::get('list','UserController@listUser');
+		Route::get('add','UserController@getAdd');
+		Route::post('add','UserController@Add');
+		Route::get('delete/{id}','UserController@Delete');
+		Route::get('edit/{id}','UserController@getEdit');
+		Route::put('edit/{id}','UserController@Edit');
+	});
 
 
 
 });
 Route::get('/trang-chu','ProductController@trangchu');
 //them
+		

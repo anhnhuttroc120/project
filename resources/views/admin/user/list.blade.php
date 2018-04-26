@@ -1,7 +1,7 @@
 @extends('layout.admin.master')
 
 @section('css')
-
+<link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
 
 <link rel="stylesheet" href="AdminLTE-2.4.3/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 {{-- <link rel="stylesheet" href="team1/team1.css"> --}}
@@ -24,6 +24,9 @@
 
     <!-- Main content -->
     <section class="content">
+       <div id="dialog-confirm" title="Thông báo!" style="display: none;">
+      <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
+  </div>  
       <div class="row">
         <div class="col-xs-12">
        
@@ -38,31 +41,37 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead  >
                 <tr>
-                  <th style="width: 13%;">Rendering engine</th>
-                  <th style="width: 13%;">Browser</th>
-                  <th style="width: 13%;">Platform(s)</th>
-                  <th style="width: 13%;">Engine version</th>
-                  <th style="width: 13%;" >CSS grade</th>
+                  <th style="width: 13%;">STT</th>
+                  <th style="width: 13%;" >Picture</th>
+                  <th style="width: 13%;">FullName</th>
+                  <th style="width: 13%;">UserName</th>
+                  <th style="width: 13%;">Email</th>
+                  <th style="width: 13%;">Is_admin</th>
                   <th style="width: 10%;">Hành động</th>
                   
                 </tr>
                 </thead>
                 <tbody>
-              @for($i=1;$i<50;$i++)  	
-                <tr>
-                  <td>{{$i}}</td>
-                  <td>Internet
-                    Explorer 4.0
+              	@foreach($users as $user)
+                <tr id="item-{{$user->id}}">
+                  <td>{{$user->id}}</td>
+                  <td><img src="images/user/{{$user->picture}}"></td>
+                  <td>{{$user->fullname}}</td>
+                  <td> {{$user->username}}</td>
+                  <td>{{$user->email}}</td>
+                  <td>
+                    @if($user->is_admin==1)
+                      {{"Admin"}}
+                    @else
+                      {{"Thuong"}}
+                    @endif
                   </td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                  <td style="width: 50px;" ><a  style="color: red";  href=""><i class="fa fa-trash"></i></a>
-                  <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href=""><i class="fa fa-edit"></i></a>  </td>
+                  <td style="width: 50px;" ><a  style="color: red";  href="javascript:deleteItem({{$user->id}})"><i class="fa fa-trash"></i></a>
+                  <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href="admin/user/edit/{{$user->id}}"><i class="fa fa-edit"></i></a>  </td>
           
                 </tr>
-              @endfor
-  
+          
+                 @endforeach  
                 </tbody>
                 
               </table>
@@ -107,6 +116,9 @@
     })
   })
 </script>
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="js/userdelete.js"></script>
 @endsection
 
 
