@@ -33,11 +33,11 @@ class PagesController extends Controller
                   User::create($data);
     			
                    
-                    Mail::send('email.dangki',$data,function($message){
-                            $message->from('namdosatdn@gmail.com');
-                            $message->to('boyquay_timgirlnhinhanh_dn2006@yahoo.com.vn','conan Vu')->subject('Xac nhan email');
-                    });
-                    echo 'da gui mail thanh cong';
+                    // Mail::send('email.dangki',$data,function($message){
+                    //         $message->from('namdosatdn@gmail.com');
+                    //         $message->to('boyquay_timgirlnhinhanh_dn2006@yahoo.com.vn','conan Vu')->subject('Xac nhan email');
+                    // });
+                    // echo 'da gui mail thanh cong';
 
     			return view('default.notice.resgiter',compact('email'))->with('success','Bạn đã đăng kí thành công, Vui lòng vào email xác nhận tài khoản');			
     }

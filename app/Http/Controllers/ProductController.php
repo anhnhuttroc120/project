@@ -30,7 +30,7 @@ class ProductController extends Controller
           if($category_id=='default'){      
              $products=Product::paginate(1)->appends(request()->query());
 
-              return view('admin.product.list',compact(['products',   'category_id']));
+             return view('admin.product.list',compact(['products',   'category_id']));
             }else{
        $products=Product::where('category_id',$category_id)->paginate(1)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
                 return view('admin.product.list',compact(['products','category_id']));
@@ -46,7 +46,7 @@ class ProductController extends Controller
    public function getAdd(){
    	$categories=Categories::pluck('name','id')->all();
 
-    return view('admin.product.add');//sdjfdsfsdh
+    return view('admin.product.add');
    }
 
    public function Add(AddProductRequest $request){

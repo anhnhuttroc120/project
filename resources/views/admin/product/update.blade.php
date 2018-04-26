@@ -107,9 +107,6 @@
 </div>
  <div class="form-group">
 
-  
- 
-
   {!! Form::label('name', 'Màu sắc') !!}
   <div class="form-controls">
       
@@ -123,11 +120,7 @@
         <input type="checkbox" name="color[]" value="Trắng">
             
         @endif    
-
-  
-
-      
-
+ 
    
      {!! Form::label('name', 'Đen') !!}
      
@@ -148,7 +141,7 @@
        @else
         <input type="checkbox" name="color[]" value="Hồng">
          
-    
+  
 
         @endif    
    
@@ -208,10 +201,6 @@
     {!! Form::checkbox('size[]', 'M') !!}
     @endif
   
-     
-
-
-
       {!! Form::label('name', 'Size L') !!}
        
      @if(in_array('L',$sizes))
@@ -223,7 +212,7 @@
   
   
       {!! Form::label('name', 'Size XL') !!}
-      @if(in_array('XL',$sizes))
+    @if(in_array('XL',$sizes))
 
     {!! Form::checkbox('size[]', 'XL',true) !!}
     @else
