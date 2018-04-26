@@ -5,8 +5,6 @@
   </div>
 </div>
 
-
-
 <div class="form-group">
 
       <label for="exampleInputUserName">Loại sản phẩm</label>
@@ -27,35 +25,22 @@
   </div>
 </div>
  <div class="form-group">
- 
 
   {!! Form::label('name', 'Màu sắc') !!}
   <div class="form-controls">
-  
+
      {!! Form::label('name', 'Trắng') !!}
     {!! Form::checkbox('color[]', 'Trắng') !!}
 
-   
-
-   
      {!! Form::label('name', 'Đen') !!}
     {!! Form::checkbox('color[]', 'Đen') !!}
-    
-
 
      {!! Form::label('name', 'Hồng') !!}
     {!! Form::checkbox('color[]', 'Hồng') !!}
-  
 
-  
      {!! Form::label('name', 'Xanh') !!}
     {!! Form::checkbox('color[]', 'Xanh') !!}
- 
 
-
-  
-
-  
      {!! Form::label('name', 'Tím') !!}
     {!! Form::checkbox('color[]', 'Tím') !!}
    

@@ -44,6 +44,7 @@ class ProductController extends Controller
    }
 
    public function Add(AddProductRequest $request){
+
    	               
       $color= isset($request->color) ? json_encode($request->color) :'';
    	  $size=	isset($request->size) ? json_encode($request->size) :'';
@@ -115,6 +116,13 @@ class ProductController extends Controller
     return view('admin.product.update', compact('product'));      
 
    }
+
+
+   public function trangchu(){
+      return view('default.pages.trangchu');
+   }
+
+
 public function Update(Request $request,$id){
 
         $this->validate($request,[
@@ -219,8 +227,6 @@ public function delete($id){
     $product_detail->delete();
     
 
+
 }
-
-
-
 }

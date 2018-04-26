@@ -53,7 +53,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-           {!! Form::open(['url' => 'admin/user/add', 'method' => 'post','files'=>true]) !!}
+           {!! Form::model($user,['url' => 'admin/user/edit/' .$user->id, 'method' => 'put','files'=>true]) !!}
               <div class="box-body">
              @include('form.user.user')
                 
@@ -61,7 +61,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Thêm</button>
+                <button type="submit" class="btn btn-primary">Thay đổi</button>
               </div>
             {!! Form::close() !!}
           </div>

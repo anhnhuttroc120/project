@@ -20,8 +20,10 @@ class PagesController extends Controller
       public function getRegister(){
     	return view('default.pages.dangki');
     }
-    public function postRegister(CreateRequest $request){
-    				
+    public function postRegister(){
+
+
+    		
     				$data=$request->all();
                     $data['status']=0;
                     $data['picture']='';

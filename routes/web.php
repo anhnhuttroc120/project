@@ -73,6 +73,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
 
 		Route::get('add','ProductController@getAdd');
 		Route::post('add','ProductController@Add')->name('add');
+
 		Route::get('list','ProductController@index');
 		Route::get('updated/{slug}','ProductController@getUpdate');
 		Route::get('category/{id}','ProductController@category');
@@ -81,8 +82,18 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
 
 	});
 
-
+	Route::group(['prefix'=>'user'],function(){
+		Route::get('list','UserController@listUser');
+		Route::get('add','UserController@getAdd');
+		Route::post('add','UserController@Add');
+		Route::get('delete/{id}','UserController@Delete');
+		Route::get('edit/{id}','UserController@getEdit');
+		Route::put('edit/{id}','UserController@Edit');
+	});
 
 
 
 });
+Route::get('/trang-chu','ProductController@trangchu');
+//them
+		

@@ -26,8 +26,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa fa-check"></i>Danh sách</a></li>
-            <li><a href="index2.html"><i class="fa fa fa-check"></i> Thêm người dùng</a></li>
+            <li class="active"><a href="{{url('admin/user/list')}}"><i class="fa fa fa-check"></i>Danh sách</a></li>
+            <li><a href="{{url('admin/user/add')}}"><i class="fa fa fa-check"></i> Thêm người dùng</a></li>
           </ul>
         </li>
         <!-- end ng dùng -->
