@@ -174,7 +174,7 @@
 
   </div>
 </div>
-<div class="form-group">
+<div class="form-group">ư
   {!! Form::label('name', 'Giảm giá') !!}
   <div class="form-controls">
     {!! Form::text('sale_off', $product->detail->sale_off, ['class' => 'form-control']) !!}

@@ -24,7 +24,7 @@ class EditProductRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        $id = ($request->route('id'));
+        $id = $request->route('id');
         return ['name'=>'required|unique:products,name,'.$id.',id','category_id'=>'required|numeric','price'=>'numeric|required','sale_off'=>'numeric|required','description'=>'required'
             //
         ];

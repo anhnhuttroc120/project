@@ -47,7 +47,6 @@ class ProductController extends Controller
         $data['slug']       = str_slug($request->name);
         $data['users_id']   = Auth::user()->id;
         $product = Product::create($data);   
-   	// $product_detail = new Product_detail();
    	    if($request->hasFile('picture')){
        	    $dataImage=[];
        		$files=$request->file('picture');
