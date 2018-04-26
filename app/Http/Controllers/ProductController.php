@@ -30,46 +30,33 @@ class ProductController extends Controller
           if($category_id=='default'){      
              $products=Product::paginate(1)->appends(request()->query());
 
-           }else{
-<<<<<<< HEAD
-                   $products=Product::where('category_id', $category_id)->paginate(1)->appends(request()->query());;
-   // ->appends(request()->query());
-            }
-            
-     
               return view('admin.product.list',compact(['products',   'category_id']));
-      }
-=======
-             $products=Product::where('category_id',$category_id)->paginate(1)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
+            }else{
+       $products=Product::where('category_id',$category_id)->paginate(1)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
+                return view('admin.product.list',compact(['products','category_id']));
+            }
+
+            
 
             }
-             return view('admin.product.list',compact(['products','category_id']));
-        }
->>>>>>> cf5c5cb0749d6fe5b6c6a8a5c2d24c321c8433c5
-             
+            
+         
 
    }
    public function getAdd(){
    	$categories=Categories::pluck('name','id')->all();
 
-    return view('admin.product.add');
+    return view('admin.product.add');//sdjfdsfsdh
    }
 
    public function Add(AddProductRequest $request){
-<<<<<<< HEAD
-   	        
-                   
-                     
-   	 $color=	json_encode($request->color);
-   	$size = json_encode($request->size);
-     
-=======
+
    	               
       $color= isset($request->color) ? json_encode($request->color) :'';
    	  $size=	isset($request->size) ? json_encode($request->size) :'';
  
 
->>>>>>> cf5c5cb0749d6fe5b6c6a8a5c2d24c321c8433c5
+
       $product =new Product();
       $product->name=$request->name;
       $product->slug=str_slug($request->name);
