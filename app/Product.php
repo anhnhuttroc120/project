@@ -10,13 +10,13 @@ class Product extends Model
 
     protected $fillable=['name','slug','price','special','product_detail_id','users_id','category_id'];
 
-    protected $lifestamp=true;
+    protected $lifestamp=false;
 
     public function category(){
     	return $this->belongsTo('App\Categories','category_id','id');
     }
 
-    public function product_detail(){
+    public function detail(){
     	return $this->hasOne('App\Product_detail','products_id','id');
     }
 

@@ -8,7 +8,7 @@ class Product_detail extends Model
 {
      protected $table='product_detail';
     
-    protected $fillable=['size','color','picture_1','picture_2','picture_3','picture_4','picture_5','description','sale_off'];
+    protected $fillable=['size','color','picture','description','sale_off','products_id'];
     protected $lifestamp=true;
 
     public function product(){

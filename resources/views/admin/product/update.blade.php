@@ -55,23 +55,23 @@
        
       {!! Form::model($product,['url' => 'admin/product/updated/'.$product->id, 'method' => 'patch','files'=>true]) !!}
       <?php
-           if(!empty($product->product_detail->color)){
-             $colors=json_decode($product->product_detail->color);
+           if(!empty($product->detail->color)){
+             $colors=json_decode($product->detail->color);
            }else{
              $colors=[];  
 
            }
 
         
-         if(!empty($product->product_detail->size)){
-            $sizes=json_decode($product->product_detail->size);
+         if(!empty($product->detail->size)){
+            $sizes=json_decode($product->detail->size);
          }else{
             $sizes=[];
          
            
          } 
           
-          $pictures=json_decode($product->product_detail->picture,true);
+          $pictures=json_decode($product->detail->picture,true);
 
             
                
@@ -177,7 +177,7 @@
 <div class="form-group">
   {!! Form::label('name', 'Giảm giá') !!}
   <div class="form-controls">
-    {!! Form::text('sale_off', $product->product_detail->sale_off, ['class' => 'form-control']) !!}
+    {!! Form::text('sale_off', $product->detail->sale_off, ['class' => 'form-control']) !!}
   </div>
   <div class="form-group">
   {!! Form::label('name', 'Kích thước') !!}
@@ -223,7 +223,7 @@
   </div>
    <div class="form-group">
                     <label>Nội Dung</label>
-                    <textarea name="description" id="demo" class="form-control ckeditor" rows="3" value="{{$product->product_detail->description}}">{{$product->product_detail->description}}</textarea>
+                    <textarea name="description" id="demo" class="form-control ckeditor" rows="3" value="{{$product->detail->description}}">{{$product->detail->description}}</textarea>
                 </div>
 
 

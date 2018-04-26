@@ -21,18 +21,24 @@
 
     <!-- Main content -->
      <section class="content">
+      <div class="container">
       <div class="row">
-     <div class="col-md-12">
-          @if($errors->any())
+         @if($errors->any())
+        <div class="col-md-12">
+         
        <div class="alert alert-danger">
         <ul style="list-style-type: none">
             @foreach ($errors->all() as $error)
                 <li >{{ $error }}</li>
             @endforeach
         </ul>
-        @endif
-     </div>
       </div>
+      
+    
+      </div> {{-- row- col-md --}}
+        @endif
+    </div> {{-- row end --}}
+  </div>{{--  container   --}}
 
       <div class="row">
 

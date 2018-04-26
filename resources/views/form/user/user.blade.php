@@ -2,7 +2,7 @@
       <label for="exampleInputUserName">UserName</label>
 
     {!!Form::text('username',null,['class'=>'form-control','id'=>'exampleInputUserName','placeholder'=>'User Name']) !!}
- </div>
+</div>
 <div class="form-group">
       <label for="exampleInputUserName">FullName</label>
 
@@ -16,11 +16,11 @@
   @if(empty($user))
  <div class="form-group">
       <label for="exampleInputPassword1">Password</label>
-      <div></div>
+      
       <input name="password" type="password" class="form-control" id="" placeholder="Re-Password">
-       </div>
+       
   </div>
- 
+
    <div class="form-group">
       <label for="exampleInputPassword1">Re-Password</label>
       <input name="re-password" type="password" class="form-control" id="" placeholder="Re-Password">
@@ -33,6 +33,7 @@
       <label for="exampleInputPhone">Phone</label>
       {!!Form::text('phone',null,['class'=>'form-control','id'=>'exampleInputFullName','placeholder'=>'phone']) !!}
   </div>
+  
   <div class="form-group">
       <label for="exampleInputAddress">Address</label>
       {!!Form::text('address',null,['class'=>'form-control','id'=>'exampleInputFullName','placeholder'=>'adress']) !!}

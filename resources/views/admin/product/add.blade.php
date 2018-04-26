@@ -42,7 +42,7 @@
         </div>
       @endif
 
-            @if($errors->any())
+    @if($errors->any())
        <div class="alert alert-danger">
         <ul style="list-style-type: none">
             @foreach ($errors->all() as $error)
@@ -51,8 +51,7 @@
         </ul>
        
     </div>
-        @endif
-
+    @endif
           </div>
        
            {!! Form::open(['url' => 'admin/product/add', 'method' => 'post','files'=>true]) !!}
