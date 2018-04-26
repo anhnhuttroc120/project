@@ -51,8 +51,6 @@ Route::get('dang-nhap','PagesConTroller@getDangNhap');
 Route::post('dang-nhap','PagesConTroller@postDangNhap');
 Route::get('trang-chu','PagesController@index');
 Route::get('dang-xuat','PagesController@logOut');
-   
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
