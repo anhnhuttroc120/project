@@ -26,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
         }
          $special=['Không','Có'];
            View::share('special', $special);
+          $role=['Member','Admin'];
+           View::share('role', $role);
            // $colorD=['default'=>'Chọn màu','Đỏ','Tím','Hồng','Xanh','Đen','Trắng'];
            // ksort($color);
            // View::share('color', $color);

@@ -30,10 +30,11 @@ class UserController extends Controller
 	 		$data['username']=$request->username;
 	 		$data['password']=$request->password; 
 	 		
-	 		if(Auth::attempt($data)){
+	 		if(Auth::attempt($data)){ //Auth atthemp  kiem tra du lieu nguoi dung co dung trong databse 
 	 			return redirect()->intended('admin/index');
 	 			
 	 		}else{
+
 	 			return back()->with('notice','Tài khoản và mật khẩu không chính xác');
 	 			
 	 		}

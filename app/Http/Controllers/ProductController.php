@@ -127,7 +127,12 @@ class ProductController extends Controller
     return view('admin.product.update', compact('product'));      
 
    }
-public function Update(Request $request,$id,Product $product){
+
+
+
+
+public function Update(Request $request,$id){
+
 
         $this->validate($request,[
           'name'=>'required|unique:products,name,'.$id.',id','category_id'=>'required|numeric','price'=>'numeric|required','sale_off'=>'numeric|required','description'=>'required'
@@ -237,8 +242,7 @@ public function delete($id){
   
 
 
+
 }
-
-
 
 }
