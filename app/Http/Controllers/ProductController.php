@@ -24,10 +24,10 @@ class ProductController extends Controller
    {
         if (isset($category_id)){
             if($category_id == 'default'){      
-                $products = Product::paginate(1)->appends(request()->query());
+                $products = Product::paginate(4)->appends(request()->query());
                  return view('admin.product.list',compact(['products',   'category_id']));
             } else {
-                $products = Product::where('category_id', $category_id)->paginate(1)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
+                $products = Product::where('category_id', $category_id)->paginate(4)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
                 return view('admin.product.list', compact(['products' , 'category_id']));
                 }
         }

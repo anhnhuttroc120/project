@@ -29,7 +29,7 @@ class PagesController extends Controller
     $data['picture'] = '';
     $data['is_admin'] = 0;
     $data['created_by'] ='';
-    $data['maActive'] = csrf_token(); 
+    // $data['maActive'] = csrf_token(); 
     User::create($data); // them vo database
 	
                    

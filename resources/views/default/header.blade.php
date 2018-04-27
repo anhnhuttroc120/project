@@ -25,7 +25,7 @@
 		<div  class="header-body">
 			<div class="container beta-relative">
 				<div class="pull-left">
-					<a href="index.html" id="logo"><img style="width: 400px;height:152px;" src="images/banner.jpg" width="200px" alt=""></a>
+					<a href="index.html" id="logo"><img style="width: 700px;height:152px;" src="images/banner.jpg" width="200px" alt=""></a>
 				</div>
 				<div style="padding-top:30px;" class="pull-right beta-components space-left ov">
 					<div class="space10">&nbsp;</div>
