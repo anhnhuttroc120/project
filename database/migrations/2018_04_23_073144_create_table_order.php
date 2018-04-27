@@ -17,7 +17,7 @@ class CreateTableOrder extends Migration
             $table->increments('id');
             $table->integer('quantity');
             $table->tinyInteger('status');
-            $table->decimal('total');
+            $table->decimal('total',50,0);
             $table->integer('users_id');
             $table->text('address');
             $table->text('phone');

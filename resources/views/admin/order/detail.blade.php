@@ -34,6 +34,11 @@
             <div class="box-header">
               <h3 class="box-title">Danh sách Chi Tiết</h3>
             </div>
+            @if (Session::has('success'))
+        <div class="alert alert-success">
+          {{ Session::get('success') }}
+        </div>
+      @endif>
 
             <!-- /.box-header -->
             <div class="box-body">
@@ -43,59 +48,90 @@
       <div class="khach-hang">
         <h5 style="font-weight: bold;">Thông tin khách hàng:</h5>
         <div>
-           <label style="font-weight:400; width: 250px;">Thông tin người đặt hàng:</label> <span></span>
+           <label style="font-weight:400; width: 250px;">Thông tin người đặt hàng:</label> <span>{{$order->user->fullname}}</span>
         </div>
        <div>
-          <label style="font-weight:400; width: 250px;">Ngày đặt hàng:</label> <span></span>
+          <label style="font-weight:400; width: 250px;">Ngày đặt hàng:</label> <span>{{$order->date_shipper}}</span>
        </div>
        <div>
-         <label style="font-weight:400;width: 250px;">Số điện thoại:</label> <span></span>
+         <label style="font-weight:400;width: 250px;">Số điện thoại:</label> <span>{{$order->user->phone}}</span>
        </div>
         <div>
-          <label style="font-weight:400;width: 250px;">Địa chỉ:</label> <span></span>
+          <label style="font-weight:400;width: 250px;">Địa chỉ:</label> <span>{{$order->user->address}}</span>
         </div>
         <div>
-          <label style="font-weight:400;width: 250px;">Email:</label> <span></span>
+          <label style="font-weight:400;width: 250px;">Email:</label> <span>{{$order->user->email}}</span>
         </div>
         <div>
-          <label style="font-weight:400;width: 250px;">Ghi chú:</label> <span></span>
+          <label style="font-weight:400;width: 250px;">Ghi chú:</label> <span>{{$order->note}}</span>
         </div>
       </div>
       <div>
-          <table id="example1" class="table table-bordered table-striped">
+          <table id="" class="table table-bordered table-striped">
                 <thead  >
                 <tr >
-                  <th style="width: 25%;">STT</th>
-                  <th style="width: 25%;">Tên sản phẩm</th>
-                  <th style="width: 25%;">Số lượng</th>
-                  <th style="width: 25%;">Giá tiền</th>
+                  <th style="width: 23%;">STT</th>
+                  <th style="width: 23%;">Tên sản phẩm</th>
+                  <th style="width: 23%;">Số lượng</th>
+                  <th style="width: 23%;">Giá tiền</th>
                  
                     
                 </tr>
                 </thead>
                 <tbody>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+
+                  @foreach($order->orders_detail as $order_detail)
+                  <?php 
+                      $arrTemp[] = $order_detail->total;
+                  ?>
+                  <tr>
+                  <td>{{$order_detail->id}}</td>
+                  <td>{{$order_detail->product->name}}</td>
+                  <td>{{$order_detail->quantity}}</td>
+                  <td>{{$order_detail->total}}</td>
+                 
+                  </tr>
+                  @endforeach
+                 <?php 
+                  if(!empty($arrTemp)){
+                     $subtotal = array_sum($arrTemp);
+
+                  }else{
+                    $subtotal='0';
+                  }
+
+                if($order->status == 1){
+                   $arrStatus = ['Đã xử lý'];
+                }
+
+                 ?>
                   
                 </tbody>
                 <tfoot>
                   <td  colspan="3" class="text-right" ;" >Tổng tiền:</td>
-                  <td colspan="1" ><span style="color: red;padding-left: 15px;">250.000<sup>đ</sup></span></td>
+                  <td colspan="1" ><span style="color: red;padding-left: 15px;">{{number_format($subtotal)}}<sup>đ</sup></span></td>
                 </tfoot>
         </table>
         <div>
+          <form action="{{url('admin/order/change-status/'.$order->id)}}" method="post">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
           <div class="status" style="float:right">
           <label>Trạng thái giao hàng:</label>
-          <select>
-            <option>Đang xử lý</option>
-            <option>Đã xử lý</option>
-            <option>Hủy</option>
+          <select  name="status" class="" style="width: 150px;height: 30px;padding: 5px;">
+            @foreach($arrStatus as $key => $status)
+
+                @if($order->status == $key))
+                     <option selected value="{{$key}}">{{$status}}</option>
+                @else
+                    <option  value="{{$key}}">{{$status}}</option>
+                @endif
+            @endforeach
           </select>
-          <button class="btn btn-primary">Thay đổi trạng thái</button>
+          @if($order->status != 1)
+          <button style="height: 30px;padding: 5px;"  class="btn btn-primary">Thay đổi trạng thái</button>
+            @endif
           </div>
+          </form>
         </div>
       </div>
               {!!Form::close() !!}

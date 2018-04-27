@@ -83,7 +83,8 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	});
 	Route::group(['prefix'=>'order'],function(){
 		Route::get('list','OrderController@list');
-		Route::get('detail','OrderController@detail');
+		Route::get('detail/{id}','OrderController@detail');
+		Route::post('change-status/{id}','OrderController@changeStatus');
 	});
 
 

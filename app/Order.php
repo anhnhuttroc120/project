@@ -17,7 +17,7 @@ class Order extends Model
     	return $this->belongsTo('App\User','users_id','id');
     } 
     public function products(){
-    	return $this->hasManyThrough('App\Product','App\Product_detail','products_id','id');
+    	return $this->hasManyThrough('App\Product','App\Order_detail','order_id','products_id','id');
     }
 
 }

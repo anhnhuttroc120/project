@@ -28,6 +28,7 @@
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
+          
        
 
           <div class="box">
@@ -43,7 +44,7 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr >
-                  <th style="width: 13%;">ID</th>
+                  <th style="width: 13%;">Mã số đơn hàng</th>
                   <th style="width: 13%;">Tên người order</th>
                   <th style="width: 13%;">Địa chỉ</th>
                   <th style="width: 13%;">Ngày Đặt Hàng</th>
@@ -58,12 +59,12 @@
                	 <?php 
                	 	$result = '';
                	 	if($order->status == 0){
-               	 		$result='<small style="width:200px;" class="label label-default">Đang xử lý</small>';
-               	 	}elseif($order->status==1){
-               	 		$result='<small class="label label-success">Đã xử lý</small>';
-               	 		}else{
-               	 			$result='<small style=" width:150px !important;" class="label label-danger">Hủy</small>';
-               	 		}
+               	 		$result = '<small style="width:200px;" class="label label-default">Đang xử lý</small>';
+               	 	} elseif ($order->status==1){
+               	 		   $result = '<small class="label label-success">Đã xử lý</small>';
+               	 	} elseif($order->status==2) {
+               	 			$result = '<small style=" width:150px !important;" class="label label-danger">  Hủy</small>';
+               	 	  }
 
                	 ?>    
                 <tr>
@@ -71,9 +72,9 @@
                   <td>{{$order->user->fullname}}</td>
                   <td>{{$order->address}}</td>
                   <td>{{$order->date_shipper}}</td>
-                  <td>dung@gmail.com</td>
+                  <td>{{$order->total}}</td>
                   <td>{!! $result !!}</td>
-                  <td > <a href="">Chi tiết</a> </td>
+                  <td > <a href="{{url('admin/order/detail/'.$order->id)}}">Chi tiết</a> </td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -84,21 +85,25 @@
 
                
               </table>
+              <div style="float:right" class="pagination">
+                {!! $orders->links() !!}
+
+              </div>
               <hr>
               <div>
               	<table id="example1" class="table table-bordered table-striped">
               		
                 <tr>
 	                <th colspan="6"><span class="pull-right">Tổng đơn hàng đã xử lý</span></th>
-	                <th>5</th>
+	                <th><a href="">{{$data['done']}}</a></th>
            		 </tr>
 	            <tr>
 	                <th colspan="6"><span class="pull-right">Tổng đơn hàng chưa xử lý</span></th>
-	                <th>2</th>
+	                <th><a href="">{{$data['waiting']}}</a></th>
 	            </tr>
 	            <tr>
 	                <th colspan="6"><span class="pull-right">Tổng đơn hàng đã hủy</span></th>
-	                <th>2</th>
+	                <th><a href="">{{$data['cancel']}}</a></th>
 	            </tr>
               	</table>
               </div>

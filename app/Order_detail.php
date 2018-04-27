@@ -10,12 +10,12 @@ class Order_detail extends Model
     protected $table='order_detail';
     
     protected $fillable=['quantity','order_id','products_id','total'];
-    protected $lifestamp=true;
+    protected $lifestamp=false;
     public function order(){
     	return $this->belongsTo('App\Order','order_id','id');
     }
     public function product(){
-    	return $this->hasMany('App\Product','id','products_id');
+    	return $this->hasOne('App\Product','id','products_id');
 
     }
 }
