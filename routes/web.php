@@ -81,7 +81,10 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::get('edit/{id}','UserController@getEdit');
 		Route::put('edit/{id}','UserController@Edit');
 	});
-
+	Route::group(['prefix'=>'order'],function(){
+		Route::get('list','OrderController@list');
+		Route::get('detail','OrderController@detail');
+	});
 
 
 });
