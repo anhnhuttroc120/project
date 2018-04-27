@@ -66,7 +66,7 @@
         
         <!-- start đơn hàng -->
         <li>
-          <a href="pages/calendar.html">
+          <a href="{{url('admin/order/list')}}">
             <i class="fa fa-calendar"></i> <span>Đơn hàng</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-red">4</small>
