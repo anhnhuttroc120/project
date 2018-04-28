@@ -19,5 +19,4 @@ class Order extends Model
     public function products(){
     	return $this->hasManyThrough('App\Product','App\Order_detail','order_id','products_id','id');
     }
-
 }

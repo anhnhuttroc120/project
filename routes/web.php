@@ -85,6 +85,9 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::get('list','OrderController@list');
 		Route::get('detail/{id}','OrderController@detail');
 		Route::post('change-status/{id}','OrderController@changeStatus');
+		Route::get('search','OrderController@Search');
+		Route::get('date','OrderController@Date');
+		Route::get('status/{id}','OrderController@Status');
 	});
 
 

@@ -12,9 +12,7 @@ class OrderController extends Controller
     public function list()
     {
     	$orders = Order::paginate(4);
-    	$data['done']=Order::where('status', 1)->count();
-    	$data['waiting']=Order::where('status', 0)->count();
-    	$data['cancel']=Order::where('status', 2)->count();
+    	
 
     	return view('admin.order.list', compact('orders', 'data'));
     }
@@ -38,8 +36,33 @@ class OrderController extends Controller
 
 	     $order->update(['status'=>$request->status]);
 	     return back()->with('success','Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );
-	    }
-	    
-    			
+	    }		
     }
+
+    public function Search(Request $request)
+    {	
+    	if(!empty($request->search)){
+    		$keyword = $request->search;
+    		$orders = DB::table('order')->join('users','order.users_id','=','users.id')->where('order.id','like', $keyword)->orWhere('users.fullname','like',"%".$keyword."%")->orWhere('date_shipper','like',$keyword)->select('order.id','order.users_id','users.fullname','order.address','order.date_shipper','order.total','order.status')->paginate(4)->appends(request()->query());
+    			
+    		return view('admin.order.list',compact('orders','data'));
+    	}
+	}
+
+	public function Date(Request $request)
+
+	{
+		$startdate = isset($request->startdate) ? $request->startdate : '1970-01-01';
+		$enddate = 	isset($request->enddate) ? $request->enddate : date("Y-m-d",time());
+		$orders = Order::whereBetween('created_at',[$startdate,$enddate])->paginate(4)->appends(request()->query());
+		return view('admin.order.list',compact('startdate','enddate','orders'));	
+		
+	}
+
+	public function Status($id){
+		if (!empty($id)) {
+			$orders = Order::where('status','=',$id)->paginate(4)->appends(request()->query());
+			return view('admin.order.list',compact('orders'));
+		}
+	}
 }
