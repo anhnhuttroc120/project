@@ -13,17 +13,17 @@
 
 // Route::get('category','PagesController@category');
 // Route::get('timkiem','PagesController@timkiem');
-// Route::get('chitiet',function(){
-// 	return view('default.pages.chitiet');
-// });
+Route::get('chitiet',function(){
+	return view('default.pages.chitiet');
+});
 
 
 // Route::get('dangnhap',function(){
 // 		return view('default.pages.dangnhap');
 // });
-// Route::get('giohang',function(){
-// 		return view('default.pages.giohang');
-// });
+Route::get('giohang',function(){
+		return view('default.pages.giohang');
+});
 // Route::get('error',function(){
 // 		return view('default.pages.404');
 // });
@@ -85,6 +85,9 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::get('list','OrderController@list');
 		Route::get('detail/{id}','OrderController@detail');
 		Route::post('change-status/{id}','OrderController@changeStatus');
+		Route::get('search','OrderController@Search');
+		Route::get('date','OrderController@Date');
+		Route::get('status/{id}','OrderController@Status');
 	});
 
 

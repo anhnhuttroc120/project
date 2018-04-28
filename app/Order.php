@@ -23,5 +23,4 @@ class Order extends Model
     {
     	return $this->belongsToMany('App\Product','order_detail','order_id','products_id');
     }
-
 }
