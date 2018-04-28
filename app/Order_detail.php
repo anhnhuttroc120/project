@@ -18,7 +18,7 @@ class Order_detail extends Model
 
     public function product()
     {
-    	return $this->hasOne('App\Product', 'id', 'products_id');
+    	return $this->belongsTo('App\Product', 'products_id', 'id');
 
     }
 }

@@ -16,7 +16,7 @@ class OrderController extends Controller
     	$data['done'] = Order::where('status', 1)->count();
     	$data['waiting'] = Order::where('status', 0)->count();
     	$data['cancel']= Order::where('status', 2)->count();
-
+        
     	return view('admin.order.list', compact('orders', 'data'));
     }
     public function detail($id)
