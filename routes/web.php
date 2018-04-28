@@ -13,17 +13,17 @@
 
 // Route::get('category','PagesController@category');
 // Route::get('timkiem','PagesController@timkiem');
-// Route::get('chitiet',function(){
-// 	return view('default.pages.chitiet');
-// });
+Route::get('chitiet',function(){
+	return view('default.pages.chitiet');
+});
 
 
 // Route::get('dangnhap',function(){
 // 		return view('default.pages.dangnhap');
 // });
-// Route::get('giohang',function(){
-// 		return view('default.pages.giohang');
-// });
+Route::get('giohang',function(){
+		return view('default.pages.giohang');
+});
 // Route::get('error',function(){
 // 		return view('default.pages.404');
 // });

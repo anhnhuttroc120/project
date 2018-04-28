@@ -97,7 +97,7 @@
                   <th style="width: 13%;">Mã số đơn hàng</th>
                   <th style="width: 13%;">Tên người order</th>
                   <th style="width: 13%;">Địa chỉ</th>
-                  <th style="width: 13%;">Ngày Đặt Hàng</th>
+                  <th style="width: 13%;">Ngày Giao hàng</th>
                   <th style="width: 5%;" >Tổng tiền</th>
                   <th style="width: 10%;">Trạng thái</th>
                   <th style="width: 10%;">Hành động</th>
