@@ -26,7 +26,7 @@
 						</div>
 						<div class="form-block">
 							<label for="email">Điện thoại <span style="color:red">*</span></label>
-							<input type="email"  name="email" autocomplete='email' >
+							<input type="email"  name="phone" autocomplete='email' >
 						</div>
 
 						<div class="form-block">
@@ -67,7 +67,8 @@
 					<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; "><i class="fa fa-shopping-cart fa-2x" style="color: black"> </i>SẢN PHẨM ĐÃ CHỌN</a>
 					</div>
-					<form  action="#" method="post">
+					<form  action="{{url('check-out')}}" method="post" id="form-checkout"> 
+						<input type="hidden" name="_token" value="{{csrf_token()}}">
 						
 						<table class="table table-bordered">
 							<thead>
@@ -130,7 +131,7 @@
 							<div  style="margin-top:10px;" class="row">
 								<div class="col-md-12 bookcart">
 									<a style="background: #A5A6A5" href="#" class="btn">TIẾP TỤC MUA HÀNG</a>
-									<a style="background: #63AA38;float: right;" href="#" class="btn">ĐẶT HÀNG</a>
+									<a  style="background: #63AA38;float: right;font-size: 16px;cursor: pointer;"  class="btn checkout">ĐẶT HÀNG</a>
 								</div>
 							</div>	
 					</form>
@@ -188,6 +189,14 @@ function formatNumber (num) {
            }); 
 
 
+		});
+
+	});
+</script>
+<script>
+	$(document).ready(function(){
+		$('a.checkout').click(function(){
+			$('#form-checkout').submit();
 		});
 
 	});

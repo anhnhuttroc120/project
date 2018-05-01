@@ -49,6 +49,7 @@ Route::get('chi-tiet/{slug}','PagesController@detail');
 Route::post('add-cart/','CartController@add');
 Route::post('update-cart','CartController@update');
 Route::get('delete-cart/{rowId}','CartController@delete');
+Route::post('check-out','CartController@checkout');
 
 
 //admin side
