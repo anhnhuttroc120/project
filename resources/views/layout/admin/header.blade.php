@@ -67,7 +67,7 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="img/user/1.jpg" class="user-image" alt="User Image">
+              <img src="images/user/{{Auth::user()->picture}}" class="user-image" alt="User Image">
               <span class="hidden-xs">Chào !  {{Auth::user()->fullname}}</span>
             </a>
             

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\CreateRequest;
+use App\Http\Requests\ChangePassRequest;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AddUserRequest;
 use App\Http\Requests\EditUserRequest;
 use Intervention\Image\ImageManagerStatic as Image;
+use Validator;
+use Hash;
+use Brian2694\Toastr\Facades\Toastr;
 
 class UserController extends Controller
 {	
@@ -56,7 +60,9 @@ class UserController extends Controller
 	}
 
 	public function Add(AddUserRequest $request)
+
 	{	
+			
 		$data          	 	= $request->all();
 		$data['password']	= bcrypt($request->password);
 		$data['status'] 	= 1;
@@ -77,7 +83,9 @@ class UserController extends Controller
 			}
 		$data['picture'] = $picture;	
 		User::create($data);
-		return back()->with('success', 'Thêm thành công');
+		Toastr::success('Bạn đã thêm thành công', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+		return back();
+		
 	}
 
 	public function Delete($id)
@@ -88,6 +96,7 @@ class UserController extends Controller
 		if (file_exists('images/user/'.$picture)) {
 			unlink('images/user/'.$picture);
 		}
+
 	}
 
 	public function getEdit($id)
@@ -131,7 +140,20 @@ class UserController extends Controller
 
 		
 		$user->update($data);
-		return back()->with('success', 'Sửa thành công');
+		Toastr::success('Bạn đã sửa thành công người dùng có id là '. $user->id, 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+		return back();
+	}
+	public function profile()
+	{
+		return view('admin.user.profile');
+	}
+	public function changepass(ChangePassRequest $request)
+	{
+		 $user = User::where('username', $request->username)->first();
+		 $data['password'] = bcrypt($request->password_new);
+		 $user->update($data);
+		 return back()->with('success', 'Bạn đã thay đổi mật khẩu thành công');
+
 	}
  
 }

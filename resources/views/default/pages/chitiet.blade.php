@@ -1,13 +1,36 @@
 @extends('default.master')
+@section('css')
+<link rel="stylesheet" href="css/pagination.css">
+@endsection
 @section('content')
 <div class="container">
+	<?php 
+	if(!empty($product->detail->picture)){
+		$pictures = json_decode($product->detail->picture,true);
+		$picture_main = $pictures[1];
+		$sizes = json_decode($product->detail->size,true);
+		$colors = json_decode($product->detail->color,true);
+		if($product->detail->sale_off > 0 ){
+			$price = ((100 - $product->detail->sale_off)*$product->price)/100;
+		} else {
+			$price =$product->price;
+			}
+
+	 
+
+	}
+	
+	
+
+
+	?>
 			<div class="pull-left">
 				<h6 class="inner-title">Sản phẩm</h6>
 			</div>
 			<div class="pull-right">
 				<div class="beta-breadcrumb font-large">
 					<a href="index.html">Trang chủ</a> / <span>Sản phẩm</span>
-					/ <span>Sản phẩm chi tiết</span
+					/ <span>Sản phẩm chi tiết</span>
 				</div>
 			</div>
 			<div class="clearfix"></div>
@@ -17,16 +40,17 @@
 		<div id="content">
 			<div class="row">
 				<div class="col-sm-9">
-
+						{!!Form::open(['url'=>'add-cart','method'=>'post','id'=>'form-cart'])!!}
 					<div class="row">
 						<div class="col-sm-4">
-							<img src="images/book/2lozfcge.jpg" alt="123">
+							<input type="hidden" name="id" value="{{$product->id}}">
+							<img src="images/product/{{$picture_main}}" alt="123">
 						</div>
 						<div class="col-sm-8">
 							<div class="single-item-body">
-								<h1  style="background: #e7e7e7;padding: 10px;" class="single-item-title">Sample Woman Top</h1>
+								<h1  style="background: #e7e7e7;padding: 10px;" class="single-item-title">{{$product->name}}</h1>
 								<p class="single-item-price">
-									<h6 style="color: #ff9A00">120.000 <sup>đ</sup></h6>
+									<h6 style="color: #ff9A00">{{number_format($price)}}<sup>đ</sup></h6>
 								
 							</div>
 
@@ -46,48 +70,60 @@
 								<p>Kích thước:</p>
 								<div>
 								<select class="wc-select" name="size">
-									<option value="default">Chọn</option>
-									<option value="XS">XS</option>
-									<option value="S">S</option>
-									<option value="M">M</option>
-									<option value="L">L</option>
-									<option value="XL">XL</option>
+									@foreach($sizes as $size)
+									<option value="{{$size}}">{{$size}}</option>
+									@endforeach
 								</select>
+
+									
+								</div>
+								<p>Màu:</p>
+								<div>
+								<select class="wc-select" name="color">
+									
+									@foreach($colors as $color)
+									<option value="{{$color}}">{{$color}}</option>
+									@endforeach
+									</select>
 								</div>
 								<p>Số lượng:</p>
 								
-								<select class="wc-select" name="color">
-									
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="7">8</option>
-									<option value="7">9</option>
-									<option value="7">10</option>
+								<select class="wc-select" name="quantity">
+									@for($i = 1 ; $i<=10; $i++)
+									<option value="{{$i}}">{{$i}}</option>
+									@endfor
 								</select>
-								<p>Màu sắc: <b>Hồng</b> </p>
+								<p>Màu sắc:
+								@foreach($colors as $key => $color) 
+									@if($key == count($colors)-1)
+									<b>{{$color}}  </b>
+									@else
+									<b>{{$color}} ,  </b>
+									@endif
+									@endforeach 
+								</p>
 								<div style="margin-top:10px;">
-								<a style="background: #ff6100;font-size: 25px;color: #e7e7e7" class="btn" href="">Mua ngay</a>
+								<button type="submit" style="background: #ff6100;font-size: 25px;color: #e7e7e7" class="btn" >Mua ngay</button>
 								</div>
 								<div class="clearfix"></div>
 							</div>
 						</div>
 					</div>
+					{!!Form::close()!!}
 
 					<div class="space40">&nbsp;</div>
 					<div style="height: auto" class="woocommerce-tabs">
 						<ul class="tabs">
-							<li><a style="color: black ;font-weight: bold" href="#tab-description">Chi tiết</a></li>
-							<li><a style="color:black ;font-weight: bold;" href="#tab-reviews">Hướng dẫn mua hàng</a></li>
+							<li><a style="font-size: 16px;" href="#tab-description">Chi tiết</a></li>
+							<li><a style="font-size: 16px;" href="#tab-reviews">Hướng dẫn mua hàng</a></li>
 						</ul>
 
 						<div " class="panel" id="tab-description">
 							<h6>Thông tin chi tiết</h6>
-							<p><i class="fa fa-check" aria-hidden="true"></i>Tên sản phẩm:</p>
+							{!! $product->detail->description !!}
+
+
+							{{-- <p><i class="fa fa-check" aria-hidden="true"></i>Tên sản phẩm:</p>
 							<p><i class="fa fa-check" aria-hidden="true"></i>Chất liệu:</p>
 							<p><i class="fa fa-check" aria-hidden="true"></i>Màu sắc:</p>
 							<p><i class="fa fa-check" aria-hidden="true"></i>Thiết kế:</p>
@@ -97,13 +133,17 @@
 							<p><i class="fa fa-check" aria-hidden="true"></i>size L:</p>
 							<p><i class="fa fa-check" aria-hidden="true"></i>size XL:</p>
 							<p><i class="fa fa-check" aria-hidden="true"></i>size XXL:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>Màu sắc:</p>
+							<p><i class="fa fa-check" aria-hidden="true"></i>Màu sắc:</p> --}}
 							<div class="img-detail">
 								<div class="img-portrait" >
-								<img src="images/book/2lozfcge.jpg" alt="123">
-								<img src="images/book/2lozfcge.jpg" alt="123">
-								<img src="images/book/2lozfcge.jpg" alt="123">
-								<img src="images/book/2lozfcge.jpg" alt="123">
+									<?php
+									$pictures = array_reverse($pictures);
+
+									 ?>
+								@foreach($pictures as  $picture)	
+								<img  src="images/product/{{$picture}}" alt="123">
+								
+								@endforeach
 								
 								</div>
 							
@@ -130,63 +170,39 @@
 						<h4>Sản phẩm liên quan</h4>
 
 						<div class="row">
-							<div class="col-sm-4">
-								<div class="single-item">
-									<div class="single-item-header">
-										<a href="product.html"><img src="source/assets/dest/images/products/4.jpg" alt=""></a>
-									</div>
-									<div class="single-item-body">
-										<p class="single-item-title">Sample Woman Top</p>
-										<p class="single-item-price">
-											<span>$34.55</span>
-										</p>
-									</div>
-									<div class="single-item-caption">
-										<a class="add-to-cart pull-left" href="product.html"><i class="fa fa-shopping-cart"></i></a>
-										<a class="beta-btn primary" href="product.html">Details <i class="fa fa-chevron-right"></i></a>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-4">
-								<div class="single-item">
-									<div class="single-item-header">
-										<a href="product.html"><img src="assets/dest/images/products/5.jpg" alt=""></a>
-									</div>
-									<div class="single-item-body">
-										<p class="single-item-title">Sample Woman Top</p>
-										<p class="single-item-price">
-											<p>120.000</p>
-										</p>
-									</div>
-									<div class="single-item-caption">
-										<a class="add-to-cart pull-left" href="product.html"><i class="fa fa-shopping-cart"></i></a>
-										<a class="beta-btn primary" href="product.html">Details <i class="fa fa-chevron-right"></i></a>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-4">
-								<div class="single-item">
-									<div class="ribbon-wrapper"><div class="ribbon sale">Sale</div></div>
+							@foreach($products['relate'] as $product)
+								<?php 
+									$pictures = json_decode($product->detail->picture,true);
+									$picture_main = $pictures[1];
+									if($product->detail->sale_off > 0){
+										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
+									}
 
-									<div class="single-item-header">
-										<a href="#"><img src="assets/dest/images/products/6.jpg" alt=""></a>
-									</div>
-									<div class="single-item-body">
-										<p class="single-item-title">Sample Woman Top</p>
-										<p class="single-item-price">
-											<span class="flash-del">$34.55</span>
-											<span class="flash-sale">$33.55</span>
-										</p>
-									</div>
-									<div class="single-item-caption">
-										<a class="add-to-cart pull-left" href="#"><i class="fa fa-shopping-cart"></i></a>
-										<a class="beta-btn primary" href="#">Details <i class="fa fa-chevron-right"></i></a>
-										<div class="clearfix"></div>
+								
+								?>
+								<div  class="col-sm-4">
+									<div  class="single-item">
+										<div class="single-item-header">
+											<a href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
+										</div>
+										<div class="single-item-body">
+											<p class="name-product" style="height: 50px;"  class="single-item-title">{{$product->name}}</p>
+											@if($product->detail->sale_off >0 )
+												<span class="flash-del price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												<span class="flash-sale price">{{number_format($price_sale)}}<sup>đ</sup ></span>
+												@else
+												<span class="flash-sale price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												@endif
+										</div>
+										<div class="single-item-caption">
+											<a class="add-to-cart pull-left" href=""><i class="fa fa-shopping-cart"></i></a>
+											<a class="beta-btn primary" href="chi-tiet/{{$product->slug}}">Chi tiết <i class="fa fa-chevron-right"></i></a>
+											<div   class="clearfix"></div>
+										</div>
 									</div>
 								</div>
-							</div>
+								@endforeach
+							
 						</div>
 					</div> <!-- .beta-products-list -->
 				</div>
@@ -195,34 +211,27 @@
 						<h3 class="widget-title">Sản phẩm bán chạy</h3>
 						<div class="widget-body">
 							<div class="beta-sales beta-lists">
+								@foreach($products['bestseller'] as $product)
+								<?php
+									$pictures = json_decode($product->detail->picture,true);
+									$picture_main = $pictures[1];
+									if($product->detail->sale_off > 0){
+										$price = ((100 - $product->detail->sale_off)*$product->price)/100;
+
+									} else {
+										$price = $product->price;
+										}
+									$name = substr($product->name, 0,50) .'...'	;
+
+								 ?>
 								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="source/assets/dest/images/products/sales/1.png" alt=""></a>
+									<a class="pull-left" href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
 									<div class="media-body">
-										Sample Woman Top
-										<span class="beta-sales-price">120.000 VNĐ </span>
+										{{$name}}
+										<span class="beta-sales-price">{{number_format($price)}} VNĐ </span>
 									</div>
 								</div>
-								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="assets/dest/images/products/sales/2.png" alt=""></a>
-									<div class="media-body">
-										Sample Woman Top
-										<span class="beta-sales-price">$34.55</span>
-									</div>
-								</div>
-								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="assets/dest/images/products/sales/3.png" alt=""></a>
-									<div class="media-body">
-										Sample Woman Top
-										<span class="beta-sales-price">$34.55</span>
-									</div>
-								</div>
-								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="assets/dest/images/products/sales/4.png" alt=""></a>
-									<div class="media-body">
-										Sample Woman Top
-										<span class="beta-sales-price">$34.55</span>
-									</div>
-								</div>
+								@endforeach
 							</div>
 						</div>
 					</div> <!-- best sellers widget -->
@@ -230,34 +239,29 @@
 						<h3 class="widget-title">Sản phẩm mới</h3>
 						<div class="widget-body">
 							<div class="beta-sales beta-lists">
+
+								<@foreach($products['new'] as $product)
+								<?php
+									$pictures = json_decode($product->detail->picture,true);
+									$picture_main = $pictures[1];
+									if($product->detail->sale_off > 0){
+										$price = ((100 - $product->detail->sale_off)*$product->price)/100;
+
+									} else {
+										$price = $product->price;
+										}
+									$name = substr($product->name, 0,50) .'...'	;
+
+								 ?>
 								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="assets/dest/images/products/sales/1.png" alt=""></a>
+									<a class="pull-left" href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
 									<div class="media-body">
-										Sample Woman Top
-										<span class="beta-sales-price">$34.55</span>
+										{{$name}}
+										<span class="beta-sales-price">{{number_format($price)}} VNĐ </span>
 									</div>
 								</div>
-								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="assets/dest/images/products/sales/2.png" alt=""></a>
-									<div class="media-body">
-										Sample Woman Top
-										<span class="beta-sales-price">$34.55</span>
-									</div>
-								</div>
-								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="assets/dest/images/products/sales/3.png" alt=""></a>
-									<div class="media-body">
-										Sample Woman Top
-										<span class="beta-sales-price">$34.55</span>
-									</div>
-								</div>
-								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="assets/dest/images/products/sales/4.png" alt=""></a>
-									<div class="media-body">
-										Sample Woman Top
-										<span class="beta-sales-price">$34.55</span>
-									</div>
-								</div>
+								@endforeach
+								
 							</div>
 						</div>
 					</div> <!-- best sellers widget -->

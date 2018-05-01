@@ -11,7 +11,6 @@ class Categories extends Model
     protected $lifestamp = true;
     public function products()
     {
-
     	return $this->hasMany('App\Product','category_id','id');
     }
 

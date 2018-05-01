@@ -2,8 +2,10 @@
 
 @section('css')
 <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 
 <link rel="stylesheet" href="AdminLTE-2.4.3/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+
 {{-- <link rel="stylesheet" href="team1/team1.css"> --}}
 
 @endsection
@@ -86,6 +88,7 @@
     </section>
     <!-- /.content -->
   </div>
+
 @endsection
 @section('script')
 <script src="AdminLTE-2.4.3/bower_components/jquery/dist/jquery.min.js"></script>

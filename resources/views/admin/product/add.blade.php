@@ -1,6 +1,8 @@
 @extends('layout.admin.master')
 @section('css')
-
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 @endsection
 @section('content')
 
@@ -36,11 +38,8 @@
           <div>
        
             
-       @if (Session::has('success'))
-        <div class="alert alert-success">
-          {{ Session::get('success') }}
-        </div>
-      @endif
+      
+       {!! Toastr::message() !!}
 
     @if($errors->any())
        <div class="alert alert-danger">
@@ -97,4 +96,5 @@
 <!-- AdminLTE for demo purposes -->
 <script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
 <script src="ckeditor/ckeditor.js"></script>
+
 @endsection

@@ -97,8 +97,8 @@
                      $subtotal = array_sum($arrTemp);
 
                   }else{
-                    $subtotal='0';
-                  }
+                    $subtotal = '0';
+                    }
 
                 if($order->status == 1){
                    $arrStatus = ['Đã xử lý'];

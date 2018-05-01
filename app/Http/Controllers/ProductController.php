@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AddProductRequest;
 use App\Http\Requests\EditProductRequest;
 use Session;
+use Brian2694\Toastr\Facades\Toastr;
 class ProductController extends Controller
 {
     public function index()
@@ -45,6 +46,7 @@ class ProductController extends Controller
         $data               = $request->all();
         $data['slug']       = str_slug($request->name);
         $data['users_id']   = Auth::user()->id;
+        $data['bestseller'] = rand(1,5555);
         $product = Product::create($data);   
    	    if($request->hasFile('picture')){
        	    $dataImage=[];
@@ -72,8 +74,9 @@ class ProductController extends Controller
         $data['size']         = $sizes;
         $data['products_id']  = $product->id; 
         Product_detail::create($data); 
-        return back()->with('success', 'Đã thêm sản phầm thành công');
-    } 
+        Toastr::success('Bạn đã thành công sản phẩm mới ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+        return back();
+    }
 
     public function getUpdate($id)
     { 
@@ -128,22 +131,22 @@ class ProductController extends Controller
             $data['picture'] = json_encode($listImage); // chuyển mảng thành json lưu vô ông nội database   
         }
         $product->detail->update($data);
-        return back()->with('success', 'Bạn Đã thay đổi thành công sản phầm có mã số ID ' .$product->id); 
-    }
-
+        Toastr::success('Bạn đã sửa thành công sản phẩm mã số ID ' .$product->id, 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+        return back();
+    }   
     public function delete($id)
     {
     $product = Product::findOrFail($id); //tim san phảm xóa //tìm thong tin chi tiet san phẩm //xóa sản phẩm
-        if(!empty($product->detail->picture)){ //kiểm tra hình ảnh có tồn tại gắn vào mảng
+    if(!empty($product->detail->picture)){ //kiểm tra hình ảnh có tồn tại gắn vào mảng
         $pictures = json_decode($product->detail->picture);
-        }
-        if(!empty($pictures)){
-            foreach ($pictures as $key => $picture){ //lặp mảng xóa trong thư mục upload file
-                if(file_exists('images/product/'.$picture)){
+    }
+    if(!empty($pictures)){
+        foreach ($pictures as $key => $picture){ //lặp mảng xóa trong thư mục upload file
+            if(file_exists('images/product/'.$picture)){
                  unlink('images/product/'.$picture);
-                }     
-            }
+            }     
         }
+     }
     $product->delete();
     $product->detail->delete();   
     }   

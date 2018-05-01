@@ -109,11 +109,11 @@
                	 <?php 
                	 	$result = '';
                	 	if($order->status == 3){
-               	 		$result = '<small style="width:200px;" class="label label-default">Đang xử lý</small>';
+               	 		$result = '<small style="width:200px;" class="label label-danger">Hủy</small>';
                	 	} elseif ($order->status==1){
                	 		   $result = '<small class="label label-success">Đã xử lý</small>';
                	 	} elseif($order->status==2) {
-               	 			$result = '<small style=" width:150px !important;" class="label label-danger">  Hủy</small>';
+               	 			$result = '<small style=" width:150px !important;" class="label label-default">  Đang xử lý</small>';
                	 	  }
 
                	 ?>    
