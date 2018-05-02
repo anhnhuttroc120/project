@@ -1,5 +1,8 @@
 @extends('default.master')
 @section('css')
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 @endsection
 @section('content')
 
@@ -13,6 +16,7 @@
 	<div class="container">
 		
 		<div class="row" style="margin-bottom: 20px;"> {{-- start row --}}
+			   {!! Toastr::message() !!}
 
 			<div class="col-md-5">
 						<div >
@@ -67,6 +71,7 @@
 					<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; "><i class="fa fa-shopping-cart fa-2x" style="color: black"> </i>SẢN PHẨM ĐÃ CHỌN</a>
 					</div>
+				@if(!empty(Cart::content()) && count(Cart::content())>0)	
 					<form  action="{{url('check-out')}}" method="post" id="form-checkout"> 
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
 						
@@ -135,6 +140,9 @@
 								</div>
 							</div>	
 					</form>
+					@else
+					<h4>Không có sản phẩm nào trong giỏ hàng.Click vào <a style="color: blue" href="{{url('trang-chu')}}">đây</a> về trang chủ tiếp tục mua hàng. </h4>
+					@endif
 
 				
 			</div> <!-- COL MD-7 -->

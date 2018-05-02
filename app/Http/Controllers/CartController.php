@@ -13,6 +13,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Order;
 use App\Order_detail;
+
 class CartController extends Controller
 {
     public function add(Request $request)
@@ -60,8 +61,7 @@ class CartController extends Controller
     public function checkout(Request $request)
     {
         $carts = !empty(Cart::content()) ? Cart::content() : '';
-        if(count($carts)<=0){
-
+        if(count($carts) <= 0){
             Toastr::warning('Không có sản phẩm nào trong giỏ hàng !,không thể đặt hàng ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
             return back();
         } else {
@@ -71,15 +71,21 @@ class CartController extends Controller
             $data['quantity'] = Cart::count();
             $data['status'] = 2;
             $total =  str_replace(',','',Cart::subtotal());
-                
             $data['total'] =  $total;
             $data['note'] = isset($request->note) ? $request->note : '';
             $dayTemp = time() + 172800;
             $data['date_shipper'] = date("Y-m-d", $dayTemp);
-            Order::create($data);
+            $order = Order::create($data);
             foreach ($carts as $key => $item) {
-               
+                $data['quantity'] = $item->qty; 
+                $data['order_id'] = $order->id; 
+                $data['products_id'] = $item->id;
+                $data['config'] = $item->options->size . '-' .$item->options->color;
+                $data['total'] = str_replace(',','',$item->price * $item->qty);
+                Order_detail::create($data);
             }
+            Cart::destroy();
+   
 
             }
     }
