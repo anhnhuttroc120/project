@@ -17,6 +17,7 @@
 	<div class="container">
 		@if(!empty(Cart::content()) && count(Cart::content())>0)	
 			<form  action="{{url('check-out')}}" method="post" id="form-checkout"> 
+				<input type="hidden" name="_token" value="{{csrf_token()}}">
 		<div class="row" style="margin-bottom: 20px;"> {{-- start row --}}
 			   {!! Toastr::message() !!}
 
@@ -70,7 +71,7 @@
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; "><i class="fa fa-shopping-cart fa-2x" style="color: black"> </i>SẢN PHẨM ĐÃ CHỌN</a>
 					</div>
 				
-						<input type="hidden" name="_token" value="{{csrf_token()}}">
+						
 						
 						<table class="table table-bordered">
 							<thead>

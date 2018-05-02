@@ -65,10 +65,10 @@
 										<a href="checkout.html" class="beta-btn primary text-center">Đặt hàng <i  class="fa fa-chevron-right"></i></a>
 									</div>
 								</div>
-						@endif
+						@else
 								<p>Không có sản phẩm nào trong giỏ hàng</p>
 							</div>
-							
+						@endif	
 						</div> <!-- .cart -->
 					</div>
 				</div>

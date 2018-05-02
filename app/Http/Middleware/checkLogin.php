@@ -21,7 +21,7 @@ class checkLogin
          
         } else {
 
-            return redirect()->intended('admin/dang-nhap');
+            return redirect('dang-nhap');
             }
     }
 }
