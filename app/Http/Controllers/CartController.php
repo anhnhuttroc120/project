@@ -86,7 +86,10 @@ class CartController extends Controller
             $data['note'] = isset($request->note) ? $request->note : '';
             $dayTemp = time() + 172800;
             $data['date_shipper'] = date("Y-m-d", $dayTemp);
-            $order = Order::create($data);
+
+            // Order::create($data);
+             $order = Order::create($data);
+           
             foreach ($carts as $key => $item) {
                 $data['quantity'] = $item->qty; 
                 $data['order_id'] = $order->id; 
@@ -97,6 +100,7 @@ class CartController extends Controller
             }
             Cart::destroy();
             return view('default.notice.giohang');
+
             }
     }
    
