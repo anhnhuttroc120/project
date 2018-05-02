@@ -76,11 +76,18 @@ class CartController extends Controller
             $data['note'] = isset($request->note) ? $request->note : '';
             $dayTemp = time() + 172800;
             $data['date_shipper'] = date("Y-m-d", $dayTemp);
-            Order::create($data);
-            foreach ($carts as $key => $item) {
-               
+            // Order::create($data);
+             $order = Order::create($data);
+            // dd($carts);
+            foreach ($carts as $key => $item) { 
+                $data['quantity'] = $item->qty;
+                $data['order_id'] = $order->id;
+                $data['products_id'] = $item->id;
+                $total = str_replace(',','',$item->qty* $item->price);
+                $data['total'] = $total;
+                $order_detail = Order_detail::create($data);
             }
-
+              
             }
     }
 }
