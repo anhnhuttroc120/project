@@ -1,4 +1,7 @@
 @extends('default.master')
+@section('css')
+<link rel="stylesheet" href="css/pagination.css">
+@endsection
 @section('content')
 <div class="container">
 			{{-- <div class="pull-left">
@@ -12,6 +15,9 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
+	<?php 
+			$result = isset($products) ? count($products) : 0;
+	?>
 
 <div class="container">
 		<div id="content" class="space-top-none">
@@ -20,33 +26,57 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="beta-products-list">
-							<a  class="product-new" >KẾT QUẢ TÌM KIẾM CHO: <span style="color: red;">	"đầm"</span> </a>
+							<h2  class="product-new" data="{{$keyword}}" >Tìm thấy {{$products->total()}} kết quả với từ khóa  <span style="">	"{{$keyword}}"</span> </h2>
+							<div style="margin-top:10px;float:right;">
+								<select style="width: 300px;" class="form-control" name="order" id="">		
+								@foreach($sorts as $key =>$value)
+								@if(isset($sort) && $sort == $key)	
+								<option style="font-weight: bold;" selected value="{{$key}}"> {{$value}}</option>
+								@else
+								<option  value="{{$key}}">{{$value}}</option>
+								@endif
+								@endforeach
+							
+							</select></div>
 							<div style="margin-top:30px;" class="beta-products-details">
 								
 								<div class="clearfix"></div>
 							</div>
 
 							<div class="row">
-								@foreach($bookNew as $book)
+						@foreach($products as $product)
+								<?php 
+									$pictures = json_decode($product->picture,true);
+									$picture_main = $pictures[1];
+									if($product->sale_off > 0){
+										$price_sale = ((100 - $product->sale_off)*$product->price)/100;
+									}
+
+								
+								?>
 								<div  class="col-sm-3">
-									<div " class="single-item">
+									<div  class="single-item">
 										<div class="single-item-header">
-											<a href="chitiet/{{$book['id']}}"><img src="images/book/{{$book['picture']}}" alt=""></a>
+											<a href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
 										</div>
 										<div class="single-item-body">
-											<p class="name-product" style="height: 50px;"  class="single-item-title">{{$book['name']}}</p>
-											<p class="single-item-price">
-													<p class="price">{{number_format($book['price'])}} <sup>đ</sup><p>
-											</p>
+											<p class="name-product" style="height: 50px;"  class="single-item-title">{{$product->name}}</p>
+											@if($product->sale_off >0 )
+												<span class="flash-del price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												<span class="flash-sale price">{{number_format($price_sale)}}<sup>đ</sup ></span>
+												@else
+												<span class="flash-sale price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												@endif
 										</div>
 										<div class="single-item-caption">
-											<a class="add-to-cart pull-left" href="shopping_cart.html"><i class="fa fa-shopping-cart"></i></a>
-											<a class="beta-btn primary" href="product.html">Chi tiết <i class="fa fa-chevron-right"></i></a>
-											<div class="clearfix"></div>
+											<a class="add-to-cart pull-left" href=""><i class="fa fa-shopping-cart"></i></a>
+											<a class="beta-btn primary" href="chi-tiet/{{$product->slug}}">Chi tiết <i class="fa fa-chevron-right"></i></a>
+											<div   class="clearfix"></div>
 										</div>
 									</div>
 								</div>
 								@endforeach
+							
 							</div>
 						</div> <!-- .beta-products-list -->
 
@@ -57,6 +87,15 @@
 					
 					</div>
 				</div> <!-- end section with sidebar and main content -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="pagination" style="padding-left: 500px;">
+							{{$products->links('vendor.pagination.default')}}
+							
+						</div>
+							
+					</div>
+				</div>
 
 
 
@@ -64,3 +103,21 @@
 		</div> <!-- #content -->
 </div> <!-- .container -->
 @endsection
+@section('script')
+
+<script>
+	$(document).ready(function(){
+		$('select[name=order]').change(function(){
+		
+			var order = $(this).val();
+			var keyword = $('h2.product-new').attr('data');
+			var url =  '{{url('search/')}}' + '/'  + keyword + '/' + order; 
+			
+               $(location).attr('href', url);
+
+		});
+
+	});
+</script>
+@endsection
+

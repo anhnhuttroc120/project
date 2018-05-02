@@ -18,7 +18,7 @@ class CreateTableOrderDetail extends Migration
             $table->integer('quantity');
             $table->integer('order_id');
             $table->integer('products_id');
-            $table->decimal('total');
+            $table->decimal('total',50,0);
             
 
             $table->timestamps();

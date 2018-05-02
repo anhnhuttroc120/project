@@ -26,8 +26,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa fa-check"></i>Danh sách</a></li>
-            <li><a href="index2.html"><i class="fa fa fa-check"></i> Thêm người dùng</a></li>
+            <li class="active"><a href="{{url('admin/user/list')}}"><i class="fa fa fa-check"></i>Danh sách</a></li>
+            <li><a href="{{url('admin/user/add')}}"><i class="fa fa fa-check"></i> Thêm người dùng</a></li>
           </ul>
         </li>
         <!-- end ng dùng -->
@@ -57,8 +57,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/charts/chartjs.html"><i class="fa fa fa-check"></i> Danh sách chuyên mục</a></li>
-            <li><a href="pages/charts/morris.html"><i class="fa fa fa-check"></i> Thêm chuyên mục</a></li>
+            <li><a href=""><i class="fa fa fa-check"></i> Danh sách chuyên mục</a></li>
+            <li><a href=""><i class="fa fa fa-check"></i> Thêm chuyên mục</a></li>
            
           </ul>
         </li><!-- end chuyên mục -->
@@ -66,7 +66,7 @@
         
         <!-- start đơn hàng -->
         <li>
-          <a href="pages/calendar.html">
+          <a href="{{url('admin/order/list')}}">
             <i class="fa fa-calendar"></i> <span>Đơn hàng</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-red">4</small>
@@ -83,8 +83,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa fa-check"></i> Danh sách </a></li>
-            <li><a href="pages/forms/advanced.html"><i class="fa fa fa-check"></i> Thêm</a></li>
+            <li><a href="{{url('admin/product/list')}}"><i class="fa fa fa-check"></i> Danh sách </a></li>
+            <li><a href="{{url('admin/product/add')}}"><i class="fa fa fa-check"></i> Thêm</a></li>
            
           </ul>
         </li> <!-- end nhóm người dùng -->

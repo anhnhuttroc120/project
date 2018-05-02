@@ -1,6 +1,8 @@
 @extends('layout.admin.master')
 @section('css')
-
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 @endsection
 @section('content')
 
@@ -18,9 +20,32 @@
       </ol>
     </section>
 
+
     <!-- Main content -->
      <section class="content">
+      <div class="container">
       <div class="row">
+         @if($errors->any())
+        <div class="col-md-12">
+         
+       <div class="alert alert-danger">
+        <ul style="list-style-type: none">
+            @foreach ($errors->all() as $error)
+                <li >{{ $error }}</li>
+            @endforeach
+        </ul>
+      </div>
+      
+    
+      </div> {{-- row- col-md --}}
+        @endif
+    </div> {{-- row end --}}
+  </div>{{--  container   --}}
+
+      <div class="row">
+       {!! Toastr::message() !!}
+
+
         <!-- left column -->
         <div class="col-md-12">
           <!-- general form elements -->
@@ -30,7 +55,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-           {!! Form::open(['url' => 'admin/user', 'method' => 'post']) !!}
+           {!! Form::open(['url' => 'admin/user/add', 'method' => 'post','files'=>true]) !!}
               <div class="box-body">
              @include('form.user.user')
                 
@@ -71,5 +96,6 @@
 <script src="AdminLTE-2.4.3/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
+
 
 @endsection

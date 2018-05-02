@@ -1,0 +1,16 @@
+.active{
+	background: #313031 !important;
+	color: white;
+	font-weight: bold;
+
+}
+.pagination li a{
+ color: #4a494a;
+ background: 2px solid red;
+}
+#profile-form label{
+	width: 200px;
+}
+.form-pass{
+	margin-top:10px;
+}

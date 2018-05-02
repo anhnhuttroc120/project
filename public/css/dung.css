@@ -1,0 +1,10 @@
+.date{
+	padding:5px;
+	border-radius: 5px;
+	   border: 2px solid #e7e7e7;
+	margin-bottom: 10px;
+	width: 100px;
+}
+.wrapper-date{
+	padding-left: 25px;
+}
