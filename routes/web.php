@@ -13,9 +13,8 @@
 
 
 
-Route::get('giohang',function(){
-		return view('default.pages.giohang');
-})->name('gio-hang');
+
+		
 Route::get('mail',function(){
 	     
 
@@ -31,7 +30,8 @@ Route::get('mail',function(){
 
 
    //customer side
-
+Route::get('giohang','CartController@cart')->name('gio-hang');
+Route::get('district','PagesController@district');
 Route::get('dang-ki','PagesConTroller@getRegister');
 Route::post('dang-ki','PagesConTroller@postRegister');
 Route::get('dang-nhap','PagesConTroller@getDangNhap');

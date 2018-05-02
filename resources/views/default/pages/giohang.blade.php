@@ -5,6 +5,7 @@
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 @endsection
 @section('content')
+<?php ?>
 
 
 
@@ -14,7 +15,8 @@
 				</div>
 			</div></div>
 	<div class="container">
-		
+		@if(!empty(Cart::content()) && count(Cart::content())>0)	
+			<form  action="{{url('check-out')}}" method="post" id="form-checkout"> 
 		<div class="row" style="margin-bottom: 20px;"> {{-- start row --}}
 			   {!! Toastr::message() !!}
 
@@ -23,7 +25,7 @@
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold;width: "><i class="fa fa-truck fa-2x" style="color: black"> </i>GIAO HÀNG TỚI</a>
 						</div>
 					<p style="margin-top:10px;">Bạn vui lòng nhập đầy đủ thông tin bên dưới</p>
-					<form action="#" method="post">
+					
 						<div class="form-block">
 							<label for="email">Họ tên <span style="color:red">*</span></label>
 							<input type="text"  name="username">
@@ -35,8 +37,10 @@
 
 						<div class="form-block">
 							<label for="your_last_name">Tỉnh/Thành phố <span style="color:red">*</span></label>
-							<select style="height: 40px;" name="city" id="" autocomplete='address-level2'>
-								<option value="0">Chọn</option>
+							<select style="height: 40px;" name="city"  autocomplete='address-level2'>
+							@foreach($provinces as $id => $province)
+								<option value="{{$id}}">{{$province}}</option>
+							@endforeach	
 							</select>
 						</div>
 						<div class="form-block">
@@ -59,20 +63,13 @@
 							</textarea>
 						</div>
 						
-
-
-					</form>
-			
-
-
 			</div>
 
 			<div class="col-md-7">
 					<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; "><i class="fa fa-shopping-cart fa-2x" style="color: black"> </i>SẢN PHẨM ĐÃ CHỌN</a>
 					</div>
-				@if(!empty(Cart::content()) && count(Cart::content())>0)	
-					<form  action="{{url('check-out')}}" method="post" id="form-checkout"> 
+				
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
 						
 						<table class="table table-bordered">
@@ -207,6 +204,32 @@ function formatNumber (num) {
 			$('#form-checkout').submit();
 		});
 
+	});
+</script>
+<script>
+	$(document).ready(function(){
+
+		$('select[name=city]').change(function(){
+			var idCity = $(this).val();
+			
+
+			 $.ajax({
+
+                    /* the route pointing to the post function */
+                    url: 'district',
+                    type: 'get',
+                     /* send the csrf-token and the input to the controller */
+                   	data: {idCity:idCity},
+                    dataType: 'text',
+                     /* remind that 'data' is the response of the AjaxController */
+                     success: function (data) { 
+                  
+                     	$('select[name=district]').html(data);
+                   
+                     }
+           }); 
+			
+		});
 	});
 </script>
 @endsection

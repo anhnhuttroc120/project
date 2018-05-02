@@ -13,9 +13,18 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Order;
 use App\Order_detail;
+use App\province;
 
 class CartController extends Controller
 {
+    public function cart()
+    {
+        $provinces = DB::table('province')->pluck('name','provinceid')->all();
+        $provinces['0'] ='-- Chọn tỉnh --';
+        ksort($provinces);
+        return view('default.pages.giohang', compact('provinces'));
+    }
+
     public function add(Request $request)
     {
     	if($request->has('id')){
@@ -60,7 +69,8 @@ class CartController extends Controller
     }
 
     public function checkout(Request $request)
-    {
+    {       
+
         $carts = !empty(Cart::content()) ? Cart::content() : '';
         if(count($carts) <= 0){
             Toastr::warning('Không có sản phẩm nào trong giỏ hàng !,không thể đặt hàng ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
@@ -89,4 +99,5 @@ class CartController extends Controller
             return view('default.notice.giohang');
             }
     }
+   
 }
