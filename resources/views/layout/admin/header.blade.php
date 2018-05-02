@@ -90,7 +90,7 @@
                   <a href="{{url('admin/profile')}}" class="btn btn-default btn-flat">Thông tin tài khoản</a>
                 </div>
                 <div class="pull-right">
-                  <a href="{{url('admin/changePass')}}" class="btn btn-default btn-flat">Đổi mật khẩu</a>
+                  <a href="{{url('admin/profile')}}" class="btn btn-default btn-flat">Đổi mật khẩu</a>
                 </div>
               </li>
             </ul>

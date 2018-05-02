@@ -9,6 +9,7 @@ use Mail;
 use App\Product;
 use DB;
 use App\Categories;
+use App\province;
 use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
@@ -129,6 +130,25 @@ class PagesController extends Controller
         $products['bestseller'] = Product::orderBy('bestseller', 'desc')->take(4)->get();
         $products['new'] = Product::orderBy('id', 'desc')->take(4)->get();
         return view('default.pages.chitiet', compact('product', 'products'));
+    }
+    public function district(Request $request)
+    {
+         
+        $city = $request->idCity;
+        $result =''; 
+        $province = province::where('provinceid',$city)->first();
+        if($city != 00){
+            foreach ($province->district as $key => $district) {
+                $result .= '<option  value="'.$district->districtid.'">'.$district->name.'</option>';
+            }
+        } else {
+                $result = '';
+            }
+            
+            return $result;
+
+          
+         
     }
 
 }

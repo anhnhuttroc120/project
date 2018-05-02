@@ -2,7 +2,7 @@
 
 @section('css')
 <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
-<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+
 
 <link rel="stylesheet" href="AdminLTE-2.4.3/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 
@@ -57,7 +57,8 @@
               	@foreach($users as $user)
                 <tr id="item-{{$user->id}}">
                   <td>{{$user->id}}</td>
-                  <td><img src="images/user/{{$user->picture}}"></td>
+                  <td>@if(!empty($user->picture))<img src="images/user/{{$user->picture}}">@else
+                  Chưa có ảnh @endif</td>
                   <td>{{$user->fullname}}</td>
                   <td> {{$user->username}}</td>
                   <td>{{$user->email}}</td>

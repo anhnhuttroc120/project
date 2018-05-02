@@ -26,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
             ksort($categories);
             View::share('categories', $categories);
             View::share('categories_main', $categories_main);
-        
         }
         $special = ['Không','Có'];
         View::share('special', $special);
@@ -38,8 +37,8 @@ class AppServiceProvider extends ServiceProvider
         if(\Schema::hasTable('order')){
 
             $data['done']=  Order::where('status', 1)->count();
-            $data['waiting'] = Order::where('status', 3)->count();
-            $data['cancel'] = Order::where('status', 2)->count();
+            $data['waiting'] = Order::where('status', 2)->count();
+            $data['cancel'] = Order::where('status', 3)->count();
              View::share('data', $data);
         }
         $sorts = ['asc'=>'Sắp xếp theo giá : Từ thấp đến cao','desc'=>'Sắp xếp theo giá : Từ cao đến thấp','bestseller'=>'Sắp xếp theo giá : bán chạy nhất'];
@@ -50,13 +49,6 @@ class AppServiceProvider extends ServiceProvider
        });
         $quantitys = range(1,10);
         View::share('quantitys', $quantitys);
-
-        
-         
-
-           // $colorD=['default'=>'Chọn màu','Đỏ','Tím','Hồng','Xanh','Đen','Trắng'];
-           // ksort($color);
-           // View::share('color', $color);
     }
 
     /**
