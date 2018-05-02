@@ -41,16 +41,16 @@ class CartController extends Controller
     	}
     	
     }
+
     public function update(Request $request)
     {
     	if(!empty($request->rowId)){
-
     		$cart_update = Cart::update($request->rowId, $request->qty);
-
     		return response(['cart_one'=>$cart_update,'total'=>Cart::subtotal(),'count'=>Cart::count()], 200);
     	}
 
     }
+
     public function delete($rowId)
     {
     	if(!empty($rowId)){
@@ -58,6 +58,7 @@ class CartController extends Controller
     		return back();
     	}
     }
+
     public function checkout(Request $request)
     {
         $carts = !empty(Cart::content()) ? Cart::content() : '';
@@ -85,8 +86,7 @@ class CartController extends Controller
                 Order_detail::create($data);
             }
             Cart::destroy();
-   
-
+            return view('default.notice.giohang');
             }
     }
 }

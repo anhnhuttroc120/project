@@ -110,9 +110,9 @@
                	 	$result = '';
                	 	if($order->status == 3){
                	 		$result = '<small style="width:200px;" class="label label-danger">Hủy</small>';
-               	 	} elseif ($order->status==1){
+               	 	} elseif ($order->status == 1){
                	 		   $result = '<small class="label label-success">Đã xử lý</small>';
-               	 	} elseif($order->status==2) {
+               	 	} elseif($order->status== 2) {
                	 			$result = '<small style=" width:150px !important;" class="label label-default">  Đang xử lý</small>';
                	 	  }
 
@@ -148,12 +148,12 @@
 	                <th><a href="{{url('admin/order/status/1')}}">{{$data['done']}}</a></th>
            		 </tr>
 	            <tr>
-	                <th colspan="6"><span class="pull-right">Tổng đơn hàng chưa xử lý</span></th>
-	                <th><a href="{{url('admin/order/status/3')}}">{{$data['waiting']}}</a></th>
+	                <th colspan="6"><span class="pull-right">Tổng đơn hàng đang xử lý</span></th>
+	                <th><a href="{{url('admin/order/status/2')}}">{{$data['waiting']}}</a></th>
 	            </tr>
 	            <tr>
 	                <th colspan="6"><span class="pull-right">Tổng đơn hàng đã hủy</span></th>
-	                <th><a href="{{url('admin/order/status/2')}}">{{$data['cancel']}}</a></th>
+	                <th><a href="{{url('admin/order/status/3')}}">{{$data['cancel']}}</a></th>
 	            </tr>
               	</table>
               </div>

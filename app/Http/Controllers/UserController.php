@@ -94,9 +94,9 @@ class UserController extends Controller
 		$user->delete();
 		if($user->picture !=''){
 			$picture 	= $user->picture;
-		if (file_exists('images/user/'.$picture)) {
+			if (file_exists('images/user/'.$picture)) {
 			unlink('images/user/'.$picture);
-		}
+			}
 
 		}
 		

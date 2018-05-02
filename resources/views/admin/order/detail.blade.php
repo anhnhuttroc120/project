@@ -109,7 +109,7 @@
                 </tbody>
                 <tfoot>
                   <td  colspan="3" class="text-right" ;" >Tổng tiền:</td>
-                  <td colspan="1" ><span style="color: red;padding-left: 15px;">{{number_format($subtotal)}}<sup>đ</sup></span></td>
+                  <td colspan="1" ><span style="color: red;padding-left: 15px;">{{number_format($order->total)}}<sup>đ</sup></span></td>
                 </tfoot>
         </table>
         <div>
