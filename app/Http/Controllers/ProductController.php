@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Categories;
 use App\Product_detail;
 use App\Product;
+use App\Comment;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AddProductRequest;
@@ -17,7 +18,8 @@ class ProductController extends Controller
 {
     public function index()
    {
-   		$products = Product::paginate(4);       
+   		$products = Product::paginate(4);    
+ 
       return view('admin.product.list', compact(['products', 'category_id']));
    }
 
@@ -151,4 +153,13 @@ class ProductController extends Controller
     $product->detail->delete();   
     }   
 
+    public function postComment(Request $request){
+      $data = $request->all();
+      $product = Product::where('slug', $request->slug)->first();
+      $data['product_id'] = $product->id;
+      $data['parent_id'] = !empty(Auth::user()) ? Auth::user()->id : ''; 
+      Comment::create($data);
+      return back();
+
+    }
 }

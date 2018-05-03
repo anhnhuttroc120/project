@@ -7,6 +7,7 @@ use App\User;
 use Session;
 use Mail;
 use App\Product;
+use App\Comment;
 use DB;
 use App\Categories;
 use App\province;
@@ -87,7 +88,7 @@ class PagesController extends Controller
     public function logOut()
     {
         Auth::logout();
-        return redirect()->back();
+        return redirect('trang-chu');
     }
 
     public function search(Request $request)
@@ -125,11 +126,12 @@ class PagesController extends Controller
     }
     public function detail($slug)
     {
-        $product = Product::where('slug', $slug)->first();
-        $products['relate'] = Product::where('category_id', $product->category->id)->inRandomOrder()->take(3)->get();
+        $product_main = Product::where('slug', $slug)->first();
+        // $comments = Comment::where('product_id',$product_main->id)->get();  
+        $products['relate'] = Product::where('category_id', $product_main->category->id)->inRandomOrder()->take(3)->get();
         $products['bestseller'] = Product::orderBy('bestseller', 'desc')->take(4)->get();
         $products['new'] = Product::orderBy('id', 'desc')->take(4)->get();
-        return view('default.pages.chitiet', compact('product', 'products'));
+        return view('default.pages.chitiet', compact('product_main', 'products'));
     }
     public function district(Request $request)
     {
