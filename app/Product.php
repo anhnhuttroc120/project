@@ -34,4 +34,7 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Order', 'order_detail', 'order_id', 'products_id');
     }
+    public function comments(){
+        return $this->hasMany('App\Comment','product_id','id');
+    }
 }
