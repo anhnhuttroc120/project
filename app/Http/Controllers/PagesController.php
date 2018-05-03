@@ -24,7 +24,7 @@ class PagesController extends Controller
     public function category($slug)
     {   
         $category = Categories::where('slug', $slug)->first();
-        $products = Product::where('category_id', $category->id)->orderBy('price', 'asc')->paginate(4)->appends(request()->query());;
+        $products = Product::where('category_id', $category->id)->orderBy('price', 'asc')->paginate(8)->appends(request()->query());;
         return view('default.pages.category', compact('products', 'category'));
     }
 
@@ -32,10 +32,10 @@ class PagesController extends Controller
     {       
         $category = Categories::where('slug', $slug)->first(); 
         if($sort != 'bestseller'){
-            $products = Product::where('category_id', $category->id)->orderBy('price', $sort)->paginate(4)->appends(request()->query());
+            $products = Product::where('category_id', $category->id)->orderBy('price', $sort)->paginate(8)->appends(request()->query());
 
         } else {
-            $products = Product::where('category_id', $category->id)->orderBy('bestseller', 'desc')->paginate(4)->appends(request()->query());
+            $products = Product::where('category_id', $category->id)->orderBy('bestseller', 'desc')->paginate(8)->appends(request()->query());
             }
         return view('default.pages.category', compact('products', 'category', 'sort'));  
     }
@@ -48,8 +48,10 @@ class PagesController extends Controller
 
     public function postRegister(CreateRequest $request)
     {				
-        $data=$request->all();            
-        $data['status'] = 0;
+        $data = $request->all();            
+        $data['status'] = 1;
+        $data['password'] = bcrypt($request->password);
+
         $data['picture'] = '';
         $data['is_admin'] = 0;
         $data['created_by'] = '';
@@ -63,7 +65,7 @@ class PagesController extends Controller
                     // });
                     // echo 'da gui mail thanh cong';
 
-        return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công, Vui lòng vào email xác nhận tài khoản');			
+        return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công');			
     } 
 
     public function getDangNhap()
@@ -75,7 +77,7 @@ class PagesController extends Controller
     {
         $username = $request->username;
         $password = $request->password;
-        if(Auth::attempt(['password' => $password, 'username'=>$username, 'status'=>1])){
+        if(Auth::attempt(['password' => $password, 'username'=>$username])){
             return redirect()->intended('trang-chu');
         } else {
      		 return redirect()->back()->with('notice','Thông tin đăng nhập không chính xác! Hãy kiểm tra tài khoản và mật khẩu của bạn');
