@@ -92,10 +92,14 @@ class UserController extends Controller
 	{
 		$user 		= User::findOrFail($id);
 		$user->delete();
-		$picture 	= $user->picture;
-		if (file_exists('images/user/'.$picture)) {
+		if($user->picture !=''){
+			$picture 	= $user->picture;
+			if (file_exists('images/user/'.$picture)) {
 			unlink('images/user/'.$picture);
+			}
+
 		}
+		
 
 	}
 

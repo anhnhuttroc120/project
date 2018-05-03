@@ -57,7 +57,8 @@
               	@foreach($users as $user)
                 <tr id="item-{{$user->id}}">
                   <td>{{$user->id}}</td>
-                  <td><img src="images/user/{{$user->picture}}"></td>
+                  <td>@if(!empty($user->picture))<img src="images/user/{{$user->picture}}">@else
+                  Chưa có ảnh @endif</td>
                   <td>{{$user->fullname}}</td>
                   <td> {{$user->username}}</td>
                   <td>{{$user->email}}</td>

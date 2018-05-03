@@ -39,8 +39,7 @@ class OrderController extends Controller
     {	
     	if(!empty($request->search)){
     		$keyword = $request->search;
-    		$orders = DB::table('order')->join('users','order.users_id','=','users.id')->where('order.id','like', $keyword)->orWhere('users.fullname','like',"%".$keyword."%")->orWhere('date_shipper','like',$keyword)->select('order.id','order.users_id','users.fullname','order.address','order.date_shipper','order.total','order.status')->paginate(4)->appends(request()->query());
-    			
+    		$orders = DB::table('order')->join('users','order.users_id','=','users.id')->where('order.id','like', $keyword)->orWhere('users.fullname','like',"%".$keyword."%")->orWhere('date_shipper','like',$keyword)->select('order.id','order.users_id','users.fullname','order.address','order.date_shipper','order.total','order.status')->paginate(4)->appends(request()->query());    			
     		return view('admin.order.list',compact('orders'));
     	}
 	}

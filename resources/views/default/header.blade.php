@@ -38,46 +38,26 @@
 
 					<div class="beta-comp">
 						<div class="cart">
-							<div class="beta-select"><i style="color: red" class="fa fa-shopping-cart"></i> Giỏ hàng(<span class="count"> @if(!empty(Cart::count())){{Cart::count()}}@endif </span> )<i class="fa fa-chevron-down"></i></div>
+							<div class="beta-select"><i style="color: red" class="fa fa-shopping-cart"></i> Giỏ hàng(<span class="count"> @if(!empty(Cart::count())){{Cart::count()}}@else 0 @endif </span> )<i class="fa fa-chevron-down"></i></div>
 							<div class="beta-dropdown cart-body">
+						@if(!empty(Cart::content()) && count(Cart::content())>0)
+							@foreach(Cart::content() as $item)	
 								<div class="cart-item">
 									<div class="media">
 										<a class="cart-item-delete" href="#"><i class="fa fa-times"></i></a>
-										<a class="pull-left" href="#"><img src="source/assets/dest/images/products/cart/1.png" alt=""></a>
+										<a class="pull-left" href="#"><img src="images/product/{{$item->options->img}}" alt=""></a>
 										<div class="media-body">
-											<span class="cart-item-title">Sample Woman Top</span>
+											<span class="cart-item-title">{{$item->name}}</span>
 										
-											<span class="cart-item-amount">1 X <span>150000VND</span></span>
+											<span class="cart-item-amount">{{$item->qty}} X <span>{{number_format($item->price)}}</span><span> VND</span></span>
 										</div>
 									</div>
 								</div>
-
-								<div class="cart-item">
-									<div class="media">
-											<a class="cart-item-delete" href="#"><i class="fa fa-times"></i></a>
-										<a class="pull-left" href="#"><img src="source/assets/dest/images/products/cart/2.png" alt=""></a>
-										<div class="media-body">
-											<span class="cart-item-title">Sample Woman Top</span>
-										
-											<span class="cart-item-amount">1 x<span>20000VND</span></span>
-										</div>
-									</div>
-								</div>
-
-								<div class="cart-item">
-									<div class="media">
-											<a class="cart-item-delete" href="#"><i class="fa fa-times"></i></a>
-										<a class="pull-left" href="#"><img src="source/assets/dest/images/products/cart/3.png" alt=""></a>
-										<div class="media-body">
-											<span class="cart-item-title">Sample Woman Top</span>
-											
-											<span class="cart-item-amount">1 x <span>20.000VND</span></span>
-										</div>
-									</div>
-								</div>
+							@endforeach
+								
 
 								<div class="cart-caption">
-									<div class="cart-total text-right">Tổng tiền: <span class="cart-total-value">300.000 VND</span></div>
+									<div class="cart-total text-right">Tổng tiền: <span class="cart-total-value">{{Cart::subtotal()}} </span><span>VND</span></div>
 									<div class="clearfix"></div>
 
 									<div class="center">
@@ -85,7 +65,10 @@
 										<a href="checkout.html" class="beta-btn primary text-center">Đặt hàng <i  class="fa fa-chevron-right"></i></a>
 									</div>
 								</div>
+						@endif
+								<p>Không có sản phẩm nào trong giỏ hàng</p>
 							</div>
+							
 						</div> <!-- .cart -->
 					</div>
 				</div>

@@ -13,8 +13,18 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Order;
 use App\Order_detail;
+use App\province;
+
 class CartController extends Controller
 {
+    public function cart()
+    {
+        $provinces = DB::table('province')->pluck('name','provinceid')->all();
+        $provinces['0'] ='-- Chọn tỉnh --';
+        ksort($provinces);
+        return view('default.pages.giohang', compact('provinces'));
+    }
+
     public function add(Request $request)
     {
     	if($request->has('id')){
@@ -40,16 +50,16 @@ class CartController extends Controller
     	}
     	
     }
+
     public function update(Request $request)
     {
     	if(!empty($request->rowId)){
-
     		$cart_update = Cart::update($request->rowId, $request->qty);
-
     		return response(['cart_one'=>$cart_update,'total'=>Cart::subtotal(),'count'=>Cart::count()], 200);
     	}
 
     }
+
     public function delete($rowId)
     {
     	if(!empty($rowId)){
@@ -57,11 +67,12 @@ class CartController extends Controller
     		return back();
     	}
     }
-    public function checkout(Request $request)
-    {
-        $carts = !empty(Cart::content()) ? Cart::content() : '';
-        if(count($carts)<=0){
 
+    public function checkout(Request $request)
+    {       
+
+        $carts = !empty(Cart::content()) ? Cart::content() : '';
+        if(count($carts) <= 0){
             Toastr::warning('Không có sản phẩm nào trong giỏ hàng !,không thể đặt hàng ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
             return back();
         } else {
@@ -71,16 +82,26 @@ class CartController extends Controller
             $data['quantity'] = Cart::count();
             $data['status'] = 2;
             $total =  str_replace(',','',Cart::subtotal());
-                
             $data['total'] =  $total;
             $data['note'] = isset($request->note) ? $request->note : '';
             $dayTemp = time() + 172800;
             $data['date_shipper'] = date("Y-m-d", $dayTemp);
-            Order::create($data);
+
+            // Order::create($data);
+             $order = Order::create($data);
+           
             foreach ($carts as $key => $item) {
-               
+                $data['quantity'] = $item->qty; 
+                $data['order_id'] = $order->id; 
+                $data['products_id'] = $item->id;
+                $data['config'] = $item->options->size . '-' .$item->options->color;
+                $data['total'] = str_replace(',','',$item->price * $item->qty);
+                Order_detail::create($data);
             }
+            Cart::destroy();
+            return view('default.notice.giohang');
 
             }
     }
+   
 }
