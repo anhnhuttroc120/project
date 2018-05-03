@@ -1,19 +1,20 @@
 @extends('default.master')
 @section('css')
 <link rel="stylesheet" href="css/pagination.css">
+<link rel="stylesheet" href="css/comment.css">
 @endsection
 @section('content')
 <div class="container">
 	<?php 
-	if(!empty($product->detail->picture)){
-		$pictures = json_decode($product->detail->picture,true);
+	if(!empty($product_main->detail->picture)){
+		$pictures = json_decode($product_main->detail->picture,true);
 		$picture_main = $pictures[1];
-		$sizes = json_decode($product->detail->size,true);
-		$colors = json_decode($product->detail->color,true);
-		if($product->detail->sale_off > 0 ){
-			$price = ((100 - $product->detail->sale_off)*$product->price)/100;
+		$sizes = json_decode($product_main->detail->size,true);
+		$colors = json_decode($product_main->detail->color,true);
+		if($product_main->detail->sale_off > 0 ){
+			$price = ((100 - $product_main->detail->sale_off)*$product_main->price)/100;
 		} else {
-			$price =$product->price;
+			$price = $product_main->price;
 			}
 	}
 	
@@ -38,12 +39,12 @@
 						{!!Form::open(['url'=>'add-cart','method'=>'post','id'=>'form-cart'])!!}
 					<div class="row">
 						<div class="col-sm-4">
-							<input type="hidden" name="id" value="{{$product->id}}">
+							<input type="hidden" name="id" value="{{$product_main->id}}">
 							<img src="images/product/{{$picture_main}}" alt="123">
 						</div>
 						<div class="col-sm-8">
 							<div class="single-item-body">
-								<h1  style="background: #e7e7e7;padding: 10px;" class="single-item-title">{{$product->name}}</h1>
+								<h1  style="background: #e7e7e7;padding: 10px;" class="single-item-title">{{$product_main->name}}</h1>
 								<p class="single-item-price">
 									<h6 style="color: #ff9A00">{{number_format($price)}}<sup>đ</sup></h6>
 								
@@ -115,7 +116,7 @@
 
 						<div " class="panel" id="tab-description">
 							<h6>Thông tin chi tiết</h6>
-							{!! $product->detail->description !!}
+							{!! $product_main->detail->description !!}
 
 
 							{{-- <p><i class="fa fa-check" aria-hidden="true"></i>Tên sản phẩm:</p>
@@ -264,7 +265,45 @@
 			</div>
 		</div> <!-- #content -->
 		<div><hr></div>
-		<div style="width: 501px;">
+		<div>
+			<form method="post" action="{{url('comment')}}">
+				<input type="hidden" name="_token" value="{{csrf_token()}}">
+				<div class="form-group">
+					<input type="hidden" name="slug" value="{{$product_main->slug}}">
+					<label for="email">Email:</label>
+					<input required type="email" name="email" class="form-control" id="email">
+				</div>
+				<div class="form-group">
+					<label for="name">Tên:</label>
+					<input required="" type="text" name="name" id="name" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="cm">Bình luận:</label>
+					<textarea required rows="10" id="cm" class="form-control" name="content"></textarea>
+				</div>
+				<div class="form-group text-right">
+					<button type="submit" class="btn btn-default">Gửi</button>
+				</div>
+
+			</form>
+		</div>
+		<div class="container" style="padding-bottom: 60px;">
+			<div class="row list-product">
+				<a class="btn btn-primary">Ý kiến phản hồi ({{count($product_main->comments)}})</a>
+				@foreach($product_main->comments as $comment)
+						<div style="margin-top: 10px;">
+							<div class="top">
+								<h5>{{$comment->name}}</h5>
+								<p>{{date('d/m/Y H:i', strtotime($comment->created_at))}}</p>
+							</div>
+							<div class="bot">
+								<p>{{$comment->content}}</p>
+							</div>
+						</div>
+						@endforeach
+			</div>
+		</div>
+<!-- 		<div style="width: 501px;">
 			<h3>Bình luận</h3>
 			<form>
 				<input type="hidden" name="">
@@ -284,14 +323,14 @@
 					<button type="submit" style="background: #ff6100;font-size: 15px;color: #e7e7e7" class="btn" >Gửi</button>
 				</div>
 			</form>
-		</div>
-		<div style="padding-top: 100px; padding-bottom: 30px;">
+		</div> -->
+		<!-- <div style="padding-top: 100px; padding-bottom: 30px;">
 			<p style="font-weight: bold; line-height: 30px;">Project-team1:</p>
 			<p>2018-05-02 00:00:00</p>
 			<p style="font-weight: bold;line-height: 30px;">Tên:</p>
 			<p>Dũng</p>
 			<p style="font-weight: bold;">Nội dung:</p>
 			<p>ai mà biết</p>
-		</div>
+		</div> -->
 	</div> <!-- .container -->
 @endsection

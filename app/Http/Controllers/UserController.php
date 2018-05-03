@@ -68,6 +68,7 @@ class UserController extends Controller
 		$data['status'] 	= 1;
 		$data['created_by'] = Auth::user()->fullname;
 		if($request->hasFile('picture')){
+
 			$file 		= $request->file('picture');
 			$name 		= $file->getClientOriginalName();
 			$extension 	= $file->getClientOriginalExtension();
@@ -79,6 +80,7 @@ class UserController extends Controller
    			$img 		 = Image::make('images/user/' .$picture)->resize('50', '50');
    			$img->save('images/user/'.$picture);	
 		} else {
+			
 			$picture	 = "";
 			}
 		$data['picture'] = $picture;	
@@ -121,9 +123,6 @@ class UserController extends Controller
 
 		   //ngươi dùng đã thay đổi file
 			$file = $request->file('picture');
-			echo '<pre>';
-			print_r($file);
-			echo '</pre>';
 				
 			$name = $file->getClientOriginalName();
 			$extension = $file->getClientOriginalExtension();	

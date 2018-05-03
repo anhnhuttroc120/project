@@ -51,6 +51,7 @@ Route::post('update-cart','CartController@update');
 Route::get('delete-cart/{rowId}','CartController@delete');
 Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
+Route::post('comment','ProductController@postComment');
 
 //admin side
 
