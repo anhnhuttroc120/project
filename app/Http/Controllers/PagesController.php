@@ -89,7 +89,7 @@ class PagesController extends Controller
     public function logOut()
     {
         Auth::logout();
-        return redirect()->back();
+        return redirect('trang-chu');
     }
 
     public function search(Request $request)
@@ -137,8 +137,8 @@ class PagesController extends Controller
     {
          
         $city = $request->idCity;
-        $result =''; 
-        $province = province::where('provinceid',$city)->first();
+        $result = ''; 
+        $province = province::where('provinceid', $city)->first();
         if($city != 00){
             foreach ($province->district as $key => $district) {
                 $result .= '<option  value="'.$district->districtid.'">'.$district->name.'</option>';
@@ -148,9 +148,7 @@ class PagesController extends Controller
             }
             
             return $result;
-
-          
-         
+     
     }
 
 }

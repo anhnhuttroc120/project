@@ -19,8 +19,8 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li><a href="#">Người dùng</a></li>
-        <li class="active"> Danh sách người dùng</li>
+        <li><a href="">Người dùng</a></li>
+       
       </ol>
     </section>
 
@@ -35,7 +35,8 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Danh sách</h3>
+              <h3 class="box-title"><a class="btn" href="{{url('admin/user/add')}}" style="color: #e7e7e7;background: #E3458B;">Thêm người dùng</a></h3>
+
             </div>
 
             <!-- /.box-header -->

@@ -76,8 +76,11 @@ class CartController extends Controller
             Toastr::warning('Không có sản phẩm nào trong giỏ hàng !,không thể đặt hàng ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
             return back();
         } else {
+            $city = isset($request->city) ? $request->city : ' ';
+            $district = isset($request->district) ? $request->district : ' ';
+            $address =  isset($request->address) ? $request->address : Auth::user()->address;
+            $data['address'] = $city. '-' .$district. '-'.$address;
             $data['phone'] = isset($request->phone) ? $request->phone : Auth::user()->phone;
-            $data['address'] = isset($request->address) ? $request->address : Auth::user()->address;
             $data['users_id'] = Auth::user()->id;
             $data['quantity'] = Cart::count();
             $data['status'] = 2;

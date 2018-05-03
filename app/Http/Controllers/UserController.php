@@ -115,7 +115,7 @@ class UserController extends Controller
 		$data 				= $request->all();
 		$data['status'] 	= 1;
 		$data['crtead_by']	= Auth::user()->fullname;
-		$oldImage 			= $user->picture;
+		$oldImage 			= ($user->picture =='') ? ' ' : $user->picture;
 	
 		if($request->hasFile('picture')){ 
 
