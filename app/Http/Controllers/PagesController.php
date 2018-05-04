@@ -37,7 +37,7 @@ class PagesController extends Controller
 
         } else {
             $products = Product::where('category_id', $category->id)->orderBy('bestseller', 'desc')->paginate(4)->appends(request()->query());
-            }
+        }
         return view('default.pages.category', compact('products', 'category', 'sort'));  
     }
 
@@ -78,16 +78,14 @@ class PagesController extends Controller
         $password = $request->password;
         if(Auth::attempt(['password' => $password, 'username'=>$username, 'status'=>1])){
             return redirect()->intended('trang-chu');
-        } else {
-     		 return redirect()->back()->with('notice','Thông tin đăng nhập không chính xác! Hãy kiểm tra tài khoản và mật khẩu của bạn');
-     	  }
-    	
+        }
+     	return redirect()->back()->with('notice','Thông tin đăng nhập không chính xác! Hãy kiểm tra tài khoản và mật khẩu của bạn');	
     }
 
     public function logOut()
     {
         Auth::logout();
-        return redirect()->back();
+        return redirect('trang-chu');
     }
 
     public function search(Request $request)
@@ -98,16 +96,16 @@ class PagesController extends Controller
                $products = DB::table('products')->join('category','products.category_id','=','category.id')->join('product_detail','products.id','=','product_detail.products_id')->where('products.id',$keyword)->orWhere('products.name','like',"%".$keyword."%")->orWhere('category.slug','like',"%".$keyword."%")->orWhere('category.name','like',"%".$keyword."%")->orderBy('price','asc')->select('products.*','category.name as name_category','product_detail.*')->paginate(4)->appends(request()->query());
 
                return view('default.pages.timkiem', compact('keyword', 'products'));
-            } else {
-                return view('default.pages.404');
-                }  
+            } 
+
+            return view('default.pages.404');
+                 
          
         } 
            
     }
 
     public function orderSearch($keyword,$sort)
-
     {    
         if(!empty($sort)){
             $keyword = $keyword;
@@ -132,20 +130,16 @@ class PagesController extends Controller
         return view('default.pages.chitiet', compact('product', 'products'));
     }
     public function district(Request $request)
-    {
-         
+    { 
         $city = $request->idCity;
-        $result =''; 
+        $result = ''; 
         $province = province::where('provinceid',$city)->first();
-        if($city != 00){
+        if ($city != 00) {
             foreach ($province->district as $key => $district) {
                 $result .= '<option  value="'.$district->districtid.'">'.$district->name.'</option>';
             }
-        } else {
-                $result = '';
-            }
-            
-            return $result;
+        } 
+        return $result;
 
           
          

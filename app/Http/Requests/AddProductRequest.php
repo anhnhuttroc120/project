@@ -24,7 +24,12 @@ class AddProductRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        return ['name'=>'required|unique:products,name','category_id'=>'required|numeric','price'=>'numeric|required','sale_off'=>'numeric|required','description'=>'required'   //
+        return ['name'=>'required|unique:products,name',
+                'category_id'=>'required|numeric',
+                'price'=>'numeric|required',
+                'sale_off'=>'numeric|required',
+                'description'=>'required' ,
+                'picture.*'=>'image|mimes:jpeg,png,jpg,svg|max:2048'  //
         ];
     }
 }

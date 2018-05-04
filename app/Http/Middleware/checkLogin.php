@@ -21,7 +21,7 @@ class checkLogin
          
         } else {
 
-            return redirect('dang-nhap');
+            return redirect()->intended('dang-nhap');
             }
     }
 }

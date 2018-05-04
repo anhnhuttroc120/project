@@ -17,14 +17,10 @@
 		
 Route::get('mail',function(){
 	     
-
-		// $data = ['nam','nho'];
-
-  //                   Mail::send('email.dangki',$data,function($message){
-  //                           $message->from('namdosatdn@gmail.com');
-  //                           $message->to('boyquay_timgirlnhinhanh_dn2006@yahoo.com.vn','conan Vu')->subject('Xac nhan email');
-  //                   });
-  //                   echo 'da gui mail thanh cong';
+	$data = [1=>1,2,3,4,5];
+	echo '<pre>';
+	 print_r($data);
+	 echo '</pre>'; 
 
 });
 
@@ -49,10 +45,14 @@ Route::get('chi-tiet/{slug}','PagesController@detail');
 Route::post('add-cart/','CartController@add');
 Route::post('update-cart','CartController@update');
 Route::get('delete-cart/{rowId}','CartController@delete');
-Route::post('check-out','CartController@checkout')->middleware('checkLogin');
+
+Route::post('check-out','CartController@checkout');
+
 Route::get('check-out',function(){
 	return view('default.pages.404');
 });
+
+
 
 
 //admin side

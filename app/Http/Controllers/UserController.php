@@ -11,6 +11,7 @@ use App\Http\Requests\EditUserRequest;
 use Intervention\Image\ImageManagerStatic as Image;
 use Validator;
 use Hash;
+use Illuminate\Support\Facades\DB;
 use Brian2694\Toastr\Facades\Toastr;
 
 class UserController extends Controller
@@ -62,29 +63,40 @@ class UserController extends Controller
 	public function Add(AddUserRequest $request)
 
 	{	
+		try{
+			DB::beginTransaction();
+			$data          	 	= $request->all();
+			$data['password']	= bcrypt($request->password);
+			$data['status'] 	= 1;
+			$data['created_by'] = Auth::user()->fullname;
+			if($request->hasFile('picture')){
+				$file 		= $request->file('picture');
+				$name 		= $file->getClientOriginalName();
+				$extension 	= $file->getClientOriginalExtension();
+				if($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg' &&  $extension!= 'gif' ){
+	   				return redirect()->back()->with('notice', 'Kiểu ảnh không phù hợp');
+	   			}
+	   			$picture	 = str_random(6) .$name;
+	   			$file->move('images/user', $picture);
+	   			$img 		 = Image::make('images/user/' .$picture)->resize('50', '50');
+	   			$img->save('images/user/'.$picture);	
+			} else {
+				$picture	 = "";
+				}
+			$data['picture'] = $picture;	
+			User::create($data);
+			DB::commit();
+			Toastr::success('Bạn đã thêm thành công', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+			return back();
 			
-		$data          	 	= $request->all();
-		$data['password']	= bcrypt($request->password);
-		$data['status'] 	= 1;
-		$data['created_by'] = Auth::user()->fullname;
-		if($request->hasFile('picture')){
-			$file 		= $request->file('picture');
-			$name 		= $file->getClientOriginalName();
-			$extension 	= $file->getClientOriginalExtension();
-			if($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg' &&  $extension!= 'gif' ){
-   				return redirect()->back()->with('notice', 'Kiểu ảnh không phù hợp');
-   			}
-   			$picture	 = str_random(6) .$name;
-   			$file->move('images/user', $picture);
-   			$img 		 = Image::make('images/user/' .$picture)->resize('50', '50');
-   			$img->save('images/user/'.$picture);	
-		} else {
-			$picture	 = "";
-			}
-		$data['picture'] = $picture;	
-		User::create($data);
-		Toastr::success('Bạn đã thêm thành công', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
-		return back();
+
+		}catch (\Exception $e) {
+			DB::rollBack();
+			Toastr::warning('Đã xảy ra lỗi', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+			return back();
+
+		}	
+
 		
 	}
 
@@ -99,7 +111,7 @@ class UserController extends Controller
 			}
 
 		}
-		
+		return  response(['success'=>'OK'],200);
 
 	}
 
@@ -110,21 +122,19 @@ class UserController extends Controller
 	}
 
 	public function Edit(EditUserRequest $request, $id)
-	{
-		$user 				= User::findOrFail($id);
+	{	
+		try{
+			DB::beginTransaction();
+			$user 				= User::findOrFail($id);
 		$data 				= $request->all();
 		$data['status'] 	= 1;
 		$data['crtead_by']	= Auth::user()->fullname;
 		$oldImage 			= $user->picture;
 	
-		if($request->hasFile('picture')){ 
+		if ($request->hasFile('picture')) { 
 
 		   //ngươi dùng đã thay đổi file
 			$file = $request->file('picture');
-			echo '<pre>';
-			print_r($file);
-			echo '</pre>';
-				
 			$name = $file->getClientOriginalName();
 			$extension = $file->getClientOriginalExtension();	
 			if($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg' &&  $extension != 'gif'){
@@ -138,14 +148,21 @@ class UserController extends Controller
    				unlink('images/user/'.$oldImage);
    			}	
    			$data['picture'] = $newpicture;
-		} else{ //  người dùng k thay đổi hình
+		} else { //  người dùng k thay đổi hình
 			$data['picture'] = $oldImage;
-			}
-
-		
+		}
 		$user->update($data);
 		Toastr::success('Bạn đã sửa thành công người dùng có id là '. $user->id, 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+		DB::commit();
 		return back();
+
+		} catch(\Exception $e) {
+			DB::rollBack();
+			Toastr::warning('Đã có lỗi xảy ra ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+			return back();	
+		}
+
+		
 	}
 	public function profile()
 	{
