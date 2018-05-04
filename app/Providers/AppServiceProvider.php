@@ -29,13 +29,11 @@ class AppServiceProvider extends ServiceProvider
         }
         $special = ['Không','Có'];
         View::share('special', $special);
-
         $role = ['Member','Admin'];
         View::share('role', $role);
         $arrStatus = [1=>'Đã xử lý',2=>'Đang xử lý',3=>'Hủy'];
         View::share('arrStatus', $arrStatus);
         if(\Schema::hasTable('order')){
-
             $data['done']=  Order::where('status', 1)->count();
             $data['waiting'] = Order::where('status', 2)->count();
             $data['cancel'] = Order::where('status', 3)->count();

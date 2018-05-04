@@ -47,6 +47,7 @@ Route::get('delete-cart/{rowId}','CartController@delete');
 Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
 Route::post('comment','ProductController@postComment');
+Route::get('order','PagesController@order');
 
 
 //admin side

@@ -125,4 +125,7 @@ class PagesController extends Controller
         } 
         return $result;
     }
+    public function order() {
+        return view('default.pages.order.order');
+    }
 }

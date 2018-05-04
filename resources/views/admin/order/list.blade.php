@@ -27,16 +27,10 @@
         <li class="active"> Danh sách Order</li>
       </ol>
     </section>
-
     <!-- Main content -->
     <section class="content">
-
-
       <div class="row">
-        <div class="col-xs-12">
-          
-       
-
+        <div class="col-xs-12">         
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Danh sách</h3>
@@ -66,26 +60,17 @@
         <div class="col-sm-6"></div>
         <form method="get" action="{{url('admin/order/date')}}">
               <div class="col-sm-3 wrapper-date">
-          
             <div style="float:right" >
               <label>Từ:</label>
               <input  class="date rounded"  id="date" name="startdate" placeholder="1970-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/></div>
            </div>
-       
-
             <!--end-date-->
             <div class="col-sm-3 ">
-          
             <div >
               <label>Đến:</label>
               <input class="date" id="date" name="enddate" placeholder="{{date('Y-m-d',time())}}" type="text" value="@if(!empty($enddate)){{$enddate}}@endif" /> <button type="submit"><i class="fa fa-search"></i></button></div>
            </div>
         </form>
-      
-      
-   
-
-
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="dialog-confirm" title="Thông báo!" style="display: none;">
@@ -101,7 +86,6 @@
                   <th style="width: 5%;" >Tổng tiền</th>
                   <th style="width: 10%;">Trạng thái</th>
                   <th style="width: 10%;">Hành động</th>
-                  
                 </tr>
                 </thead>
                 <tbody>
@@ -115,7 +99,6 @@
                	 	} elseif($order->status== 2) {
                	 			$result = '<small style=" width:150px !important;" class="label label-default">  Đang xử lý</small>';
                	 	  }
-
                	 ?>    
                 <tr>
                   <td>{{$order->id}}</td>
@@ -129,20 +112,14 @@
                 @endforeach
                 </tbody>
                 <tfoot>
-               
-               </tfoot> 
-
-
-               
+               </tfoot>  
               </table>
               <div style="float:right" class="pagination">
                 {!! $orders->links() !!}
-
               </div>
               <hr>
               <div>
-              	<table id="example1" class="table table-bordered table-striped">
-              		
+              	<table id="example1" class="table table-bordered table-striped">            		
                 <tr>
 	                <th colspan="6"><span class="pull-right">Tổng đơn hàng đã xử lý</span></th>
 	                <th><a href="{{url('admin/order/status/1')}}">{{$data['done']}}</a></th>
@@ -157,8 +134,7 @@
 	            </tr>
               	</table>
               </div>
-              {!!Form::close() !!}
-              
+              {!!Form::close() !!}             
             </div>
             <!-- /.box-body -->
           </div>
