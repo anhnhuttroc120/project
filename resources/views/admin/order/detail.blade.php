@@ -28,7 +28,6 @@
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
-       
 
           <div class="box">
             <div class="box-header">
@@ -38,7 +37,7 @@
         <div class="alert alert-success">
           {{ Session::get('success') }}
         </div>
-      @endif>
+      @endif
 
             <!-- /.box-header -->
             <div class="box-body">
@@ -74,38 +73,22 @@
                   <th style="width: 23%;">Tên sản phẩm</th>
                   <th style="width: 23%;">Số lượng</th>
                   <th style="width: 23%;">Giá tiền</th>
-                 
-                    
                 </tr>
                 </thead>
                 <tbody>
-
                   @foreach($order->orders_detail as $order_detail)
-                  <?php 
-                      $arrTemp[] = $order_detail->total;
-                  ?>
                   <tr>
                   <td>{{$order_detail->id}}</td>
                   <td>{{$order_detail->product->name}}</td>
                   <td>{{$order_detail->quantity}}</td>
                   <td>{{$order_detail->total}}</td>
-                 
                   </tr>
                   @endforeach
                  <?php 
-                  if(!empty($arrTemp)){
-                     $subtotal = array_sum($arrTemp);
-
-                  }else{
-                    $subtotal = '0';
-                    }
-
                 if($order->status == 1){
                    $arrStatus = ['Đã xử lý'];
                 }
-
-                 ?>
-                  
+                 ?> 
                 </tbody>
                 <tfoot>
                   <td  colspan="3" class="text-right" ;" >Tổng tiền:</td>
