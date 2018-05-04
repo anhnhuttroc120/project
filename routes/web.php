@@ -34,12 +34,10 @@ Route::get('dang-nhap','PagesConTroller@getDangNhap')->name('login');
 Route::post('dang-nhap','PagesConTroller@postDangNhap');
 Route::get('trang-chu','PagesController@index');
 Route::get('dang-xuat','PagesController@logOut');
-Route::get('category/{slug}','PagesController@category');
-Route::get('category/{slug}/{sort}','PagesController@order');
+Route::get('category/{slug}/{asc}','PagesController@category');
 Auth::routes();
-Route::get('search','PagesController@search');
-Route::get('search/{keyword}/{sort}','PagesController@orderSearch');
-
+Route::get('search/{sort}','PagesController@search');
+// Route::get('search/{keyword}/{order}','PagesController@search');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('chi-tiet/{slug}','PagesController@detail');
 Route::post('add-cart/','CartController@add');

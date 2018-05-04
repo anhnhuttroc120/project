@@ -1,6 +1,11 @@
 @extends('default.master')
 @section('css')
-
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<style>
+	select{
+		font-family: fontAwesome;
+	}
+</style>
 @endsection
 @section('content')
 <div class="container">
@@ -28,9 +33,9 @@
 								<select style="width: 300px;" class="form-control" name="arrange" id="">		
 								@foreach($sorts as $key =>$value)
 								@if(isset($sort) && $sort == $key)	
-								<option style="font-weight: bold;" selected value="{{$key}}"> {{$value}}</option>
+								<option style="font-weight: bold;" selected value="{{$key}}">&#xf00c; {{$value}}</option>
 								@else
-								<option  value="{{$key}}">{{$value}}</option>
+								<option  value="{{$key}}">&emsp;&nbsp;{{$value}}</option>
 								@endif
 								@endforeach
 							

@@ -22,26 +22,17 @@ class PagesController extends Controller
         return view('default.pages.trangchu', compact('products'));
     }
 
-    public function category($slug)
+    public function category($slug, $sort = 'asc')
     {   
         $category = Categories::where('slug', $slug)->first();
-        $products = Product::where('category_id', $category->id)->orderBy('price', 'asc')->paginate(4)->appends(request()->query());;
-        return view('default.pages.category', compact('products', 'category'));
-    }
-
-    public function order($slug,$sort)
-    {       
-        $category = Categories::where('slug', $slug)->first(); 
-        if($sort != 'bestseller'){
-            $products = Product::where('category_id', $category->id)->orderBy('price', $sort)->paginate(4)->appends(request()->query());
-
-        } else {
-            $products = Product::where('category_id', $category->id)->orderBy('bestseller', 'desc')->paginate(4)->appends(request()->query());
+        $query  = Product::where('category_id', $category->id);
+        $query->orderBy('price', $sort);
+        if ($sort == 'bestseller') {
+          $query->orderBy('bestseller','desc');  
         }
-        return view('default.pages.category', compact('products', 'category', 'sort'));  
+        $products = $query->paginate(8)->appends(request()->query());
+        return view('default.pages.category', compact('products', 'category','sort'));
     }
-
-
     public function getRegister()
     {
         return view('default.pages.dangki');
@@ -88,38 +79,21 @@ class PagesController extends Controller
         return redirect('trang-chu');
     }
 
-    public function search(Request $request)
-    {
+    public function search(Request $request, $sort ='asc')
+    {   
         if($request->has('keyword')){
             $keyword = $request->keyword;
-            if($keyword != ''){ 
-               $products = DB::table('products')->join('category','products.category_id','=','category.id')->join('product_detail','products.id','=','product_detail.products_id')->where('products.id',$keyword)->orWhere('products.name','like',"%".$keyword."%")->orWhere('category.slug','like',"%".$keyword."%")->orWhere('category.name','like',"%".$keyword."%")->orderBy('price','asc')->select('products.*','category.name as name_category','product_detail.*')->paginate(4)->appends(request()->query());
-
-               return view('default.pages.timkiem', compact('keyword', 'products'));
-            } 
-
-            return view('default.pages.404');
-                 
-         
+            $query = Product::whereHas('category', function($query) use ($keyword) {
+                $query->where('name','like',"%".$keyword . "%")->orWhere('slug','like',"%".$keyword."%");
+                 })->orwhere('name', 'like', "%".$keyword . "%");
+            if($sort == 'bestseller'){ 
+                $query->orderBy('bestseller', 'desc');
+            }
+            $query->orderBy('price', $sort);
+            $products = $query->paginate(4)->appends(request()->query());
+            return view('default.pages.timkiem', compact('keyword', 'products','sort'));
         } 
            
-    }
-
-    public function orderSearch($keyword,$sort)
-    {    
-        if(!empty($sort)){
-            $keyword = $keyword;
-            if($sort !='bestseller'){
-                $products = DB::table('products')->join('category','products.category_id','=','category.id')->join('product_detail','products.id','=','product_detail.products_id')->where('products.id',$keyword)->orWhere('products.name','like',"%".$keyword."%")->orWhere('category.slug','like',"%".$keyword."%")->orWhere('category.name','like',"%".$keyword."%")->select('products.*','category.name as name_category','product_detail.*')->orderBy('price',$sort)->paginate(4)->appends(request()->query());
-            } else {
-
-                 $products = DB::table('products')->join('category' ,'products.category_id', '=' ,'category.id')->join('product_detail', 'products.id', '=', 'product_detail.products_id')->where('products.id', $keyword)->orWhere('products.name','like',"%".$keyword."%")->orWhere('category.slug','like',"%".$keyword."%")->orWhere('category.name','like', "%".$keyword."%")->select('products.*','category.name as name_category','product_detail.*')->orderBy('bestseller','desc')->paginate(4)->appends(request()->query());
-                }   
-
-           return view('default.pages.timkiem', compact('keyword', 'products','sort'));
-        }
-      
-
     }
     public function detail($slug)
     {
@@ -144,5 +118,4 @@ class PagesController extends Controller
           
          
     }
-
 }
