@@ -37,7 +37,7 @@ class OrderController extends Controller
 
     public function Search(Request $request)
     {	
-    	if(!empty($request->search)){
+    	if( !empty($request->search)) {
     		$keyword = $request->search;
     		$orders = DB::table('order')
     		->join('users','order.users_id','=','users.id')
@@ -63,7 +63,7 @@ class OrderController extends Controller
 	public function Status($id)
 	{
 		if (!empty($id)) {
-			$orders = Order::where('status','=',$id)->paginate(4)->appends(request()->query());
+			$orders = Order::where('status', '=', $id)->paginate(4)->appends(request()->query());
 			return view('admin.order.list', compact('orders'));
 		}
 	}

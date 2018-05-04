@@ -28,7 +28,6 @@ class PagesController extends Controller
     public function category($slug, $sort = 'asc')
     {   
         $category = Categories::where('slug', $slug)->first();
-
         $query  = Product::where('category_id', $category->id);
         $query->orderBy('price', $sort);
         if ($sort == 'bestseller') {
@@ -75,7 +74,7 @@ class PagesController extends Controller
     {
         $username = $request->username;
         $password = $request->password;
-        if(Auth::attempt(['password' => $password, 'username'=>$username])){
+        if (Auth::attempt(['password' => $password, 'username'=>$username])){
             return redirect()->intended('trang-chu');
         }
 
@@ -91,12 +90,12 @@ class PagesController extends Controller
 
     public function search(Request $request, $sort ='asc')
     {   
-        if($request->has('keyword')){
+        if ($request->has('keyword')) {
             $keyword = $request->keyword;
             $query = Product::whereHas('category', function($query) use ($keyword) {
                 $query->where('name','like',"%".$keyword . "%")->orWhere('slug','like',"%".$keyword."%");
                  })->orwhere('name', 'like', "%".$keyword . "%");
-            if($sort == 'bestseller'){ 
+            if ($sort == 'bestseller') { 
                 $query->orderBy('bestseller', 'desc');
             }
             $query->orderBy('price', $sort);
