@@ -10,6 +10,7 @@
 
 @endsection
 @section('content')
+
  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -55,27 +56,22 @@
                 </tr>
                 </thead>
                 <tbody>
-              	@foreach($users as $user)
+              @foreach($Users as $key => $user)
                 <tr id="item-{{$user->id}}">
                   <td>{{$user->id}}</td>
-                  <td>@if(!empty($user->picture))<img src="images/user/{{$user->picture}}">@else
-                  Chưa có ảnh @endif</td>
+                  <td><img src="images/user/{{$user->picture}}"></td>
                   <td>{{$user->fullname}}</td>
-                  <td> {{$user->username}}</td>
+                  <td>{{$user->username}} </td>
                   <td>{{$user->email}}</td>
-                  <td>
-                    @if($user->is_admin==1)
-                      {{"Admin"}}
-                    @else
-                      {{"Thuong"}}
-                    @endif
-                  </td>
+                  <td>@if($user->is_admin==1)admin
+                  @else thuong
+                  @endif</td>
                   <td style="width: 50px;" ><a  style="color: red";  href="javascript:deleteItem({{$user->id}})"><i class="fa fa-trash"></i></a>
                   <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href="admin/user/edit/{{$user->id}}"><i class="fa fa-edit"></i></a>  </td>
           
                 </tr>
-          
-                 @endforeach  
+          @endforeach
+                
                 </tbody>
                 
               </table>

@@ -49,10 +49,10 @@ class UserController extends Controller
 		Auth::logout();
 		return redirect()->route('login');
 	}
-	public function listUser()
-	{
-		$users = User::all();
-		return view('admin.user.list', compact('users'));
+	public function listUser(){
+		$Users = User::all();
+		
+		return view('admin.user.list',compact('Users'));
 	}
 
 	public function getAdd()
@@ -65,35 +65,31 @@ class UserController extends Controller
 	{	
 		try{
 			DB::beginTransaction();
-			$data          	 	= $request->all();
-			$data['password']	= bcrypt($request->password);
-			$data['status'] 	= 1;
+			$data = $request->all();
+			$data['password']=bcrypt($request->password);
+			$data['status'] = 0;
 			$data['created_by'] = Auth::user()->fullname;
 			if($request->hasFile('picture')){
-				$file 		= $request->file('picture');
-				$name 		= $file->getClientOriginalName();
-				$extension 	= $file->getClientOriginalExtension();
-				if($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg' &&  $extension!= 'gif' ){
-	   				return redirect()->back()->with('notice', 'Kiểu ảnh không phù hợp');
-	   			}
+				$file 		= $request->file('picture'); //lay dc file
+				$name 		= $file->getClientOriginalName();//lay dc ten hinh
 	   			$picture	 = str_random(6) .$name;
-	   			$file->move('images/user', $picture);
+	   			$file->move('images/user', $picture);  // luu o thu muc public/images/user/tenfile
 	   			$img 		 = Image::make('images/user/' .$picture)->resize('50', '50');
 	   			$img->save('images/user/'.$picture);	
 			} else {
 				$picture	 = "";
-				}
-			$data['picture'] = $picture;	
+			}
+			$data['picture'] = $picture;
 			User::create($data);
-			DB::commit();
 			Toastr::success('Bạn đã thêm thành công', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
-			return back();
-			
-
+			DB::commit();
+			return back();		
+		
 
 		}catch (\Exception $e) {
 			DB::rollBack();
 			Toastr::warning('Đã xảy ra lỗi', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+
 			return back();
 
 		}		

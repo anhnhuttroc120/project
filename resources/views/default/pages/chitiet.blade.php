@@ -162,8 +162,8 @@
 						</div>
 					</div>
 					<div class="space50">&nbsp;</div>
-					<div class="beta-products-list">
-						<h4>Sản phẩm liên quan</h4>
+					<div class="beta-products-list" style="border: 0px;">
+						<h4 style="margin-bottom: 10px;">Sản phẩm liên quan</h4>
 
 						<div class="row">
 							@foreach($products['relate'] as $product)
@@ -178,8 +178,8 @@
 								?>
 								<div  class="col-sm-4">
 									<div  class="single-item">
-										<div class="single-item-header">
-											<a href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
+										<div class="" style="">
+											<a href="chi-tiet/{{$product->slug}}"><img class="picture-main"  src="images/product/{{$picture_main}}" alt=""></a>
 										</div>
 										<div class="single-item-body">
 											<p class="name-product" style="height: 50px;"  class="single-item-title">{{$product->name}}</p>
@@ -217,7 +217,7 @@
 									} else {
 										$price = $product->price;
 										}
-									$name = substr($product->name, 0,50) .'...'	;
+									$name = substr($product->name, 0,37) .'...'	;
 
 								 ?>
 								<div class="media beta-sales-item">
@@ -236,7 +236,7 @@
 						<div class="widget-body">
 							<div class="beta-sales beta-lists">
 
-								<@foreach($products['new'] as $product)
+								@foreach($products['new'] as $product)
 								<?php
 									$pictures = json_decode($product->detail->picture,true);
 									$picture_main = $pictures[1];
@@ -246,14 +246,14 @@
 									} else {
 										$price = $product->price;
 										}
-									$name = substr($product->name, 0,50) .'...'	;
+									$name = substr($product->name, 0,37) .'...'	;
 
 								 ?>
 								<div class="media beta-sales-item">
 									<a class="pull-left" href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
 									<div class="media-body">
 										{{$name}}
-										<span class="beta-sales-price">{{number_format($price)}} VNĐ </span>
+										<span class="beta-sales-price">{{number_format($price)}}VNĐ </span>
 									</div>
 								</div>
 								@endforeach
