@@ -43,3 +43,21 @@ ul{
 	margin-top: 10px;
 	padding-left: 10px;
 }
+.container-fluid li a:hover{
+	color: #4a494a;
+	font-weight: bold;
+}
+.active2 {
+	font-weight: bold;
+	text-decoration: underline;
+}
+.account label{
+	width: 200px;
+	font-weight: 100;
+}
+.account input {
+	padding:5px;
+}
+
+
+

@@ -66,9 +66,13 @@
 								<p>Kích thước:</p>
 								<div>
 								<select class="wc-select" name="size">
-									@foreach($sizes as $size)
+									@forelse($sizes as $size)
 									<option value="{{$size}}">{{$size}}</option>
-									@endforeach
+									@empty <option value="''
+
+
+									"></option>
+									@endforelse
 								</select>
 
 									
@@ -178,8 +182,8 @@
 								?>
 								<div  class="col-sm-4">
 									<div  class="single-item">
-										<div class="" style="">
-											<a href="chi-tiet/{{$product->slug}}"><img class="picture-main"  src="images/product/{{$picture_main}}" alt=""></a>
+										<div class="single-item-header" style="">
+											<a href="chi-tiet/{{$product->slug}}"><img style="width: 251px;height: 334px;" class="picture-main"  src="images/product/{{$picture_main}}" alt=""></a>
 										</div>
 										<div class="single-item-body">
 											<p class="name-product" style="height: 50px;"  class="single-item-title">{{$product->name}}</p>

@@ -8,10 +8,11 @@ use Session;
 use Mail;
 use App\Product;
 use App\Comment;
+
 use DB;
 use App\Categories;
 use App\province;
-
+use App\Order;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -90,14 +91,14 @@ class PagesController extends Controller
     {   
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
-            $query = Product::whereHas('category', function($query) use ($keyword) {
+            $query1 = Product::whereHas('category', function($query) use ($keyword) {
                 $query->where('name','like',"%".$keyword . "%")->orWhere('slug','like',"%".$keyword."%");
                  })->orwhere('name', 'like', "%".$keyword . "%");
             if ($sort == 'bestseller') { 
-                $query->orderBy('bestseller', 'desc');
+                $query1->orderBy('bestseller', 'desc');
             }
-            $query->orderBy('price', $sort);
-            $products = $query->paginate(4)->appends(request()->query());
+            $query1->orderBy('price', $sort);
+            $products = $query1->paginate(4)->appends(request()->query());
             return view('default.pages.timkiem', compact('keyword', 'products','sort'));
 
         }
@@ -125,7 +126,17 @@ class PagesController extends Controller
         } 
         return $result;
     }
-    public function order() {
-        return view('default.pages.order.order');
+    
+    public function profile()
+    {
+        return view('default.pages.order.profile');
+    }
+    public function order()
+    {
+       return view('default.pages.order.list'); 
+    }
+    public function changePass()
+    {
+        return view('default.pages.order.pass'); 
     }
 }

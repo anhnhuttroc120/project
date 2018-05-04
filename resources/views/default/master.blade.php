@@ -75,6 +75,27 @@
 
 
 	</script>
+	<script>
+		 jQuery(document).ready(function($) {
+                'use strict';
+			
+        // this will get the full URL at the address bar
+        var url = window.location.href;
+
+        // passes on every "a" tag
+        $(".menu-info a").each(function() {
+        	// var a = $('.menu-info a').attr('href');
+
+            // checks if its the same on the address bar
+            if (url == (this.href)) {
+                $(this).closest("li").addClass("active2");
+				 $(this).parents('li').addClass('parent-active');
+           	
+           		 }
+           });		 
+        
+    }); 
+	</script>
 	
 	@yield('script')
 </body>

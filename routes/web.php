@@ -47,8 +47,9 @@ Route::get('delete-cart/{rowId}','CartController@delete');
 Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
 Route::post('comment','ProductController@postComment');
+Route::get('profile','PagesController@profile');
 Route::get('order','PagesController@order');
-
+Route::get('changepass','PagesController@changePass');
 
 //admin side
 
