@@ -111,6 +111,7 @@ class CartController extends Controller
                 Cart::destroy();
                 DB::commit();
                 return view('default.notice.giohang');
+
             }
         } catch(\Exception $e) {
             DB::rollBack();

@@ -44,13 +44,9 @@ Route::post('add-cart/','CartController@add');
 Route::post('update-cart','CartController@update');
 Route::get('delete-cart/{rowId}','CartController@delete');
 
-Route::post('check-out','CartController@checkout');
+Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
-Route::get('check-out',function(){
-	return view('default.pages.404');
-});
-
-
+Route::post('comment','ProductController@postComment');
 
 
 //admin side

@@ -67,8 +67,8 @@
 								</div>
 						@else
 								<p>Không có sản phẩm nào trong giỏ hàng</p>
+						@endif		
 							</div>
-						@endif	
 						</div> <!-- .cart -->
 					</div>
 				</div>

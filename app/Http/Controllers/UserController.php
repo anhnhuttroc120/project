@@ -90,14 +90,13 @@ class UserController extends Controller
 			return back();
 			
 
+
 		}catch (\Exception $e) {
 			DB::rollBack();
 			Toastr::warning('Đã xảy ra lỗi', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
 			return back();
 
-		}	
-
-		
+		}		
 	}
 
 	public function Delete($id)
@@ -129,17 +128,13 @@ class UserController extends Controller
 		$data 				= $request->all();
 		$data['status'] 	= 1;
 		$data['crtead_by']	= Auth::user()->fullname;
-		$oldImage 			= $user->picture;
+		$oldImage 			= ($user->picture =='') ? ' ' : $user->picture;
 	
 		if ($request->hasFile('picture')) { 
 
 		   //ngươi dùng đã thay đổi file
 			$file = $request->file('picture');
 			$name = $file->getClientOriginalName();
-			$extension = $file->getClientOriginalExtension();	
-			if($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg' &&  $extension != 'gif'){
-   				return redirect()->back()->with('notice', 'Kiểu ảnh không phù hợp');
-   			}
    			$newpicture = str_random(6).$name; // hibhf moi nguoi dung sua
    			$file->move('images/user',$newpicture);
    			$img 		= Image::make('images/user/'.$newpicture)->resize('50', '50');

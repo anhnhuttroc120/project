@@ -34,7 +34,7 @@
 						</div>
 						<div class="form-block">
 							<label for="email">Điện thoại <span style="color:red">*</span></label>
-							<input type="email"  name="phone" autocomplete='email' >
+							<input type="text"  name="phone" autocomplete='email' >
 						</div>
 
 						<div class="form-block">
@@ -134,8 +134,9 @@
 							</div>
 							<div  style="margin-top:10px;" class="row">
 								<div class="col-md-12 bookcart">
-									<a style="background: #A5A6A5;" href="#" class="btn">TIẾP TỤC MUA HÀNG</a>
-									<button  style="background: #63AA38;float: right;color: #e7e7e7;font-size: 16px;cursor: pointer;"  class="btn checkout">ĐẶT HÀNG</button>
+
+									<a style="background: #A5A6A5" href="{{url('trang-chu')}}" class="btn">TIẾP TỤC MUA HÀNG</a>
+									<button  style="background: #63AA38;float: right;font-size: 16px;color: #e7e7e7"  class="btn checkout">ĐẶT HÀNG</button>
 								</div>
 							</div>	
 					</form>

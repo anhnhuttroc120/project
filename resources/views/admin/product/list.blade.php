@@ -32,7 +32,7 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Danh sách</h3>
+              <h3 class="box-title"><a class="btn" href="{{url('admin/product/add')}}" style="color: white;background: #E3458B;">Thêm Sản Phẩm</a></h3>
             </div>
 
             <!-- /.box-header -->

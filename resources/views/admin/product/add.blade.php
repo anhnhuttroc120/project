@@ -14,12 +14,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-       Sản phẩm
-        <small>Thêm</small>
+       Thêm 
+        <small>Sản phẩm</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li class="active">Sản phẩm</li>
+        <li class="active"><a href="{{url('admin/product/list')}}">Sản phẩm</a></li>
       </ol>
     </section>
 

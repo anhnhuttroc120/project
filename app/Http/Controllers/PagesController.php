@@ -7,9 +7,12 @@ use App\User;
 use Session;
 use Mail;
 use App\Product;
+use App\Comment;
 use DB;
 use App\Categories;
 use App\province;
+
+
 use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
@@ -25,6 +28,7 @@ class PagesController extends Controller
     public function category($slug, $sort = 'asc')
     {   
         $category = Categories::where('slug', $slug)->first();
+
         $query  = Product::where('category_id', $category->id);
         $query->orderBy('price', $sort);
         if ($sort == 'bestseller') {
@@ -33,6 +37,8 @@ class PagesController extends Controller
         $products = $query->paginate(8)->appends(request()->query());
         return view('default.pages.category', compact('products', 'category','sort'));
     }
+
+    
     public function getRegister()
     {
         return view('default.pages.dangki');
@@ -40,8 +46,10 @@ class PagesController extends Controller
 
     public function postRegister(CreateRequest $request)
     {				
-        $data=$request->all();            
-        $data['status'] = 0;
+        $data = $request->all();            
+        $data['status'] = 1;
+        $data['password'] = bcrypt($request->password);
+
         $data['picture'] = '';
         $data['is_admin'] = 0;
         $data['created_by'] = '';
@@ -55,7 +63,7 @@ class PagesController extends Controller
                     // });
                     // echo 'da gui mail thanh cong';
 
-        return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công, Vui lòng vào email xác nhận tài khoản');			
+        return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công');			
     } 
 
     public function getDangNhap()
@@ -67,9 +75,10 @@ class PagesController extends Controller
     {
         $username = $request->username;
         $password = $request->password;
-        if(Auth::attempt(['password' => $password, 'username'=>$username, 'status'=>1])){
+        if(Auth::attempt(['password' => $password, 'username'=>$username])){
             return redirect()->intended('trang-chu');
         }
+
      	return redirect()->back()->with('notice','Thông tin đăng nhập không chính xác! Hãy kiểm tra tài khoản và mật khẩu của bạn');	
     }
 
@@ -78,6 +87,7 @@ class PagesController extends Controller
         Auth::logout();
         return redirect('trang-chu');
     }
+
 
     public function search(Request $request, $sort ='asc')
     {   
@@ -92,21 +102,24 @@ class PagesController extends Controller
             $query->orderBy('price', $sort);
             $products = $query->paginate(4)->appends(request()->query());
             return view('default.pages.timkiem', compact('keyword', 'products','sort'));
-        } 
-           
-    }
+
+        }
+    }    
+
     public function detail($slug)
     {
-        $product = Product::where('slug', $slug)->first();
-        $products['relate'] = Product::where('category_id', $product->category->id)->inRandomOrder()->take(3)->get();
+        $product_main = Product::where('slug', $slug)->first();
+        // $comments = Comment::where('product_id',$product_main->id)->get();  
+        $products['relate'] = Product::where('category_id', $product_main->category->id)->inRandomOrder()->take(3)->get();
         $products['bestseller'] = Product::orderBy('bestseller', 'desc')->take(4)->get();
         $products['new'] = Product::orderBy('id', 'desc')->take(4)->get();
-        return view('default.pages.chitiet', compact('product', 'products'));
+        return view('default.pages.chitiet', compact('product_main', 'products'));
     }
     public function district(Request $request)
     { 
         $city = $request->idCity;
         $result = ''; 
+
         $province = province::where('provinceid',$city)->first();
         if ($city != 00) {
             foreach ($province->district as $key => $district) {
@@ -114,8 +127,5 @@ class PagesController extends Controller
             }
         } 
         return $result;
-
-          
-         
     }
 }

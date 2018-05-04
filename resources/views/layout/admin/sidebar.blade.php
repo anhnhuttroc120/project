@@ -5,10 +5,10 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="img/user/1.jpg" class="img-circle" alt="User Image">
+          <img src="images/user/{{Auth::user()->picture}}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Nam Soái ca</p>
+          <p>{{Auth::user()->fullname}}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -18,17 +18,14 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
           <!-- start ng dùng -->
-        <li class="active treeview">
-          <a href="#">
+        <li class="active">
+          <a href="{{url('admin/user/list')}}">
             <i class="fa fa-user"></i> <span>Người dùng</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="{{url('admin/user/list')}}"><i class="fa fa fa-check"></i>Danh sách</a></li>
-            <li><a href="{{url('admin/user/add')}}"><i class="fa fa fa-check"></i> Thêm người dùng</a></li>
-          </ul>
+          
         </li>
         <!-- end ng dùng -->
 
@@ -75,18 +72,14 @@
           </a>
         </li>
         <!-- end đơn hàng -->
-         <li class="treeview">
-          <a href="#">
+         <li class="">
+          <a href="{{url('admin/product/list')}}">
             <i class="fa fa-book"></i> <span>Sản phẩm</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="{{url('admin/product/list')}}"><i class="fa fa fa-check"></i> Danh sách </a></li>
-            <li><a href="{{url('admin/product/add')}}"><i class="fa fa fa-check"></i> Thêm</a></li>
-           
-          </ul>
+          
         </li> <!-- end nhóm người dùng -->
         
         

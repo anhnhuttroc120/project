@@ -12,12 +12,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-       Sản phẩm
-        <small>Thêm</small>
+       Sửa Sản Phẩm
+        
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li class="active">Sản phẩm</li>
+        <li><a href="{{url('admin/index')}}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active"><a href="{{url('admin/product/list')}}">Sản Phẩm</a></li>
       </ol>
     </section>
 
@@ -29,7 +29,7 @@
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Quick Example</h3>
+              <h3 class="box-title"></h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -78,7 +78,7 @@
            ?>
               <div class="box-body">
            <div class="form-group">
-  {!! Form::label('name', 'Tến sản phẩm') !!}
+  {!! Form::label('name', 'Tên sản phẩm') !!}
   <div class="form-controls">
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
   </div>
