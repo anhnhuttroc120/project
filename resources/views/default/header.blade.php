@@ -30,7 +30,7 @@
 				<div style="padding-top:30px;" class="pull-right beta-components space-left ov">
 					<div class="space10">&nbsp;</div>
 					<div class="beta-comp">
-						<form role="search" method="get" id="searchform" action="{{url('search')}}">
+						<form role="search" method="get" id="searchform" action="{{url('search/asc')}}">
 					        <input type="text"  name="keyword" value="@if(!empty($keyword)){{$keyword}}@endif" name="s" id="s" placeholder="Nhập từ khóa..." />
 					        <button class="fa fa-search" type="submit" id="searchsubmit"></button>
 						</form>
@@ -62,13 +62,13 @@
 
 									<div class="center">
 										<div class="space10">&nbsp;</div>
-										<a href="checkout.html" class="beta-btn primary text-center">Đặt hàng <i  class="fa fa-chevron-right"></i></a>
+										<a href="{{url('giohang')}}" class="beta-btn primary text-center">Đặt hàng <i  class="fa fa-chevron-right"></i></a>
 									</div>
 								</div>
-						@endif
+						@else
 								<p>Không có sản phẩm nào trong giỏ hàng</p>
+						@endif		
 							</div>
-							
 						</div> <!-- .cart -->
 					</div>
 				</div>
@@ -85,7 +85,7 @@
 						<li><a   href="{{url('trang-chu')}}">TRANG CHỦ</a></li>
 						
 						@foreach($categories_main as $key => $category)
-						<li><a href="category/{{$category->slug}}">{{$category->name}}</a>
+						<li><a href="category/{{$category->slug}}/asc">{{$category->name}}</a>
 							
 						</li>
 						@endforeach

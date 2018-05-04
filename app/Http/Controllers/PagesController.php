@@ -11,6 +11,8 @@ use App\Comment;
 use DB;
 use App\Categories;
 use App\province;
+
+
 use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
@@ -23,26 +25,19 @@ class PagesController extends Controller
         return view('default.pages.trangchu', compact('products'));
     }
 
-    public function category($slug)
+    public function category($slug, $sort = 'asc')
     {   
         $category = Categories::where('slug', $slug)->first();
-        $products = Product::where('category_id', $category->id)->orderBy('price', 'asc')->paginate(4)->appends(request()->query());;
-        return view('default.pages.category', compact('products', 'category'));
+        $query  = Product::where('category_id', $category->id);
+        $query->orderBy('price', $sort);
+        if ($sort == 'bestseller') {
+          $query->orderBy('bestseller','desc');  
+        }
+        $products = $query->paginate(8)->appends(request()->query());
+        return view('default.pages.category', compact('products', 'category','sort'));
     }
 
-    public function order($slug,$sort)
-    {       
-        $category = Categories::where('slug', $slug)->first(); 
-        if($sort != 'bestseller'){
-            $products = Product::where('category_id', $category->id)->orderBy('price', $sort)->paginate(4)->appends(request()->query());
-
-        } else {
-            $products = Product::where('category_id', $category->id)->orderBy('bestseller', 'desc')->paginate(4)->appends(request()->query());
-            }
-        return view('default.pages.category', compact('products', 'category', 'sort'));  
-    }
-
-
+    
     public function getRegister()
     {
         return view('default.pages.dangki');
@@ -50,8 +45,10 @@ class PagesController extends Controller
 
     public function postRegister(CreateRequest $request)
     {				
-        $data=$request->all();            
-        $data['status'] = 0;
+        $data = $request->all();            
+        $data['status'] = 1;
+        $data['password'] = bcrypt($request->password);
+
         $data['picture'] = '';
         $data['is_admin'] = 0;
         $data['created_by'] = '';
@@ -65,7 +62,7 @@ class PagesController extends Controller
                     // });
                     // echo 'da gui mail thanh cong';
 
-        return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công, Vui lòng vào email xác nhận tài khoản');			
+        return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công');			
     } 
 
     public function getDangNhap()
@@ -77,12 +74,11 @@ class PagesController extends Controller
     {
         $username = $request->username;
         $password = $request->password;
-        if(Auth::attempt(['password' => $password, 'username'=>$username, 'status'=>1])){
+        if (Auth::attempt(['password' => $password, 'username'=>$username])){
             return redirect()->intended('trang-chu');
-        } else {
-     		 return redirect()->back()->with('notice','Thông tin đăng nhập không chính xác! Hãy kiểm tra tài khoản và mật khẩu của bạn');
-     	  }
-    	
+        }
+
+     	return redirect()->back()->with('notice','Thông tin đăng nhập không chính xác! Hãy kiểm tra tài khoản và mật khẩu của bạn');	
     }
 
     public function logOut()
@@ -91,39 +87,24 @@ class PagesController extends Controller
         return redirect('trang-chu');
     }
 
-    public function search(Request $request)
-    {
-        if($request->has('keyword')){
+
+    public function search(Request $request, $sort ='asc')
+    {   
+        if ($request->has('keyword')) {
             $keyword = $request->keyword;
-            if($keyword != ''){ 
-               $products = DB::table('products')->join('category','products.category_id','=','category.id')->join('product_detail','products.id','=','product_detail.products_id')->where('products.id',$keyword)->orWhere('products.name','like',"%".$keyword."%")->orWhere('category.slug','like',"%".$keyword."%")->orWhere('category.name','like',"%".$keyword."%")->orderBy('price','asc')->select('products.*','category.name as name_category','product_detail.*')->paginate(4)->appends(request()->query());
+            $query = Product::whereHas('category', function($query) use ($keyword) {
+                $query->where('name','like',"%".$keyword . "%")->orWhere('slug','like',"%".$keyword."%");
+                 })->orwhere('name', 'like', "%".$keyword . "%");
+            if ($sort == 'bestseller') { 
+                $query->orderBy('bestseller', 'desc');
+            }
+            $query->orderBy('price', $sort);
+            $products = $query->paginate(4)->appends(request()->query());
+            return view('default.pages.timkiem', compact('keyword', 'products','sort'));
 
-               return view('default.pages.timkiem', compact('keyword', 'products'));
-            } else {
-                return view('default.pages.404');
-                }  
-         
-        } 
-           
-    }
-
-    public function orderSearch($keyword,$sort)
-
-    {    
-        if(!empty($sort)){
-            $keyword = $keyword;
-            if($sort !='bestseller'){
-                $products = DB::table('products')->join('category','products.category_id','=','category.id')->join('product_detail','products.id','=','product_detail.products_id')->where('products.id',$keyword)->orWhere('products.name','like',"%".$keyword."%")->orWhere('category.slug','like',"%".$keyword."%")->orWhere('category.name','like',"%".$keyword."%")->select('products.*','category.name as name_category','product_detail.*')->orderBy('price',$sort)->paginate(4)->appends(request()->query());
-            } else {
-
-                 $products = DB::table('products')->join('category' ,'products.category_id', '=' ,'category.id')->join('product_detail', 'products.id', '=', 'product_detail.products_id')->where('products.id', $keyword)->orWhere('products.name','like',"%".$keyword."%")->orWhere('category.slug','like',"%".$keyword."%")->orWhere('category.name','like', "%".$keyword."%")->select('products.*','category.name as name_category','product_detail.*')->orderBy('bestseller','desc')->paginate(4)->appends(request()->query());
-                }   
-
-           return view('default.pages.timkiem', compact('keyword', 'products','sort'));
         }
-      
+    }    
 
-    }
     public function detail($slug)
     {
         $product_main = Product::where('slug', $slug)->first();
@@ -134,23 +115,19 @@ class PagesController extends Controller
         return view('default.pages.chitiet', compact('product_main', 'products'));
     }
     public function district(Request $request)
-    {
-         
+    { 
         $city = $request->idCity;
-        $result =''; 
+        $result = ''; 
+
         $province = province::where('provinceid',$city)->first();
-        if($city != 00){
+        if ($city != 00) {
             foreach ($province->district as $key => $district) {
                 $result .= '<option  value="'.$district->districtid.'">'.$district->name.'</option>';
             }
-        } else {
-                $result = '';
-            }
-            
-            return $result;
-
-          
-         
+        } 
+        return $result;
     }
-
+    public function order() {
+        return view('default.pages.order.order');
+    }
 }
