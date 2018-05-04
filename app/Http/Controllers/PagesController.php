@@ -37,7 +37,6 @@ class PagesController extends Controller
         return view('default.pages.category', compact('products', 'category','sort'));
     }
 
-    
     public function getRegister()
     {
         return view('default.pages.dangki');
@@ -86,7 +85,6 @@ class PagesController extends Controller
         Auth::logout();
         return redirect('trang-chu');
     }
-
 
     public function search(Request $request, $sort ='asc')
     {   
