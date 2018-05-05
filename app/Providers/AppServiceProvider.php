@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
         \Schema::defaultStringLength(191);
         if(\Schema::hasTable('category')){
             $categories = Categories::pluck('name','id')->all();
-            $categories['default']= '--Tất cả sản phẩm --'  ;
+            $categories['default']= '--Tất cả loại sản phẩm --'  ;
             $categories_main = Categories::all();
             ksort($categories);
             View::share('categories', $categories);
@@ -41,8 +41,7 @@ class AppServiceProvider extends ServiceProvider
         }
         $sorts = ['asc'=>'Sắp xếp theo giá : Từ thấp đến cao','desc'=>'Sắp xếp theo giá : Từ cao đến thấp','bestseller'=>'Sắp xếp theo giá : bán chạy nhất'];
         View::share('sorts', $sorts);
-        $quantity = range(1,10);
-         Validator::extend('password_old',function($attribute,$value,$parameters,$validator){
+        Validator::extend('password_old',function($attribute,$value,$parameters,$validator){
             return Hash::check($value,current($parameters));
        });
         $quantitys = range(1,10);

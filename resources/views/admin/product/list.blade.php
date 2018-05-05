@@ -45,25 +45,25 @@
                 
               <select name="category" id="category">
               
-                @foreach($categories as $key => $category)
-                @if(!empty($category_id) && $category_id== $key)
-                <option selected value="{{$key}}">{{$category}}</option>
+                @foreach($categories as $key => $value)
+                @if(!empty($category) && $category== $key)
+                <option selected value="{{$key}}">{{$value}}</option>
                 @else
-                <option  value="{{$key}}">{{$category}}</option>
+                <option  value="{{$key}}">{{$value}}</option>
                 @endif
                 @endforeach
               </select>
               <select name="sort" id="sort">
               
-                @foreach($sorts as $key => $sort)
-                @if(!empty($sort) && $sort== $key)
-                <option selected value="{{$key}}">{{$sort}}</option>
+                @foreach($sorts as $key => $value)
+                @if(!empty($sort) && $sort == $key)
+                <option selected value="{{$key}}">{{$value}}</option>
                 @else
-                <option  value="{{$key}}">{{$sort}}</option>
+                <option  value="{{$key}}">{{$value}}</option>
                 @endif
                 @endforeach
               </select>
-              <input  style="width: 200px;"  type="text"  name="keyword" id="search" placeholder="Tìm kiếm theo tên sản phẩm">
+              <input  style="width: 200px;"  type="text"  name="keyword" id="search" placeholder="Tìm kiếm theo tên sản phẩm" value="@if(!empty($keyword)) {{$keyword}}@endif">
                 <div id="result">
                     {!! view('ajax.product',compact(['products']))->render() !!}
                 </div>
@@ -93,10 +93,10 @@
 <!-- AdminLTE App -->
 <script src="AdminLTE-2.4.3/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
+{{-- <script src="AdminLTE-2.4.3/dist/js/demo.js"></script> --}}
 <!-- page script -->
-<script>
-  $(function () {+
+{{-- <script>
+  $(function () {
     $('#example1').DataTable()
     $('#example2').DataTable({
       'paging'      : false,
@@ -107,10 +107,19 @@
       'autoWidth'   : true
     })
   })
-</script>
+</script> --}}
 <script>
     $(document).ready(function(){
+        $('#category').change(function(){
+             callAjax();
 
+        });
+        $('#sort').change(function(){
+            callAjax();
+        });
+        $('#search').on('keyup',function(){
+            callAjax();
+        });
         
     });
 </script>
@@ -123,9 +132,10 @@
       $.ajax({
         type :'get',
         url :url ,
-        data:{keyword:keyword,sort:sort,category:category},
+        data:{category:category,sort:sort,keyword:keyword},
         success: function (data) { 
-    
+          console.log(data);
+          $('#result').html(data.view);
             
         }
       });
@@ -139,4 +149,4 @@
 @endsection
 
 
-
+{{-- keyword:keyword,sort:sort, --}}
