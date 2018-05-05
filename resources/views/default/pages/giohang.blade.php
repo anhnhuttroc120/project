@@ -17,6 +17,8 @@
 	<div class="container">
 		@if(!empty(Cart::content()) && count(Cart::content())>0)	
 			<form  action="{{url('check-out')}}" method="post" id="form-checkout"> 
+				<input type="hidden" name="_token" value="{{csrf_token()}}">
+
 		<div class="row" style="margin-bottom: 20px;"> {{-- start row --}}
 			   {!! Toastr::message() !!}
 
@@ -32,7 +34,7 @@
 						</div>
 						<div class="form-block">
 							<label for="email">Điện thoại <span style="color:red">*</span></label>
-							<input type="email"  name="phone" autocomplete='email' >
+							<input type="text"  name="phone" autocomplete='email' >
 						</div>
 
 						<div class="form-block">
@@ -70,7 +72,7 @@
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; "><i class="fa fa-shopping-cart fa-2x" style="color: black"> </i>SẢN PHẨM ĐÃ CHỌN</a>
 					</div>
 				
-						<input type="hidden" name="_token" value="{{csrf_token()}}">
+						
 						
 						<table class="table table-bordered">
 							<thead>
@@ -132,8 +134,9 @@
 							</div>
 							<div  style="margin-top:10px;" class="row">
 								<div class="col-md-12 bookcart">
-									<a style="background: #A5A6A5" href="#" class="btn">TIẾP TỤC MUA HÀNG</a>
-									<a  style="background: #63AA38;float: right;font-size: 16px;cursor: pointer;"  class="btn checkout">ĐẶT HÀNG</a>
+
+									<a style="background: #A5A6A5" href="{{url('trang-chu')}}" class="btn">TIẾP TỤC MUA HÀNG</a>
+									<button  style="background: #63AA38;float: right;font-size: 16px;color: #e7e7e7"  class="btn checkout">ĐẶT HÀNG</button>
 								</div>
 							</div>	
 					</form>

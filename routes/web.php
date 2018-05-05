@@ -17,14 +17,10 @@
 		
 Route::get('mail',function(){
 	     
-
-		// $data = ['nam','nho'];
-
-  //                   Mail::send('email.dangki',$data,function($message){
-  //                           $message->from('namdosatdn@gmail.com');
-  //                           $message->to('boyquay_timgirlnhinhanh_dn2006@yahoo.com.vn','conan Vu')->subject('Xac nhan email');
-  //                   });
-  //                   echo 'da gui mail thanh cong';
+	$data = [1=>1,2,3,4,5];
+	echo '<pre>';
+	 print_r($data);
+	 echo '</pre>'; 
 
 });
 
@@ -34,23 +30,26 @@ Route::get('giohang','CartController@cart')->name('gio-hang');
 Route::get('district','PagesController@district');
 Route::get('dang-ki','PagesConTroller@getRegister');
 Route::post('dang-ki','PagesConTroller@postRegister');
-Route::get('dang-nhap','PagesConTroller@getDangNhap');
-Route::post('dang-nhap','PagesConTroller@postDangNhap')->name('login');;
+Route::get('dang-nhap','PagesConTroller@getDangNhap')->name('login');
+Route::post('dang-nhap','PagesConTroller@postDangNhap');
 Route::get('trang-chu','PagesController@index');
 Route::get('dang-xuat','PagesController@logOut');
-Route::get('category/{slug}','PagesController@category');
-Route::get('category/{slug}/{sort}','PagesController@order');
+Route::get('category/{slug}/{asc}','PagesController@category');
 Auth::routes();
-Route::get('search','PagesController@search');
-Route::get('search/{keyword}/{sort}','PagesController@orderSearch');
-
+Route::get('search/{sort}','PagesController@search');
+// Route::get('search/{keyword}/{order}','PagesController@search');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('chi-tiet/{slug}','PagesController@detail');
 Route::post('add-cart/','CartController@add');
 Route::post('update-cart','CartController@update');
 Route::get('delete-cart/{rowId}','CartController@delete');
-Route::post('check-out','CartController@checkout');
 
+Route::post('check-out','CartController@checkout')->middleware('checkLogin');
+
+Route::post('comment','ProductController@postComment');
+Route::get('profile','PagesController@profile');
+Route::get('order','PagesController@order');
+Route::get('changepass','PagesController@changePass');
 
 //admin side
 
@@ -64,14 +63,14 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::group(['prefix'=>'product'], function(){
 		Route::get('add','ProductController@getAdd');
 		Route::post('add','ProductController@Add')->name('add');
-		Route::get('list','ProductController@index');
+		Route::get('list','ProductController@index')->name('product');
 		Route::get('updated/{slug}','ProductController@getUpdate');
 		Route::get('category/{id}','ProductController@category');
 		Route::patch('updated/{id}','ProductController@Update');
 		Route::get('delete/{id}','ProductController@delete');
 	});
 	Route::group(['prefix'=>'user'],function(){
-		Route::get('list','UserController@listUser');
+		Route::get('list','UserController@listUser')->name('index');
 		Route::get('add','UserController@getAdd');
 		Route::post('add','UserController@Add');
 		Route::get('delete/{id}','UserController@Delete');
@@ -79,7 +78,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::put('edit/{id}','UserController@Edit');
 	});
 	Route::group(['prefix'=>'order'],function(){
-		Route::get('list','OrderController@list');
+		Route::get('list','OrderController@list')->name('order');
 		Route::get('detail/{id}','OrderController@detail');
 		Route::post('change-status/{id}','OrderController@changeStatus');
 		Route::get('search','OrderController@Search');

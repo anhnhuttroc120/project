@@ -10,8 +10,8 @@ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 			"Có" : function() {
 
 				$.get('admin/user/delete/'+id, function(data) {
-					 console.log(data);
-					$('#item-' + id).remove().slideUp(300);
+					
+					$('#item-' + id).remove();
 
 				});
 				$(this).dialog("close");

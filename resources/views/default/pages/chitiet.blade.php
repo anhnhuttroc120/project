@@ -1,27 +1,23 @@
 @extends('default.master')
 @section('css')
 <link rel="stylesheet" href="css/pagination.css">
+<link rel="stylesheet" href="css/comment.css">
 @endsection
 @section('content')
 <div class="container">
 	<?php 
-	if(!empty($product->detail->picture)){
-		$pictures = json_decode($product->detail->picture,true);
+	if(!empty($product_main->detail->picture)){
+		$pictures = json_decode($product_main->detail->picture,true);
 		$picture_main = $pictures[1];
-		$sizes = json_decode($product->detail->size,true);
-		$colors = json_decode($product->detail->color,true);
-		if($product->detail->sale_off > 0 ){
-			$price = ((100 - $product->detail->sale_off)*$product->price)/100;
+		$sizes = json_decode($product_main->detail->size,true);
+		$colors = json_decode($product_main->detail->color,true);
+		if($product_main->detail->sale_off > 0 ){
+			$price = ((100 - $product_main->detail->sale_off)*$product_main->price)/100;
 		} else {
-			$price =$product->price;
+			$price = $product_main->price;
 			}
-
-	 
-
 	}
 	
-	
-
 
 	?>
 			<div class="pull-left">
@@ -43,12 +39,12 @@
 						{!!Form::open(['url'=>'add-cart','method'=>'post','id'=>'form-cart'])!!}
 					<div class="row">
 						<div class="col-sm-4">
-							<input type="hidden" name="id" value="{{$product->id}}">
+							<input type="hidden" name="id" value="{{$product_main->id}}">
 							<img src="images/product/{{$picture_main}}" alt="123">
 						</div>
 						<div class="col-sm-8">
 							<div class="single-item-body">
-								<h1  style="background: #e7e7e7;padding: 10px;" class="single-item-title">{{$product->name}}</h1>
+								<h1  style="background: #e7e7e7;padding: 10px;" class="single-item-title">{{$product_main->name}}</h1>
 								<p class="single-item-price">
 									<h6 style="color: #ff9A00">{{number_format($price)}}<sup>đ</sup></h6>
 								
@@ -70,9 +66,13 @@
 								<p>Kích thước:</p>
 								<div>
 								<select class="wc-select" name="size">
-									@foreach($sizes as $size)
+									@forelse($sizes as $size)
 									<option value="{{$size}}">{{$size}}</option>
-									@endforeach
+									@empty <option value="''
+
+
+									"></option>
+									@endforelse
 								</select>
 
 									
@@ -120,7 +120,7 @@
 
 						<div " class="panel" id="tab-description">
 							<h6>Thông tin chi tiết</h6>
-							{!! $product->detail->description !!}
+							{!! $product_main->detail->description !!}
 
 
 							{{-- <p><i class="fa fa-check" aria-hidden="true"></i>Tên sản phẩm:</p>
@@ -166,8 +166,8 @@
 						</div>
 					</div>
 					<div class="space50">&nbsp;</div>
-					<div class="beta-products-list">
-						<h4>Sản phẩm liên quan</h4>
+					<div class="beta-products-list" style="border: 0px;">
+						<h4 style="margin-bottom: 10px;">Sản phẩm liên quan</h4>
 
 						<div class="row">
 							@foreach($products['relate'] as $product)
@@ -182,8 +182,8 @@
 								?>
 								<div  class="col-sm-4">
 									<div  class="single-item">
-										<div class="single-item-header">
-											<a href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
+										<div class="single-item-header" style="">
+											<a href="chi-tiet/{{$product->slug}}"><img style="width: 251px;height: 334px;" class="picture-main"  src="images/product/{{$picture_main}}" alt=""></a>
 										</div>
 										<div class="single-item-body">
 											<p class="name-product" style="height: 50px;"  class="single-item-title">{{$product->name}}</p>
@@ -221,7 +221,7 @@
 									} else {
 										$price = $product->price;
 										}
-									$name = substr($product->name, 0,50) .'...'	;
+									$name = substr($product->name, 0,37) .'...'	;
 
 								 ?>
 								<div class="media beta-sales-item">
@@ -240,7 +240,7 @@
 						<div class="widget-body">
 							<div class="beta-sales beta-lists">
 
-								<@foreach($products['new'] as $product)
+								@foreach($products['new'] as $product)
 								<?php
 									$pictures = json_decode($product->detail->picture,true);
 									$picture_main = $pictures[1];
@@ -250,14 +250,14 @@
 									} else {
 										$price = $product->price;
 										}
-									$name = substr($product->name, 0,50) .'...'	;
+									$name = substr($product->name, 0,37) .'...'	;
 
 								 ?>
 								<div class="media beta-sales-item">
 									<a class="pull-left" href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
 									<div class="media-body">
 										{{$name}}
-										<span class="beta-sales-price">{{number_format($price)}} VNĐ </span>
+										<span class="beta-sales-price">{{number_format($price)}}VNĐ </span>
 									</div>
 								</div>
 								@endforeach
@@ -268,5 +268,73 @@
 				</div>
 			</div>
 		</div> <!-- #content -->
+		<div><hr></div>
+		<div>
+			<form method="post" action="{{url('comment')}}">
+				<input type="hidden" name="_token" value="{{csrf_token()}}">
+				<div class="form-group">
+					<input type="hidden" name="slug" value="{{$product_main->slug}}">
+					<label for="email">Email:</label>
+					<input required type="email" name="email" class="form-control" id="email">
+				</div>
+				<div class="form-group">
+					<label for="name">Tên:</label>
+					<input required="" type="text" name="name" id="name" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="cm">Bình luận:</label>
+					<textarea required rows="10" id="cm" class="form-control" name="content"></textarea>
+				</div>
+				<div class="form-group text-right">
+					<button type="submit" class="btn btn-default">Gửi</button>
+				</div>
+
+			</form>
+		</div>
+		<div class="container" style="padding-bottom: 60px;">
+			<div class="row list-product">
+				<a class="btn btn-primary">Ý kiến phản hồi ({{count($product_main->comments)}})</a>
+				@foreach($product_main->comments as $comment)
+						<div style="margin-top: 10px;">
+							<div class="top">
+								<h5>{{$comment->name}}</h5>
+								<p>{{date('d/m/Y H:i:s', strtotime($comment->created_at))}}</p>
+							</div>
+							<div class="bot">
+								<p>{{$comment->content}}</p>
+							</div>
+						</div>
+						@endforeach
+			</div>
+		</div>
+<!-- 		<div style="width: 501px;">
+			<h3>Bình luận</h3>
+			<form>
+				<input type="hidden" name="">
+				<div>
+					<label>Email</label><br>
+					<input type="email" name="email" placeholder="Email" style="width: 500px;">
+				</div>
+				<div>
+					<label>Tên</label> <br>
+					<input type="text" name="name" style="width: 500px;">
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlTextarea1">Bình luận</label>
+    				<textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="10" style="width: 500px;"></textarea>
+				</div>
+				<div style="float: right;">
+					<button type="submit" style="background: #ff6100;font-size: 15px;color: #e7e7e7" class="btn" >Gửi</button>
+				</div>
+			</form>
+		</div> -->
+		<!-- <div style="padding-top: 100px; padding-bottom: 30px;">
+			<p style="font-weight: bold; line-height: 30px;">Project-team1:</p>
+			<p>2018-05-02 00:00:00</p>
+			<p style="font-weight: bold;line-height: 30px;">Tên:</p>
+			<p>Dũng</p>
+			<p style="font-weight: bold;">Nội dung:</p>
+			<p>ai mà biết</p>
+		</div> -->
 	</div> <!-- .container -->
 @endsection

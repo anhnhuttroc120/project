@@ -1,6 +1,12 @@
 @extends('default.master')
 @section('css')
 <link rel="stylesheet" href="css/pagination.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<style>
+	select{
+		font-family: fontAwesome;
+	}
+</style>
 @endsection
 @section('content')
 <div class="container">
@@ -31,9 +37,9 @@
 								<select style="width: 300px;" class="form-control" name="order" id="">		
 								@foreach($sorts as $key =>$value)
 								@if(isset($sort) && $sort == $key)	
-								<option style="font-weight: bold;" selected value="{{$key}}"> {{$value}}</option>
+								<option style="font-weight: bold;" selected value="{{$key}}"> &#xf00c;{{$value}}</option>
 								@else
-								<option  value="{{$key}}">{{$value}}</option>
+								<option  value="{{$key}}">&emsp;&nbsp;{{$value}}</option>
 								@endif
 								@endforeach
 							
@@ -46,10 +52,10 @@
 							<div class="row">
 						@foreach($products as $product)
 								<?php 
-									$pictures = json_decode($product->picture,true);
+									$pictures = json_decode($product->detail->picture,true);
 									$picture_main = $pictures[1];
-									if($product->sale_off > 0){
-										$price_sale = ((100 - $product->sale_off)*$product->price)/100;
+									if($product->detail->sale_off > 0){
+										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
 									}
 
 								
@@ -111,7 +117,7 @@
 		
 			var order = $(this).val();
 			var keyword = $('h2.product-new').attr('data');
-			var url =  '{{url('search/')}}' + '/'  + keyword + '/' + order; 
+			var url =  '{{url('search/')}}' + '/'  + order + '?keyword=' + keyword; 
 			
                $(location).attr('href', url);
 

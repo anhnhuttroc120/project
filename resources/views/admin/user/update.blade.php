@@ -18,7 +18,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li class="active">Người dùng</li>
+        <li class="active"><a href="{{url('admin/user/list')}}">Người dùng</a></li>
       </ol>
     </section>
 
