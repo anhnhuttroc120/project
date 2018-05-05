@@ -21,7 +21,7 @@ class ProductController extends Controller
    {
    		$products = Product::paginate(4);    
  
-      return view('admin.product.list', compact(['products', 'category_id']));
+      return view('admin.product.list', compact('products'));
    }
 
     public function category($category_id)
@@ -125,7 +125,7 @@ class ProductController extends Controller
                     $listImage[$key] = $picture; //gắn tên ảnh mới zô mảng
                 }
                 foreach ($arrTemp as $key => $value) {
-                    if(!array_key_exists($key, $listImage)){
+                    if (!array_key_exists($key, $listImage)) {
                         if(array_key_exists($key, $oldImage)){
                        $listImage[$key] = $oldImage[$key]; // tên hình cũ không  sửa, gắn lại vô mảng
                         }     

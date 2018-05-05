@@ -298,7 +298,7 @@
 						<div style="margin-top: 10px;">
 							<div class="top">
 								<h5>{{$comment->name}}</h5>
-								<p>{{date('d/m/Y H:i', strtotime($comment->created_at))}}</p>
+								<p>{{date('d/m/Y H:i:s', strtotime($comment->created_at))}}</p>
 							</div>
 							<div class="bot">
 								<p>{{$comment->content}}</p>

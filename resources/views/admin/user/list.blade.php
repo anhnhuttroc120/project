@@ -32,6 +32,11 @@
   </div>  
       <div class="row">
         <div class="col-xs-12">
+          <form action="{{url('admin/user/search')}}" method="get" id="form-search">
+            <div class="form-group">
+              <input  style="padding: 5px;" type="text" name="keyword" placeholder="Tìm kiếm theo tên" id="search" value="@if(!empty($keyword)){{$keyword}}@endif" >
+            </div>
+          </form>
        
 
           <div class="box">
@@ -42,39 +47,14 @@
 
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead  >
-                <tr>
-                  <th style="width: 13%;">STT</th>
-                  <th style="width: 13%;" >Picture</th>
-                  <th style="width: 13%;">FullName</th>
-                  <th style="width: 13%;">UserName</th>
-                  <th style="width: 13%;">Email</th>
-                  <th style="width: 13%;">Is_admin</th>
-                  <th style="width: 10%;">Hành động</th>
-                  
-                </tr>
-                </thead>
-                <tbody>
-              @foreach($Users as $key => $user)
-                <tr id="item-{{$user->id}}">
-                  <td>{{$user->id}}</td>
-                  <td><img src="images/user/{{$user->picture}}"></td>
-                  <td>{{$user->fullname}}</td>
-                  <td>{{$user->username}} </td>
-                  <td>{{$user->email}}</td>
-                  <td>@if($user->is_admin==1)admin
-                  @else thuong
-                  @endif</td>
-                  <td style="width: 50px;" ><a  style="color: red";  href="javascript:deleteItem({{$user->id}})"><i class="fa fa-trash"></i></a>
-                  <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href="admin/user/edit/{{$user->id}}"><i class="fa fa-edit"></i></a>  </td>
-          
-                </tr>
-          @endforeach
-                
-                </tbody>
-                
-              </table>
+
+             <div id="result">
+            @if($users)
+                {!! view('ajax.user',compact(['users']))->render()  !!}
+            @endif
+
+
+              </div> {{-- ket thuc result --}}
             </div>
             <!-- /.box-body -->
           </div>
@@ -120,6 +100,25 @@
 <script src="js/jquery.js"></script>
 <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="js/userdelete.js"></script>
+<script>
+  $(document).ready(function(){
+   
+    $('#search').on('keyup', function(){
+      var value = $(this).val();
+      var url = "{{route('index')}}";
+      $.ajax({
+        type :'get',
+        url :url ,
+        data:{keyword:value},
+        success: function (data) { 
+            $('#result').empty();
+            $('#result').html(data.view).slideDown(300,'linear');
+        }
+      })
+    });
+   
+   });
+</script>
 @endsection
 
 

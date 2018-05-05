@@ -43,7 +43,7 @@
 
               {!!Form::open(['url' => 'admin/product/category', 'method' => 'post','files'=>true,'id'=>'admin-form'])!!}
                 
-              <select name="category_id" id="">
+              <select name="category" id="category">
               
                 @foreach($categories as $key => $category)
                 @if(!empty($category_id) && $category_id== $key)
@@ -53,60 +53,19 @@
                 @endif
                 @endforeach
               </select>
-              <table id="example1" class="table table-bordered table-striped">
-                <thead  >
-                <tr >
-                  <th style="width: 13%;">Mã sản phẩm </th>
-                  <th style="width: 13%;">Tên sản phẩm</th>
-                  <th style="width: 13%;">Hình ảnh</th>
-                  <th style="width: 13%;">Loại sản phẩm</th>
-                  <th style="width: 5%;" >Giá</th>
-                  <th style="width: 10%;">Hành động</th>
-                  
-                </tr>
-                </thead>
-                <tbody>
-                 
-               @foreach($products as $product)
-                  <?php
-                  $price=explode('.', $product->price);
-                        if(!empty($product->detail->picture)){
-
-                             $pictures=json_decode($product->detail->picture,true); //CHUYEN VE 1  mảng
-                             $randomKey=array_rand($pictures,1); // lay ngẫynhieen key trong mảng pictures
-
-                        }
-            
-                       
-                       ?> 
-                   
-                <tr id="item-{{$product->id}}">
-                  <td>{{$product->id}}</td>
-                  <td>{{$product['name']}}</td>
-                  <td> @if(!empty($pictures)) <img src="images/product/{{$pictures[$randomKey]}}" style="width: 50px;height: 50px;" alt="23">@else{!! '<span class="btn btn-warning">Chưa có ảnh</span>'!!} @endif</td>
-                  <td>{{$product->category->name}} </td>
-                  <td style="float: right;">{{number_format($price[0])}}đ</td>
-                  <td style="width: 50px;" ><a  style="color: red";  href="javascript:deleteItem({{$product->id}})"><i class="fa fa-trash"></i></a>
-                  <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href="{{url('admin/product/updated/'.$product->id)}}"><i class="fa fa-edit"></i></a>  </td>
-          
-                </tr>
-                  
-                @endforeach  
-         
-  
-                </tbody>
-                <tfoot>
-               
-               </tfoot> 
-
-
-               
-              </table>
-              {!!Form::close() !!}
-               <div style="float:right" >
-                    {!! $products->appends(request()->query()) !!}
-                    {{--  --}}
-
+              <select name="sort" id="sort">
+              
+                @foreach($sorts as $key => $sort)
+                @if(!empty($sort) && $sort== $key)
+                <option selected value="{{$key}}">{{$sort}}</option>
+                @else
+                <option  value="{{$key}}">{{$sort}}</option>
+                @endif
+                @endforeach
+              </select>
+              <input  style="width: 200px;"  type="text"  name="keyword" id="search" placeholder="Tìm kiếm theo tên sản phẩm">
+                <div id="result">
+                    {!! view('ajax.product',compact(['products']))->render() !!}
                 </div>
             </div>
             <!-- /.box-body -->
@@ -151,15 +110,27 @@
 </script>
 <script>
     $(document).ready(function(){
-        $('select[name=category_id]').change(function(){
-              var category_id = $(this).val();
-              
-              var url =  '{{url('admin/product/category/')}}' + '/' + category_id;
-             
-              $(location).attr('href', url);
 
-        });
+        
     });
+</script>
+<script>
+    function callAjax(){
+      var category = $('#category').val();
+      var sort = $('#sort').val();
+      var keyword = $('#search').val();
+      var url = "{{route('product')}}";
+      $.ajax({
+        type :'get',
+        url :url ,
+        data:{keyword:keyword,sort:sort,category:category},
+        success: function (data) { 
+    
+            
+        }
+      });
+
+    }
 </script>
 <script src="js/jquery.js"></script>
 <script src="js/jquery-ui-1.10.3.custom.min.js"></script>

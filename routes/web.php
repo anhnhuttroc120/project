@@ -63,14 +63,14 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::group(['prefix'=>'product'], function(){
 		Route::get('add','ProductController@getAdd');
 		Route::post('add','ProductController@Add')->name('add');
-		Route::get('list','ProductController@index');
+		Route::get('list','ProductController@index')->name('product');
 		Route::get('updated/{slug}','ProductController@getUpdate');
 		Route::get('category/{id}','ProductController@category');
 		Route::patch('updated/{id}','ProductController@Update');
 		Route::get('delete/{id}','ProductController@delete');
 	});
 	Route::group(['prefix'=>'user'],function(){
-		Route::get('list','UserController@listUser');
+		Route::get('list','UserController@listUser')->name('index');
 		Route::get('add','UserController@getAdd');
 		Route::post('add','UserController@Add');
 		Route::get('delete/{id}','UserController@Delete');
@@ -78,7 +78,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::put('edit/{id}','UserController@Edit');
 	});
 	Route::group(['prefix'=>'order'],function(){
-		Route::get('list','OrderController@list');
+		Route::get('list','OrderController@list')->name('order');
 		Route::get('detail/{id}','OrderController@detail');
 		Route::post('change-status/{id}','OrderController@changeStatus');
 		Route::get('search','OrderController@Search');

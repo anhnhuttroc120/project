@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
         \Schema::defaultStringLength(191);
         if(\Schema::hasTable('category')){
             $categories = Categories::pluck('name','id')->all();
-            $categories['default']= '--Chọn lọai sản phẩm--'  ;
+            $categories['default']= '--Tất cả sản phẩm --'  ;
             $categories_main = Categories::all();
             ksort($categories);
             View::share('categories', $categories);
