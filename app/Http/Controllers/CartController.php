@@ -23,22 +23,23 @@ class CartController extends Controller
         $provinces = DB::table('province')->pluck('name','provinceid')->all();
         $provinces['0'] ='-- Chọn tỉnh --';
         ksort($provinces);
-        return view('default.pages.giohang', compact('provinces'));
+        $user = Auth::user();
+        return view('default.pages.giohang', compact('provinces', 'user'));
     }
 
     public function add(Request $request)
     {   
-        try{
-            DB::beginTransaction();
-            if($request->has('id')){
+          
+            if ($request->ajax()) {
             $product = Product::find($request->id);
             $images = isset($product->detail->picture) ? json_decode($product->detail->picture,true) : '' ;
             $image = $images[1];
             if ($product->detail->sale_off > 0 ) {
             $price = ((100 - $product->detail->sale_off)*$product->price)/100;
             } else {
-            $price =$product->price;
+            $price = $product->price;
             }
+            
             $infoProduct = [
                 'id' =>$product->id,
                 'name'=>$product->name,
@@ -46,36 +47,36 @@ class CartController extends Controller
                 'qty' =>$request->quantity,
                 'options'=>['size'=>$request->size, 'color'=> $request->color, 'img'=>$image]
             ];
-
             Cart::add($infoProduct);
-            DB::commit();
-            return redirect()->route('gio-hang');
-        }
-
-        } catch (\Exception $e ) {
-            DB::rollBack();
-            Toastr::warning('Đã xảy ra lỗi '. $e->getMessage(), 'Thông báo: ', ["positionClass" => "toast-top-right"]);
-            return back();
-        }
-    	
-    	
+            $cartCount = Cart::count();
+            $header = view('ajax.header')->render();
+            return response()->json(['header'=>$header,'count'=>$cartCount], 200);
+            }
     }
 
     public function update(Request $request)
     {
-    	if(!empty($request->rowId)){
-    		$cart_update = Cart::update($request->rowId, $request->qty);
-    		return response(['cart_one'=>$cart_update,'total'=>Cart::subtotal(),'count'=>Cart::count()], 200);
+    	if($request->ajax()){
+    		$cartUpdate = Cart::update($request->rowId, $request->qty);
+            $header = view('ajax.header')->render();
+            $view = view('ajax.giohang')->render();
+            $cartCount = Cart::count();
+    		return response()->json(['view'=>$view, 'header'=>$header,'count'=>$cartCount], 200);
     	}
 
     }
 
-    public function delete($rowId)
+    public function delete(Request $request)
     {
-    	if(!empty($rowId)){
-    		Cart::remove($rowId);
-    		return back();
-    	}
+    	
+        if ($request->ajax()){
+             Cart::remove($request->rowId);
+            $header = view('ajax.header')->render();
+            $view = view('ajax.giohang')->render();
+            $cartCount = Cart::count();
+          return response()->json(['view'=>$view, 'header'=>$header,'count'=>$cartCount], 200);
+        }
+
     }
 
     public function checkout(Request $request)
@@ -121,6 +122,6 @@ class CartController extends Controller
        
               
     }
-
+    
    
 }

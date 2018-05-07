@@ -26,7 +26,7 @@ Route::get('mail',function(){
 
 
    //customer side
-Route::get('giohang','CartController@cart')->name('gio-hang');
+Route::get('giohang','CartController@cart')->name('gio-hang')->middleware('checkLogin');
 Route::get('district','PagesController@district');
 Route::get('dang-ki','PagesConTroller@getRegister');
 Route::post('dang-ki','PagesConTroller@postRegister');
@@ -40,9 +40,10 @@ Route::get('search/{sort}','PagesController@search');
 // Route::get('search/{keyword}/{order}','PagesController@search');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('chi-tiet/{slug}','PagesController@detail');
-Route::post('add-cart/','CartController@add');
-Route::post('update-cart','CartController@update');
-Route::get('delete-cart/{rowId}','CartController@delete');
+Route::post('add-cart/','CartController@add')->name('add-cart');
+
+Route::post('update-cart','CartController@update')->name('update-cart');
+Route::get('delete-cart/','CartController@delete')->name('delete-cart');
 
 Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 

@@ -40,7 +40,7 @@
 					<div class="row">
 						<div class="col-sm-4">
 							<input type="hidden" name="id" value="{{$product_main->id}}">
-							<img src="images/product/{{$picture_main}}" alt="123">
+							<img class="imgtofly" src="images/product/{{$picture_main}}" alt="123">
 						</div>
 						<div class="col-sm-8">
 							<div class="single-item-body">
@@ -103,7 +103,10 @@
 									@endforeach 
 								</p>
 								<div style="margin-top:10px;">
-								<button type="submit" style="background: #ff6100;font-size: 25px;color: #e7e7e7" class="btn" >Mua ngay</button>
+								
+								<a  style="background: #ff6100;font-size: 25px;color: #e7e7e7" class="btn add-cart" >Thêm vào giỏ hàng</a>
+								
+				
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -123,17 +126,6 @@
 							{!! $product_main->detail->description !!}
 
 
-							{{-- <p><i class="fa fa-check" aria-hidden="true"></i>Tên sản phẩm:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>Chất liệu:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>Màu sắc:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>Thiết kế:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>Thiết kế:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>size S:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>size M:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>size L:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>size XL:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>size XXL:</p>
-							<p><i class="fa fa-check" aria-hidden="true"></i>Màu sắc:</p> --}}
 							<div class="img-detail">
 								<div class="img-portrait" >
 									<?php
@@ -337,4 +329,39 @@
 			<p>ai mà biết</p>
 		</div> -->
 	</div> <!-- .container -->
+@endsection
+@section('script')
+<script>
+	$(document).ready(function(){
+		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+		$('.add-cart').click(function(){
+			var quantity = $('select[name=quantity]').val();
+			var size = $('select[name=size]').val();
+			var color = $('select[name=color]').val();
+			var id = $('input[name=id]').val();
+			var url = "{{route('add-cart')}}";
+			
+			$.ajax({
+
+                    /* the route pointing to the post function */
+                    url: url,
+                    type: 'post',
+                     /* send the csrf-token and the input to the controller */
+                   	data: {_token: CSRF_TOKEN, quantity:quantity,size:size,color:color,id:id},
+                     /* remind that 'data' is the response of the AjaxController */
+                     success: function (data) { 
+                     	$('.count').html(data.count);
+                     	$('#list-header').html(data.header);
+                       
+                     }
+           }); 
+
+			
+		});
+	});	
+		
+</script>
+
+
+
 @endsection
