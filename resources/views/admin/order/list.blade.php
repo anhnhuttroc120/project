@@ -43,12 +43,8 @@
                         <div id="imaginary_container"> 
                             <div class="input-group stylish-input-group">
                             
-                                <input name="search" type="text" class="form-control"  placeholder="Tìm kiếm" >
-                                <span style="border: 0" class="input-group-addon">
-                                    <button type="submit">
-                                       <i class="fa fa-search fa-1x"></i>
-                                    </button>  
-                                </span>
+                                <input name="keyword" type="text" class="form-control" id="search" placeholder="Tìm kiếm theo tên" value="@if(!empty($keyword)){{$keyword}}@endif" >
+                      
                             </div>
                         </div>
                     </div>
@@ -62,13 +58,14 @@
               <div class="col-sm-3 wrapper-date">
             <div style="float:right" >
               <label>Từ:</label>
-              <input  class="date rounded"  id="date" name="startdate" placeholder="1970-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/></div>
+              <input  class="date rounded"  id="startdate" name="startdate" placeholder="1970-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/></div>
            </div>
             <!--end-date-->
             <div class="col-sm-3 ">
             <div >
               <label>Đến:</label>
-              <input class="date" id="date" name="enddate" placeholder="{{date('Y-m-d',time())}}" type="text" value="@if(!empty($enddate)){{$enddate}}@endif" /> <button type="submit"><i class="fa fa-search"></i></button></div>
+              <input class="date" id="enddate" name="enddate" placeholder="{{date('Y-m-d',time())}}" type="text" value="@if(!empty($enddate)){{$enddate}}@endif" /> 
+              </div>
            </div>
         </form>
             <!-- /.box-header -->
@@ -76,47 +73,14 @@
                 <div id="dialog-confirm" title="Thông báo!" style="display: none;">
       		<p>Bạn có chắc muốn xóa phần tử này hay không?</p>
  		 </div>  
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr >
-                  <th style="width: 13%;">Mã số đơn hàng</th>
-                  <th style="width: 13%;">Tên người order</th>
-                  <th style="width: 13%;">Địa chỉ</th>
-                  <th style="width: 13%;">Ngày Giao hàng</th>
-                  <th style="width: 5%;" >Tổng tiền</th>
-                  <th style="width: 10%;">Trạng thái</th>
-                  <th style="width: 10%;">Hành động</th>
-                </tr>
-                </thead>
-                <tbody>
-               	 @foreach($orders as $order) 
-               	 <?php 
-               	 	$result = '';
-               	 	if($order->status == 3){
-               	 		$result = '<small style="width:200px;" class="label label-danger">Hủy</small>';
-               	 	} elseif ($order->status == 1){
-               	 		   $result = '<small class="label label-success">Đã xử lý</small>';
-               	 	} elseif($order->status== 2) {
-               	 			$result = '<small style=" width:150px !important;" class="label label-default">  Đang xử lý</small>';
-               	 	  }
-               	 ?>    
-                <tr>
-                  <td>{{$order->id}}</td>
-                  <td> @if(!empty($order->user->fullname)){{$order->user->fullname}}@else {{$order->fullname}} @endif</td>
-                  <td>{{$order->address}}</td>
-                  <td>{{$order->date_shipper}}</td>
-                  <td>{{$order->total}}</td>
-                  <td>{!! $result !!}</td>
-                  <td > <a href="{{url('admin/order/detail/'.$order->id)}}">Chi tiết</a> </td>
-                </tr>
-                @endforeach
-                </tbody>
-                <tfoot>
-               </tfoot>  
-              </table>
-              <div style="float:right" class="pagination">
-                {!! $orders->links() !!}
-              </div>
+            <div id="result">
+              @if($orders)
+              
+                {!! view('ajax.order',compact(['orders']))->render()  !!}
+            @endif
+
+            </div>
+             
               <hr>
               <div>
               	<table id="example1" class="table table-bordered table-striped">            		
@@ -178,6 +142,7 @@
 </script>
 <script>
     $(document).ready(function(){
+
         $('select[name=category_id]').change(function(){
               var category_id = $(this).val();
               
@@ -220,6 +185,41 @@
       autoclose: true,
     })
   })
+</script>
+<script>
+  $(document).ready(function(){
+  
+    $('#search').on('keyup', function(){
+        callAjax();
+      
+    });
+    $('#enddate').change(function(){
+      callAjax();
+    });
+      $('#startdate').change(function(){
+      callAjax();
+    });
+   
+   });
+</script>
+<script>
+      function callAjax(){
+        var value = $('#search').val();
+        var startdate = $('#startdate').val();
+        var enddate = $('#enddate').val();
+        var url = "{{route('order')}}";
+        $.ajax({
+        type :'get',
+        url :url ,
+        data:{keyword:value,startdate:startdate,enddate:enddate},
+        success: function (data) { 
+            console.log(data);
+            $('#result').empty();
+            $('#result').html(data.view).slideDown(300,'linear');
+        }
+      });
+
+      }
 </script>
 @endsection
 

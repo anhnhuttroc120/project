@@ -17,25 +17,43 @@ use Illuminate\Support\Facades\DB;
 use Brian2694\Toastr\Facades\Toastr;
 class ProductController extends Controller
 {
-    public function index()
-   {
-   		$products = Product::paginate(4);    
- 
-      return view('admin.product.list', compact(['products', 'category_id']));
-   }
-
-    public function category($category_id)
-   {
-        if (isset($category_id)) {
-            if ($category_id == 'default') {      
-                $products = Product::paginate(4)->appends(request()->query());
-                 return view('admin.product.list',compact(['products',   'category_id']));
-            } else {
-                $products = Product::where('category_id', $category_id)->paginate(4)->appends(request()->query());// apppend dùng để giữ tham số trên thanh URL khi kick zô nút phân trang ko bị mất 
-                return view('admin.product.list', compact(['products' , 'category_id']));
+    public function index(Request $request)
+    {    
+   		$query = Product::query();
+        if ($request->has('category')) {
+            $category = $request->category;
+            if ($category != 'default') {
+                $query->whereHas('category', function($query) use($category){
+                $query->where('category_id', 'like', $category);
+                });
+            }             
+        }
+        if ($request->has('sort')) {
+            $sort = $request->sort;
+            switch ($request->sort) {
+                case 'asc':
+                   $query->orderBy('price', 'asc');
+                    break;
+                
+                case'desc':
+                    $query->orderBy('price', 'desc');
+                    # code...
+                case 'bestseller':
+                    $query->orderBy('bestseller', 'desc');  
+                    break;
             }
         }
-     
+        if ($request->has('keyword')) {
+            $keyword = $request->keyword;
+            $query->where('name','like',"%".$keyword."%");
+        } 
+        if ($request->ajax()) {
+            $products = $query->paginate(8)->appends(['category'=>$request->category, 'sort'=>$request->sort, 'keyword'=>$request->keyword]);
+            $view = view('ajax.product',compact('products'))->render();
+            return response()->json(['view'=>$view], 200);
+        } 
+        $products = $query->paginate(8)->appends(request()->query());  
+        return view('admin.product.list', compact(['products', 'sort', 'keyword', 'category']));
     }
 
     public function getAdd()
@@ -57,7 +75,6 @@ class ProductController extends Controller
                 $files=$request->file('picture');
                 foreach ($files as $key => $file) {
                    $name        = $file->getClientOriginalName(); //lay tên ảnh gốc
-                   $extension   = $file->getClientOriginalExtension(); // lấy extion ảnh
                     $picture = str_random(6).'_'.$name;             
                     $file->move('images/product',$picture);
                     $img     = Image::make('images/product/'.$picture)->resize('286', '381');
@@ -69,7 +86,7 @@ class ProductController extends Controller
             } else {
                 $data['picture'] = '';
                 }
-            $colors               = isset($request->color) ? json_encode($request->color) :'';
+            $colors               = isset($request->color) ? json_encode($request->color) :''; // lap. mảng thành chuổi j son
             $sizes                = isset($request->size) ? json_encode($request->size) :'';   
             $data['color']        = $colors;
             $data['size']         = $sizes;
@@ -125,8 +142,8 @@ class ProductController extends Controller
                     $listImage[$key] = $picture; //gắn tên ảnh mới zô mảng
                 }
                 foreach ($arrTemp as $key => $value) {
-                    if(!array_key_exists($key, $listImage)){
-                        if(array_key_exists($key, $oldImage)){
+                    if (!array_key_exists($key, $listImage)) {
+                        if (array_key_exists($key, $oldImage)) {
                        $listImage[$key] = $oldImage[$key]; // tên hình cũ không  sửa, gắn lại vô mảng
                         }     
                     }

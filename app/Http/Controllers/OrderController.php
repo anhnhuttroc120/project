@@ -8,12 +8,35 @@ use DB;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
-{
-    public function list()
+
+{	
+    public function list(Request $request)
+
     {
-    	$orders = Order::paginate(4);
-    	return view('admin.order.list', compact('orders', 'data'));
+	 	$query = Order::query();
+	 	if ($request->has('keyword')) {
+	 		$keyword = $request->keyword;
+	 		$query->whereHas('user',function($query) use($keyword){
+	 		$query->where('fullname','like',"%".$keyword . "%");
+			})->orwhere('id','like',"%".$keyword."%");
+	 		
+	 	}
+	 	if ($request->has('enddate')) {
+	 		$startdate = ($request->startdate == '') ? '1970-01-01'  : $request->startdate;
+	 		$enddate = ($request->enddate == '') ?  date('Y-m-d',time()) : $request->enddate;;
+	 		$query->whereBetween('created_at',[$startdate, $enddate]);
+	 	}
+		if ($request->ajax()) {
+			$orders = $query->paginate(4)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);	
+		 	$view = view('ajax.order', compact('orders'))->render();
+			return response()->json(['view'=>$view], 200);
+		}
+		
+		$orders = $query->paginate(4)->appends(request()->query());
+		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));			
+		
     }
+
     public function detail($id)
     {	
     	$order = Order::findOrFail($id);
@@ -34,32 +57,6 @@ class OrderController extends Controller
 	    return back()->with('success','Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );
 	    }		
     }
-
-    public function Search(Request $request)
-    {	
-
-    	if( !empty($request->search)) {
-    		$keyword = $request->search;
-    		$orders = DB::table('order')
-    		->join('users','order.users_id','=','users.id')
-    		->where('order.id','like', $keyword)
-    		->orWhere('users.fullname','like',"%".$keyword."%")
-    		->orWhere('date_shipper','like',$keyword)
-    		->select('order.id','order.users_id','users.fullname','order.address','order.date_shipper','order.total','order.status')
-    		->paginate(4)->appends(request()->query());    			
-    		return view('admin.order.list',compact('orders'));
-    	}
-	}
-
-	public function Date(Request $request)
-
-	{
-		$startdate = isset($request->startdate) ? $request->startdate : '1970-01-01';
-		$enddate = 	isset($request->enddate) ? $request->enddate : date("Y-m-d", time());
-		$orders = Order::whereBetween('created_at',[$startdate, $enddate])->paginate(4)->appends(request()->query());
-		return view('admin.order.list',compact('startdate','enddate','orders'));	
-		
-	}
 
 	public function Status($id)
 	{

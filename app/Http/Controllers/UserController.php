@@ -43,16 +43,11 @@ class UserController extends Controller
 	 	}
 
 	}	
-	 	
+
 	public function logOut()
 	{
 		Auth::logout();
 		return redirect()->route('login');
-	}
-	public function listUser(){
-		$Users = User::all();
-		
-		return view('admin.user.list',compact('Users'));
 	}
 
 	public function getAdd()
@@ -159,6 +154,7 @@ class UserController extends Controller
 	{
 		return view('admin.user.profile');
 	}
+
 	public function changepass(ChangePassRequest $request)
 	{
 		 $user = User::where('username', $request->username)->first();
@@ -167,5 +163,37 @@ class UserController extends Controller
 		 return back()->with('success', 'Bạn đã thay đổi mật khẩu thành công');
 
 	}
+	public function data($keyword)
+	{
+		$user = User::where('username','like','%'.$keyword.'%')->paginate(4)->appends(request()->query());
+	}
+	// public function search(Request $request)
+
+	// {
+	
+	// 	 $users = User::paginate(4);
+	// 	   $view = view('ajax.user', compact('users'))->render();
+	// 	return response()->json(['view'=>$view],200);
+		
+	// }
+	public function listUser(Request $request)
+	{
+		$query = User::query();
+		if ($request->has('keyword') && !empty($request->keyword)) {
+			$keyword = $request->keyword;
+			$query->where('username','like',"%".$keyword."%")->orWhere('email','like',"%".$keyword."%");
+		}
+		if ($request->ajax()) {
+			$users = $query->paginate(4)->appends(['keyword'=>$request->keyword]);	
+		 	$view = view('ajax.user', compact('users'))->render();
+			return response()->json(['view'=>$view], 200);
+		}
+		
+		$users = $query->paginate(4)->appends(request()->query());
+		return view('admin.user.list', compact('users', 'keyword'));
+	}			
+		
+	
+
  
 }
