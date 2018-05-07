@@ -133,8 +133,34 @@ class PagesController extends Controller
     }
     public function order()
     {
-       return view('default.pages.order.list'); 
+        //$user = User::find(Auth::user()->id);
+        //dd($users);
+        $user = Order::where('users_id','=',Auth::user()->id)->get();
+        //dd($user);
+         return view('default.pages.order.list',compact('user')); 
     }
+
+    public function status($status,$id) 
+    {
+        $order = Order::findOrFail($id);
+        if ($status == 3) {
+             $data['status'] = 2;
+        } else {
+            $data['status'] = 3;
+        }
+       
+        $order->update($data);
+       return back();
+    
+    }
+
+    public function infoOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        //dd($order);
+       return view('default.pages.order.detail',compact('order'));
+    }
+
     public function changePass()
     {
         return view('default.pages.order.pass'); 
