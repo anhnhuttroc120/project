@@ -30,7 +30,7 @@
 					
 						<div class="form-block">
 							<label for="email">Họ tên <span style="color:red">*</span></label>
-							<input type="text"  name="username" value="{{$user->fullname}}">
+							<input type="text"  name="username" disabled="" value="{{$user->fullname}}">
 						</div>
 						<div class="form-block">
 							<label for="email">Điện thoại <span style="color:red">*</span></label>

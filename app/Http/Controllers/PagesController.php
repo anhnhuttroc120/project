@@ -8,12 +8,10 @@ use Session;
 use Mail;
 use App\Product;
 use App\Comment;
-
 use DB;
 use App\Categories;
 use App\province;
 use App\Order;
-
 use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
@@ -135,7 +133,7 @@ class PagesController extends Controller
     {
         //$user = User::find(Auth::user()->id);
         //dd($users);
-        $user = Order::where('users_id','=',Auth::user()->id)->get();
+        $user = Order::where('users_id','=',Auth::user()->id)->paginate(7);
         //dd($user);
          return view('default.pages.order.list',compact('user')); 
     }
@@ -148,7 +146,6 @@ class PagesController extends Controller
         } else {
             $data['status'] = 3;
         }
-       
         $order->update($data);
        return back();
     

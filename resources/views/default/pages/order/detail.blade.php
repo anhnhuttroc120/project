@@ -31,21 +31,25 @@
 								<th class="text-center">Size-Color</th>
 								<th class="text-center">Số lượng</th>
 								<th class="text-center">Giá tiền</th>					
+													
 							</tr>
 							</thead>
 							<tbody>
 							@foreach($order->orders_detail as $order_detail)
 							<?php 
-							$order_detail->product;
+							$pictures =  json_decode($order_detail->product->detail->picture,true);
+							$picture = $pictures[1];
+								
 							?>
 
 							<tr class="">
-								<input type="hidden" id="">
-								<td class="center">{{$order_detail->product->name}}</td>
-								<td class="center" ><img src="" alt="" ></td>
+								
+								<td style="line-height: 50px;" class="center">{{$order_detail->product->name}}</td>
+								<td class="center" ><img  style="width: 50px;height: 50px;" src="images/product/{{$picture}}" alt="" ></td>
 								<td class="center">{{$order_detail->config}}</td>
 								<td class="center">{{$order_detail->quantity}}</td>
 								<td class="center">{{number_format($order_detail->total)}} VND</td>
+							
 							</tr>
 							@endforeach
 							</tbody>

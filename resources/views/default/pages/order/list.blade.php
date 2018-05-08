@@ -30,6 +30,7 @@
 								<th class="text-center">Số lượng</th>
 								<th class="text-center">Thành tiền</th>
 								<th class="text-center">Trạng thái</th>
+								<th class="text-center">Ngày đặt hàng</th>
 								<th class="text-center">Chi tiết</th>
 								
 							</tr>
@@ -48,6 +49,10 @@
 
 										 $result = '<small style=" width:150px !important;" class="label label-success" > Đã xử lý</small>';
 									}
+									$timestamp = strtotime($or->created_at);
+									$date = date('d-m-Y', $timestamp);
+									
+
 									
 								 ?>
 							<tr class="">
@@ -57,13 +62,18 @@
 								<td class="center">{{$or->quantity}}</td>
 								<td class="center">{{number_format($or->total)}} VND</td>
 								<td style="padding-left: 20px; width: 15%;">{!! $result !!}</td>
+								<td class="center">{{$date}}</td>
 								<td class="center"><a href="{{url('detail/'.$or->id)}}"><i style="color: red;" class=" fa fa-info-circle"></i></a></td>
 							</tr>
 							@endforeach
 							</tbody>
 						</table>
+					<div style="float:right">
+						{!! $user->render() !!}
+					</div>	
 			</div>
 		</div>
+
 	</div>
 @endsection
 @section('script')
