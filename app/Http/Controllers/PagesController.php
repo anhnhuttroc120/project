@@ -8,13 +8,13 @@ use Session;
 use Mail;
 use App\Product;
 use App\Comment;
-
 use DB;
 use App\Categories;
 use App\province;
 use App\Order;
-
+use App\Http\Requests\ChangePassRequest;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PagesController extends Controller
 {
@@ -131,6 +131,33 @@ class PagesController extends Controller
     {
         return view('default.pages.order.profile');
     }
+    public function postprofile(Request $request)
+    {
+        $user = User::where('username', $request->username)->first();
+        $data = $request->all();
+        $oldImage           = ($user->picture =='') ? ' ' : $user->picture;
+        if ($request->hasFile('picture')) { 
+                echo 'co hinh';
+           //ngươi dùng đã thay đổi file
+            $file = $request->file('picture');
+            $name = $file->getClientOriginalName();
+            $newpicture = str_random(6).$name; // hibhf moi nguoi dung sua
+            $file->move('images/user',$newpicture);
+            $img        = Image::make('images/user/'.$newpicture)->resize('50', '50');
+            $img->save('images/user/'.$newpicture);
+            if(file_exists('images/user/'.$oldImage)){
+                unlink('images/user/'.$oldImage);
+            }   
+            $data['picture'] = $newpicture;
+        } else { //  người dùng k thay đổi hình
+            $data['picture'] = $oldImage;
+        }
+   
+        $user-> update($data);
+        return back();
+
+        
+    }
     public function order()
     {
        return view('default.pages.order.list'); 
@@ -139,4 +166,12 @@ class PagesController extends Controller
     {
         return view('default.pages.order.pass'); 
     }
+    public function postchangepass(ChangePassRequest $request)
+    {
+      $use = User::where('username', $request->username)->first();
+      $data['password'] = bcrypt($request->password_new);
+      $use-> update($data);
+      return back()->with('success','Bạn đã thay đổi mật khẩu thành công');
+    }
+
 }

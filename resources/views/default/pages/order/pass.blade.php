@@ -22,8 +22,14 @@
 				<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; ">ĐỔI MẬT KHẨU</a>
 					</div>
-					<form class="account" action="{{url('profile')}}" method="post">
+					    @if (Session::has('success'))
+        <div class="alert alert-success">
+          {{ Session::get('success') }}
+        </div>
+      @endif
+					<form class="account" action="{{url('changepass')}}" method="post">
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
+						<input type="hidden" name="username" value="{{Auth::user()->username}}">
 						<div class="form-group">
 						<label  for="">TÊN TÀI KHOẢN:</label>
 						<span>{{Auth::user()->username}}</span>

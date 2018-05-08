@@ -22,8 +22,9 @@
 				<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; ">Thông tin tài khoản</a>
 					</div>
-					<form class="account" action="{{url('profile')}}" method="post">
+					<form class="account" action="{{url('profile')}}" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
+
 						<input type="hidden" name="username" value="{{Auth::user()->username}}">
 						<div class="form-group">
 						<label  for="">TÊN TÀI KHOẢN:</label>
@@ -51,7 +52,7 @@
 						</div>
 						<div class="form-group">
 						<label for="">SỐ ĐIỆN THOẠI:</label>
-						<input type="text" value="{{Auth::user()->phone}}">
+						<input type="text" value="{{Auth::user()->phone}}" name="phone">
 						</div>
 						<button style="margin-left: 150px;" type="submit" class="btn btn-primary">Cập Nhập</button>
 						

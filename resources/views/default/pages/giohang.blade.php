@@ -5,7 +5,7 @@
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 @endsection
 @section('content')
-<?php ?>
+
 
 
 
@@ -116,6 +116,7 @@ function formatNumber (num) {
 
 	});
 </script>
+
 <script>
 	$(document).ready(function(){
 
@@ -132,7 +133,6 @@ function formatNumber (num) {
                     dataType: 'text',
                      /* remind that 'data' is the response of the AjaxController */
                      success: function (data) { 
-                  
                      	$('select[name=district]').html(data);
                    
                      }

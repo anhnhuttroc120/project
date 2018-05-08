@@ -28,8 +28,7 @@ class CartController extends Controller
     }
 
     public function add(Request $request)
-    {   
-          
+    {     
             if ($request->ajax()) {
             $product = Product::find($request->id);
             $images = isset($product->detail->picture) ? json_decode($product->detail->picture,true) : '' ;
@@ -38,8 +37,7 @@ class CartController extends Controller
             $price = ((100 - $product->detail->sale_off)*$product->price)/100;
             } else {
             $price = $product->price;
-            }
-            
+            }         
             $infoProduct = [
                 'id' =>$product->id,
                 'name'=>$product->name,

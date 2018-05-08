@@ -49,8 +49,10 @@ Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
 Route::post('comment','ProductController@postComment');
 Route::get('profile','PagesController@profile');
+Route::post('profile','PagesController@postprofile');
 Route::get('order','PagesController@order');
 Route::get('changepass','PagesController@changePass');
+Route::post('changepass','PagesController@postchangepass');
 
 //admin side
 
