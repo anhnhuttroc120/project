@@ -18,13 +18,12 @@ class OrderController extends Controller
 	 	if ($request->has('keyword')) {
 	 		$keyword = $request->keyword;
 	 		$query->whereHas('user',function($query) use($keyword){
-	 		$query->where('fullname','like',"%".$keyword . "%");
-			})->orwhere('id','like',"%".$keyword."%");
-	 		
+	 			$query->where('fullname','like',"%".$keyword . "%");
+			});		
 	 	}
 	 	if ($request->has('enddate')) {
-	 		$startdate = ($request->startdate == '') ? '1970-01-01'  : $request->startdate;
-	 		$enddate = ($request->enddate == '') ?  date('Y-m-d',time()) : $request->enddate;;
+	 		$startdate =  ($request->startdate == '') ? '1970-01-01' : $request->startdate;
+	 		$enddate =  ($request->enddate == '') ? date('Y-m-d',time()) : $request->enddate;
 	 		$query->whereBetween('created_at',[$startdate, $enddate]);
 	 	}
 		if ($request->ajax()) {

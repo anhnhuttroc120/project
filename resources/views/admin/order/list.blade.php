@@ -76,7 +76,7 @@
             <div id="result">
               @if($orders)
               
-                {!! view('ajax.order',compact(['orders']))->render()  !!}
+                {!! view('ajax.order', compact(['orders']))->render()  !!}
             @endif
 
             </div>
@@ -127,7 +127,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
 <!-- page script -->
-<script>
+{{-- <script>
   $(function () {+
     $('#example1').DataTable()
     $('#example2').DataTable({
@@ -139,7 +139,7 @@
       'autoWidth'   : true
     })
   })
-</script>
+</script> --}}
 <script>
     $(document).ready(function(){
 
@@ -187,6 +187,28 @@
   })
 </script>
 <script>
+      function callAjax(){
+        var value = $('#search').val();
+        var startdate = $('#startdate').val();
+
+        var enddate = $('#enddate').val();
+
+
+        var url = "{{route('order')}}";
+        $.ajax({
+        type :'get',
+        url :url ,
+        data:{keyword:value,startdate:startdate,enddate:enddate},
+        success: function (data) { 
+          console.log(data.view);
+            $('#result').empty();
+            $('#result').html(data.view);
+        }
+      });
+
+      }
+</script>
+<script>
   $(document).ready(function(){
   
     $('#search').on('keyup', function(){
@@ -194,6 +216,7 @@
       
     });
     $('#enddate').change(function(){
+
       callAjax();
     });
       $('#startdate').change(function(){
@@ -202,25 +225,7 @@
    
    });
 </script>
-<script>
-      function callAjax(){
-        var value = $('#search').val();
-        var startdate = $('#startdate').val();
-        var enddate = $('#enddate').val();
-        var url = "{{route('order')}}";
-        $.ajax({
-        type :'get',
-        url :url ,
-        data:{keyword:value,startdate:startdate,enddate:enddate},
-        success: function (data) { 
-            console.log(data);
-            $('#result').empty();
-            $('#result').html(data.view).slideDown(300,'linear');
-        }
-      });
 
-      }
-</script>
 @endsection
 
 

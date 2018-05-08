@@ -44,7 +44,7 @@
 
 							<tr class="">
 								
-								<td style="line-height: 50px;" class="center">{{$order_detail->product->name}}</td>
+								<td style="lin" class="center">{{$order_detail->product->name}}</td>
 								<td class="center" ><img  style="width: 50px;height: 50px;" src="images/product/{{$picture}}" alt="" ></td>
 								<td class="center">{{$order_detail->config}}</td>
 								<td class="center">{{$order_detail->quantity}}</td>

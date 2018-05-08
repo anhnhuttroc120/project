@@ -336,7 +336,6 @@
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$('.add-cart').click(function(){
 			var cart = $('.cart');
-	
 			var parent = $(this).parents('.parentImage');
 			var src = parent.find('img').attr('src');
 			var parTop = parent.offset().top;
