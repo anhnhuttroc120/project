@@ -163,7 +163,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Brian2694\Toastr\ToastrServiceProvider::class,
-        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class
         
 
     ],
@@ -218,7 +219,8 @@ return [
          'Html' => Collective\Html\HtmlFacade::class,
          'Image' => Intervention\Image\Facades\Image::class,
          'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
-         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class
+         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+         'Excel' => Maatwebsite\Excel\Facades\Excel::class
 
 
     ],

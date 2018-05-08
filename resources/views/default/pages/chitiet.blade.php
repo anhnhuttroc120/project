@@ -37,7 +37,7 @@
 			<div class="row">
 				<div class="col-sm-9">
 						{!!Form::open(['url'=>'add-cart','method'=>'post','id'=>'form-cart'])!!}
-					<div class="row">
+					<div class="row parentImage" data='1'>
 						<div class="col-sm-4">
 							<input type="hidden" name="id" value="{{$product_main->id}}">
 							<img class="imgtofly" src="images/product/{{$picture_main}}" alt="123">
@@ -335,11 +335,38 @@
 	$(document).ready(function(){
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$('.add-cart').click(function(){
+			var cart = $('.cart');
+	
+			var parent = $(this).parents('.parentImage');
+			var src = parent.find('img').attr('src');
+			var parTop = parent.offset().top;
+			var parLeft = parent.offset().left;
+		
+			$('<img />',{
+				class:'img-product-fly',
+				src:src,
+
+			}).appendTo('body').css({
+				'top': parseInt(parTop),
+				'left': parseInt(parLeft) +parseInt(parent.width()) - 600
+			});
+			setTimeout(function(){
+				$(document).find('.img-product-fly').css({
+					'top':cart.offset().top,
+					'left':	cart.offset().left
+				});
+				setTimeout(function(){
+					$(document).find('.img-product-fly').remove();
+
+					
+				},1000);
+			},500);
 			var quantity = $('select[name=quantity]').val();
 			var size = $('select[name=size]').val();
 			var color = $('select[name=color]').val();
 			var id = $('input[name=id]').val();
 			var url = "{{route('add-cart')}}";
+
 			
 			$.ajax({
 

@@ -6,6 +6,7 @@ use App\Order_detail;
 use App\Product;
 use DB;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 

@@ -59,5 +59,10 @@ ul{
 	padding:5px;
 }
 
-
+/*#nut{
+	padding-left: 10px;
+}*/
+td{
+	line-height: 50px !important;
+}
 

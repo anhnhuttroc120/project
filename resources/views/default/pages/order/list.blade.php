@@ -25,29 +25,55 @@
 						<table class="table table-bordered">
 							<thead>
 							<tr >
-								<th class="text-center">Sản phẩm</th>
-								<th class="text-center">Size - Màu</th>
+								<th class="text-center">Mã đơn hàng</th>
+								<th class="text-center">Khách hàng</th>
 								<th class="text-center">Số lượng</th>
-								<th class="text-center">Giá tiền</th>
 								<th class="text-center">Thành tiền</th>
 								<th class="text-center">Trạng thái</th>
+								<th class="text-center">Ngày đặt hàng</th>
+								<th class="text-center">Chi tiết</th>
 								
 							</tr>
 							</thead>
 							<tbody>
+								@foreach($user as $or)
+								<?php 
+									$result = '';
+									if($or->status == 3) {
+										$link = url('order/'.$or->status.'/'.$or->id);
+										$result = '<a href="'.$link.'" style=""><small style=" width:150px !important;" class="label label-danger"> Hủy</small></a>';
+									}elseif($or->status == 2) {
+										$link = url('order/'.$or->status . '/'.$or->id);
+										$result = '<a href="'.$link.'" style=""><small style=" width:150px !important;" class="label label-default">  Đang xử lý</small></a>';
+									}else{
+
+										 $result = '<small style=" width:150px !important;" class="label label-success" > Đã xử lý</small>';
+									}
+									$timestamp = strtotime($or->created_at);
+									$date = date('d-m-Y', $timestamp);
+									
+
+									
+								 ?>
 							<tr class="">
 								<input type="hidden" id="">
-								<td class="center" ><img src="" alt="" >Áo</td>
-								<td class="center">S</td>
-								<td class="center">2</td>
-								<td class="center">1200000</td>
-								<td class="center">34000000</td>
-								<td><a href="" style="padding-left: 10px;line-height: 50px;"><i  style="color: red;font-size: 15px;" class="fa fa-trash-o "></i></a></td>
+								<td class="center" ><img src="" alt="" >{{$or->id}}</td>
+								<td class="center">{{$or->user->fullname}}</td>
+								<td class="center">{{$or->quantity}}</td>
+								<td class="center">{{number_format($or->total)}} VND</td>
+								<td style="padding-left: 20px; width: 15%;">{!! $result !!}</td>
+								<td class="center">{{$date}}</td>
+								<td class="center"><a href="{{url('detail/'.$or->id)}}"><i style="color: red;" class=" fa fa-info-circle"></i></a></td>
 							</tr>
+							@endforeach
 							</tbody>
 						</table>
+					<div style="float:right">
+						{!! $user->render() !!}
+					</div>	
 			</div>
 		</div>
+
 	</div>
 @endsection
 @section('script')

@@ -81,13 +81,19 @@ class CartController extends Controller
     {       
         try{
             DB::beginTransaction();
+          
             $carts = !empty(Cart::content()) ? Cart::content() : '';
             if(count($carts) <= 0){
                 Toastr::warning('Không có sản phẩm nào trong giỏ hàng !,không thể đặt hàng ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
                 return back();
             } else {
+                $address = '';
+                if ($request->has('city') && $request->city !='0') {
+                $query = DB::table('province')->join('district', 'province.provinceid', '=', 'district.provinceid')->where('province.provinceid', '=', $request->city)->where('district.districtid', $request->district)->select('province.name as city' ,'district.name as district')->first();
+                $address = $query->city .'-' . $query->district;
+                 }
                 $data['phone'] = isset($request->phone) ? $request->phone : Auth::user()->phone;
-                $data['address'] = isset($request->address) ? $request->address : Auth::user()->address;
+                $data['address'] = isset($request->address) ? $address.'-'.$request->address : $address.'-'.Auth::user()->address;
                 $data['users_id'] = Auth::user()->id;
                 $data['quantity'] = Cart::count();
                 $data['status'] = 2;

@@ -36,7 +36,7 @@
 						</form>
 					</div>
 					 <div class="beta-comp">
-						<div class="cart">
+						<div class="cart" data="1">
 							<div class="beta-select">
 						<i style="color: red" class="fa fa-shopping-cart"></i>
 						       Giỏ hàng(<span class="count"> @if(!empty(Cart::count())){{Cart::count()}}@else 0 @endif </span> )<i class="fa fa-chevron-down"></i>
