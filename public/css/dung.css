@@ -63,6 +63,22 @@ ul{
 	padding-left: 10px;
 }*/
 td{
-	line-height: 50px !important;
+	line-height: 25px !important;
+	text-align: center !important;
+}
+th{
+	text-align: center !important;
 }
 
+.print{
+	text-decoration: none;
+	color: black;
+	font-size: 15px;
+	cursor: pointer;
+}
+.print:hover{
+	text-decoration: none;
+}
+.fa-print{
+	margin-right:5px;
+}

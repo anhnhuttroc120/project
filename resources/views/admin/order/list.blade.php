@@ -1,5 +1,7 @@
 @extends('layout.admin.master')
-
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 
 @section('css')
 
@@ -13,92 +15,67 @@
 
 @endsection
 @section('content')
- <div class="content-wrapper">
-
+  <div class="content-wrapper">
+ {!! Toastr::message() !!}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Danh sách Order
+        Danh sách người dùng
     <!--     <small>advanced tables</small> -->
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li><a href="{{url('admin/product/list')}}">Order</a></li>
-        <li class="active"> Danh sách Order</li>
+        <li><a href="{{url('admin/product/list')}}">Sản phẩm</a></li>
+        <li class="active"> Danh sách sản phẩm</li>
       </ol>
     </section>
+
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-xs-12">         
+        <div class="col-xs-12">
+  
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Danh sách</h3>
+              <h3 class="box-title"></h3>
             </div>
-        <!--search-->
-        <div class="container">
-            <div class="row">
-              <form method="get" action="{{url('admin/order/search')}}">
-                    <div class="col-sm-3">
-                        <div id="imaginary_container"> 
-                            <div class="input-group stylish-input-group">
-                            
-                                <input name="keyword" type="text" class="form-control" id="search" placeholder="Tìm kiếm theo tên" value="@if(!empty($keyword)){{$keyword}}@endif" >
-                      
-                            </div>
-                        </div>
-                    </div>
-              </form>
-              </div>
-        </div>
-         <!--endsearch-->
-        <!--form-date-->
-        <div class="col-sm-6"></div>
-        <form method="get" action="{{url('admin/order/date')}}">
-              <div class="col-sm-3 wrapper-date">
-            <div style="float:right" >
-              <label>Từ:</label>
-              <input  class="date rounded"  id="startdate" name="startdate" placeholder="1970-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/></div>
-           </div>
-            <!--end-date-->
-            <div class="col-sm-3 ">
-            <div >
-              <label>Đến:</label>
-              <input class="date" id="enddate" name="enddate" placeholder="{{date('Y-m-d',time())}}" type="text" value="@if(!empty($enddate)){{$enddate}}@endif" /> 
-              </div>
-           </div>
-        </form>
+
             <!-- /.box-header -->
             <div class="box-body">
-                <div id="dialog-confirm" title="Thông báo!" style="display: none;">
-      		<p>Bạn có chắc muốn xóa phần tử này hay không?</p>
- 		 </div>  
-            <div id="result">
-              @if($orders)
+                            <div id="dialog-confirm" title="Thông báo!" style="display: none;">
+                  <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
+                </div>  
+         <div class="div-search">
+            <input style="padding:5px;" name="keyword" type="text" class="form-controls" id="search" placeholder="Tìm kiếm theo tên" value="@if(!empty($keyword)){{$keyword}}@endif" />
+              <span style="font-weight: bold">Từ:</span>
+              <input  class="date rounded"  id="startdate" name="startdate" placeholder="1970-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/>
+     
+                <span style="font-weight: bold;">Đến:</span>
+                <input class="date" id="enddate" name="enddate" placeholder="{{date('Y-m-d',time())}}" type="text" value="@if(!empty($enddate)){{$enddate}}@endif" /> 
+            
+          </div>
+          <div  class="bill" style="float: right;margin-bottom: 10px;">
+             <div>
+                <form action="{{url('admin/order/print')}}" method="post" id="print-form">
+                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <select style="padding-left: 10px;width: 150px;text-align: center;" name="time" id="">
+                    <option value="default" > -- Chọn thời gian  --</option>
+                    <option value="day">1 ngày qua </option>
+                    <option value="week">1 tuần qua</option>
+                    <option value="month">1 tháng qua </option>
+                    <option value="year">1 năm qua</option>
+                 </select>
+                <a class="print" > <i style="color: black;" class="fa fa-print"></i>In hóa đơn</a>
+                </form>
+           </div>
+            
+          </div> {{-- endbill --}}
+             <div style="clear: both"></div>
+                
               
-                {!! view('ajax.order', compact(['orders']))->render()  !!}
-            @endif
-
-            </div>
-             
-              <hr>
-              <div>
-              	<table id="example1" class="table table-bordered table-striped">            		
-                <tr>
-	                <th colspan="6"><span class="pull-right">Tổng đơn hàng đã xử lý</span></th>
-	                <th><a href="{{url('admin/order/status/1')}}">{{$data['done']}}</a></th>
-           		 </tr>
-	            <tr>
-	                <th colspan="6"><span class="pull-right">Tổng đơn hàng đang xử lý</span></th>
-	                <th><a href="{{url('admin/order/status/2')}}">{{$data['waiting']}}</a></th>
-	            </tr>
-	            <tr>
-	                <th colspan="6"><span class="pull-right">Tổng đơn hàng đã hủy</span></th>
-	                <th><a href="{{url('admin/order/status/3')}}">{{$data['cancel']}}</a></th>
-	            </tr>
-              	</table>
-              </div>
-              {!!Form::close() !!}             
+                <div id="result">
+                    {!! view('ajax.order',compact(['orders']))->render() !!}
+                </div>
             </div>
             <!-- /.box-body -->
           </div>
@@ -224,6 +201,15 @@
     });
    
    });
+</script>
+<script>
+   $(document).ready(function(){
+       $('.print').click(function(){
+            $('#print-form').submit();
+       }); 
+        
+   }); 
+
 </script>
 
 @endsection

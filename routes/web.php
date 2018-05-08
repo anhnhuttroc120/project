@@ -54,6 +54,7 @@ Route::get('order/{status}/{id}','PagesController@status');
 Route::get('changepass','PagesController@changePass');
 Route::get('detail/{id}','PagesController@infoOrder');
 
+
 //admin side
 
 Route::get('admin/dang-nhap','UserController@getDangNhap')->name('login');
@@ -87,6 +88,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::get('search','OrderController@Search');
 		Route::get('date','OrderController@Date');
 		Route::get('status/{id}','OrderController@Status');
+		Route::post('print','OrderController@exportExcel');
 	});
 
 

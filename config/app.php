@@ -164,7 +164,9 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Brian2694\Toastr\ToastrServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
+        
         
 
     ],
@@ -221,6 +223,7 @@ return [
          'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
          'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
          'Excel' => Maatwebsite\Excel\Facades\Excel::class
+       
 
 
     ],
