@@ -117,34 +117,51 @@ class OrderController extends Controller
 			            });
 			            $result  = $this->takeData($orders);
 			            $countResult = count($result);
-			            $distance = count($result) +6;
-			            $sheet->fromArray($result,null, 'A6', true, true);
-			          	$sheet->cell('A6:E'.$distance,function($cell){
-			            $cell->setAlignment('center');
-			            });
-			            $sheet->setBorder('A6:E'.$distance, 'thin');
-			            $sheet->cell('A6:E6',function($cell){
+			            if($countResult>0){
+			            	$distance = count($result) +6;
+				            $sheet->fromArray($result,null, 'A6', true, true);
+				          	$sheet->cell('A6:E'.$distance,function($cell){
+				            $cell->setAlignment('center');
+				            });
+				            $sheet->setBorder('A6:E'.$distance, 'thin');
+				            $sheet->cell('A6:E6',function($cell){
+					            $cell->setFontWeight('bold');
+					            $cell->setBackground('#FFC7CE');
+				            });
+				            $distanceTotal = $distance+1;
+				            $sheet->mergeCells('A'.$distanceTotal.':D'.$distanceTotal);
+				            $sheet->cell('A'.$distanceTotal, function($cell){
+				   			$cell->setValue('Tổng tiền ');
+				            $cell->setAlignment('center');
 				            $cell->setFontWeight('bold');
+				             $cell->setBackground('#FFC7CE');
+				            });
+				            $sheet->setBorder('A'.$distanceTotal.':D'.$distanceTotal, 'thin');
+				            $sheet->setBorder('E'.$distanceTotal, 'thin');
+				            $total = $this->total($orders);
+				            if($total <= 0){
+				            	$total =0;
+				            } else {
+				            	$total = number_format($total);
+				            }
+				            $sheet->cell('E'.$distanceTotal,function($cell) use($total){
+				            $cell->setFontWeight('bold');
+				            $cell->setFontColor('#ff4131');
 				            $cell->setBackground('#FFC7CE');
-			            });
-			            $distanceTotal = $distance+1;
-			            $sheet->mergeCells('A'.$distanceTotal.':D'.$distanceTotal);
-			            $sheet->cell('A'.$distanceTotal, function($cell){
-			   			$cell->setValue('Tổng tiền ');
-			            $cell->setAlignment('center');
-			            $cell->setFontWeight('bold');
-			             $cell->setBackground('#FFC7CE');
-			            });
-			            $sheet->setBorder('A'.$distanceTotal.':D'.$distanceTotal, 'thin');
-			            $sheet->setBorder('E'.$distanceTotal, 'thin');
-			            $total = $this->total($orders);
-			            $sheet->cell('E'.$distanceTotal,function($cell) use($total){
-			            $cell->setFontWeight('bold');
-			            $cell->setFontColor('#ff4131');
-			            $cell->setBackground('#FFC7CE');
-			            $cell->setValue(number_format($total). ' VNĐ');
-			            $cell->setAlignment('center');
-			            });
+				            $cell->setValue($total. ' VNĐ');
+				            $cell->setAlignment('center');
+				            });
+
+			            } else {
+			            	$sheet->mergeCells('A6:E6');
+			            	$sheet->cell('A6',function($cell){
+					            $cell->setFontWeight('bold');
+					            $cell->setBackground('#FFC7CE');
+					            $cell->setValue('Không có đơn hàng nảo cả');
+				            	$cell->setAlignment('center');
+				            });
+			            }
+			            
 	        		});
 				})->store('xlsx', public_path('excel'));
 				$path = 'excel/'.$fileName.'.xlsx';
