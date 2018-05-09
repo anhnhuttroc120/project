@@ -20,7 +20,7 @@ class CartController extends Controller
 {
     public function cart()
     {
-        $provinces = DB::table('province')->pluck('name','provinceid')->all();
+        $provinces = province::pluck('name','provinceid')->all();
         $provinces['0'] ='-- Chọn tỉnh --';
         ksort($provinces);
         $user = Auth::user();
@@ -66,8 +66,7 @@ class CartController extends Controller
 
     public function delete(Request $request)
     {
-    	
-        if ($request->ajax()){
+        if ($request->ajax()) {
              Cart::remove($request->rowId);
             $header = view('ajax.header')->render();
             $view = view('ajax.giohang')->render();
@@ -80,20 +79,19 @@ class CartController extends Controller
     public function checkout(Request $request)
     {       
         try{
-            DB::beginTransaction();
-          
+            DB::beginTransaction();  
             $carts = !empty(Cart::content()) ? Cart::content() : '';
-            if(count($carts) <= 0){
+            if (count($carts) <= 0) {
                 Toastr::warning('Không có sản phẩm nào trong giỏ hàng !,không thể đặt hàng ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
                 return back();
             } else {
                 $address = '';
                 if ($request->has('city') && $request->city !='0') {
                 $query = DB::table('province')->join('district', 'province.provinceid', '=', 'district.provinceid')->where('province.provinceid', '=', $request->city)->where('district.districtid', $request->district)->select('province.name as city' ,'district.name as district')->first();
-                $address = $query->city .'-' . $query->district;
+                $cityAndDistrict = $query->city .'-' . $query->district;
                  }
                 $data['phone'] = isset($request->phone) ? $request->phone : Auth::user()->phone;
-                $data['address'] = isset($request->address) ? $address.'-'.$request->address : $address.'-'.Auth::user()->address;
+                $data['address'] = isset($request->address) ? $cityAndDistrict.'-'.$request->address : $cityAndDistrict.'-'.Auth::user()->address;
                 $data['users_id'] = Auth::user()->id;
                 $data['quantity'] = Cart::count();
                 $data['status'] = 2;
@@ -122,10 +120,6 @@ class CartController extends Controller
             DB::rollBack();
             Toastr::warning('Vui lòng đăng nhập trước khi đặt hàng nha chế !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
             return back();
-        }
-       
-              
-    }
-    
-   
+        }     
+    } 
 }

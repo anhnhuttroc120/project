@@ -2724,6 +2724,9 @@ background-color:#e8e8e8
 background-color:#3a5c83;
 color:#fff
 }
+.active{
+	background: #181818;
+}
 
 .beta-author-social i {
 font-size:16px;

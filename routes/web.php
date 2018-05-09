@@ -48,15 +48,15 @@ Route::get('delete-cart/','CartController@delete')->name('delete-cart');
 Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
 Route::post('comment','ProductController@postComment');
-Route::get('profile','PagesController@profile');
-Route::post('profile','PagesController@postprofile');
+Route::get('profile','PagesController@profile')->middleware('checkLogin');;
+Route::post('profile','PagesController@postprofile')->middleware('checkLogin');
 Route::get('order','PagesController@order');
 Route::get('order/{status}/{id}','PagesController@status');
 Route::get('changepass','PagesController@changePass');
 
 Route::post('changepass','PagesController@postchangepass');
 
-Route::get('detail/{id}','PagesController@infoOrder');
+Route::get('detail/{id}','PagesController@infoOrder')->middleware('checkLogin');
 
 
 //admin side
