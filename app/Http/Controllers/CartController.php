@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\User;
 use Session;
@@ -16,7 +15,6 @@ use App\Order_detail;
 use App\province;
 use Illuminate\Support\Facades\DB;
 
-
 class CartController extends Controller
 {
     public function cart()
@@ -30,41 +28,28 @@ class CartController extends Controller
     }
 
     public function add(Request $request)
-    {     
-
-        if (Auth::check()) {
-            $provinces = province::pluck('name', 'provinceid')->all();
-            $provinces['0'] = '-- Chọn tỉnh --';
-            ksort($provinces);
-            $user = Auth::user();
-            return view('default.pages.giohang', compact('provinces', 'user'));
-
-        }
-       return view('default.pages.404');
-    }
-
-    public function add(Request $request)
     {   
             if ($request->ajax()) {
-            $product = Product::find($request->id);
-            $images = isset($product->detail->picture) ? json_decode($product->detail->picture,true) : '' ;
-            $image = $images[1];
-            if ($product->detail->sale_off > 0 ) {
-            $price = ((100 - $product->detail->sale_off)*$product->price)/100;
-            } else {
-            $price = $product->price;
-            }         
-            $infoProduct = [
-                'id' =>$product->id,
-                'name'=>$product->name,
-                'price'=>$price,
-                'qty' =>$request->quantity,
-                'options'=>['size'=>$request->size, 'color'=> $request->color, 'img'=>$image]
-            ];
-            Cart::add($infoProduct);
-            $cartCount = Cart::count();
-            $header = view('ajax.header')->render();
-            return response()->json(['header'=>$header, 'count'=>$cartCount], 200);
+                $product = Product::find($request->id);
+                $images = isset($product->detail->picture) ? json_decode($product->detail->picture,true) : '' ;
+                $image = $images[1];
+                if ($product->detail->sale_off > 0 ) {
+                $price = ((100 - $product->detail->sale_off)*$product->price)/100;
+                } else {
+                $price = $product->price;
+                }         
+                $infoProduct = [
+                    'id' =>$product->id,
+                    'name'=>$product->name,
+                    'price'=>$price,
+                    'qty' =>$request->quantity,
+                    'options'=>['size'=>$request->size, 'color'=> $request->color, 'img'=>$image]
+                ];
+                Cart::add($infoProduct);
+                $cartCount = Cart::count();
+                $header = view('ajax.header')->render();
+                return response()->json(['header'=>$header,'count'=>$cartCount],200);
+            
             }
     }
 

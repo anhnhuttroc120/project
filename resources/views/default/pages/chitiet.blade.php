@@ -334,6 +334,7 @@
 <script>
 	$(document).ready(function(){
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+		
 		$('.add-cart').click(function(){
 			var cart = $('.cart');
 	
@@ -375,6 +376,7 @@
                    	data: {_token: CSRF_TOKEN, quantity:quantity,size:size,color:color,id:id},
                      /* remind that 'data' is the response of the AjaxController */
                      success: function (data) { 
+                     	console.log(data);
                      	$('.count').html(data.count);
                      	$('#list-header').html(data.header);
                        

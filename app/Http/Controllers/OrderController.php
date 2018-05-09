@@ -138,12 +138,7 @@ class OrderController extends Controller
 				            });
 				            $sheet->setBorder('A'.$distanceTotal.':D'.$distanceTotal, 'thin');
 				            $sheet->setBorder('E'.$distanceTotal, 'thin');
-				            $total = $this->total($orders);
-				            if($total <= 0){
-				            	$total =0;
-				            } else {
-				            	$total = number_format($total);
-				            }
+				            $total = number_format($this->total($orders));
 				            $sheet->cell('E'.$distanceTotal,function($cell) use($total){
 				            $cell->setFontWeight('bold');
 				            $cell->setFontColor('#ff4131');
