@@ -24,7 +24,7 @@ class ProductController extends Controller
             $category = $request->category;
             if ($category != 'default') {
                 $query->whereHas('category', function($query) use($category){
-                $query->where('category_id', 'like', $category);
+                    $query->where('category_id', 'like', $category);
                 });
             }             
         }

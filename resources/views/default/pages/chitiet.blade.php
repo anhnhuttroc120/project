@@ -366,8 +366,6 @@
 			var color = $('select[name=color]').val();
 			var id = $('input[name=id]').val();
 			var url = "{{route('add-cart')}}";
-
-			
 			$.ajax({
 
                     /* the route pointing to the post function */

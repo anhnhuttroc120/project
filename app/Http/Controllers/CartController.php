@@ -16,10 +16,12 @@ use App\Order_detail;
 use App\province;
 use Illuminate\Support\Facades\DB;
 
+
 class CartController extends Controller
 {
     public function cart()
     {
+
         $provinces = province::pluck('name','provinceid')->all();
         $provinces['0'] ='-- Chọn tỉnh --';
         ksort($provinces);
@@ -29,6 +31,20 @@ class CartController extends Controller
 
     public function add(Request $request)
     {     
+
+        if (Auth::check()) {
+            $provinces = province::pluck('name', 'provinceid')->all();
+            $provinces['0'] = '-- Chọn tỉnh --';
+            ksort($provinces);
+            $user = Auth::user();
+            return view('default.pages.giohang', compact('provinces', 'user'));
+
+        }
+       return view('default.pages.404');
+    }
+
+    public function add(Request $request)
+    {   
             if ($request->ajax()) {
             $product = Product::find($request->id);
             $images = isset($product->detail->picture) ? json_decode($product->detail->picture,true) : '' ;
@@ -48,18 +64,18 @@ class CartController extends Controller
             Cart::add($infoProduct);
             $cartCount = Cart::count();
             $header = view('ajax.header')->render();
-            return response()->json(['header'=>$header,'count'=>$cartCount], 200);
+            return response()->json(['header'=>$header, 'count'=>$cartCount], 200);
             }
     }
 
     public function update(Request $request)
     {
-    	if($request->ajax()){
+    	if ($request->ajax()) {
     		$cartUpdate = Cart::update($request->rowId, $request->qty);
             $header = view('ajax.header')->render();
             $view = view('ajax.giohang')->render();
             $cartCount = Cart::count();
-    		return response()->json(['view'=>$view, 'header'=>$header,'count'=>$cartCount], 200);
+    		return response()->json(['view'=>$view, 'header'=>$header, 'count'=>$cartCount], 200);
     	}
 
     }
@@ -86,7 +102,7 @@ class CartController extends Controller
                 return back();
             } else {
                 $address = '';
-                if ($request->has('city') && $request->city !='0') {
+                if ($request->has('city') && $request->city != '0') {
                 $query = DB::table('province')->join('district', 'province.provinceid', '=', 'district.provinceid')->where('province.provinceid', '=', $request->city)->where('district.districtid', $request->district)->select('province.name as city' ,'district.name as district')->first();
                 $cityAndDistrict = $query->city .'-' . $query->district;
                  }
@@ -100,21 +116,18 @@ class CartController extends Controller
                 $data['note'] = isset($request->note) ? $request->note : '';
                 $dayTemp = time() + 172800;
                 $data['date_shipper'] = date("Y-m-d", $dayTemp);
-
-                // Order::create($data);
                 $order = Order::create($data);
                 foreach ($carts as $key => $item) {
                     $data['quantity'] = $item->qty; 
                     $data['order_id'] = $order->id; 
                     $data['products_id'] = $item->id;
                     $data['config'] = $item->options->size . '-' .$item->options->color;
-                    $data['total'] = str_replace(',','',$item->price * $item->qty);
+                    $data['total'] = str_replace(',', '', $item->price * $item->qty);
                     Order_detail::create($data);
                 }
                 Cart::destroy();
                 DB::commit();
                 return view('default.notice.giohang');
-
             }
         } catch(\Exception $e) {
             DB::rollBack();

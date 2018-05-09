@@ -115,7 +115,7 @@ class UserController extends Controller
 	{	
 		try{
 			DB::beginTransaction();
-			$user 				= User::findOrFail($id);
+		$user 				= User::findOrFail($id);
 		$data 				= $request->all();
 		$data['status'] 	= 1;
 		$data['crtead_by']	= Auth::user()->fullname;
