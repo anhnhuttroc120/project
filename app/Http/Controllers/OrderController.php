@@ -85,7 +85,7 @@ class OrderController extends Controller
 				}
 			 	$startTime = date('Y-m-d', $timestamp);
 				$endTime = date('Y-m-d', time());
-				$orders = Order::where('status','=', 1)->whereBetween('created_at',[$startTime, $endTime])->get();
+				$orders = Order::where('status','=', 1)->whereBetween('created_at', [$startTime, $endTime])->get();
 				$fileName = $startTime. '-' .$endTime.str_random(6);
 				Excel::create($fileName,function($excel) use($orders, $startTime, $endTime){
 					$excel->sheet('Hóa đơn ', function ($sheet) use ($orders, $startTime,$endTime ) {
@@ -118,7 +118,7 @@ class OrderController extends Controller
 			            $result  = $this->takeData($orders);
 			            $countResult = count($result);
 			            $distance = count($result) +6;
-			            $sheet->fromArray($result,null, 'A6',true,true);
+			            $sheet->fromArray($result,null, 'A6', true, true);
 			          	$sheet->cell('A6:E'.$distance,function($cell){
 			            $cell->setAlignment('center');
 			            });
