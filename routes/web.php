@@ -52,7 +52,7 @@ Route::post('comment','ProductController@postComment');
 Route::get('profile','PagesController@profile')->middleware('checkLogin');;
 Route::post('profile','PagesController@postprofile')->middleware('checkLogin');
 Route::get('order','PagesController@order');
-Route::get('order/{status}/{id}','PagesController@status');
+Route::get('status','PagesController@status');
 Route::get('changepass','PagesController@changePass');
 
 Route::post('changepass','PagesController@postchangepass');

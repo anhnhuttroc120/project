@@ -45,10 +45,11 @@
                             <div id="dialog-confirm" title="Thông báo!" style="display: none;">
                   <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
                 </div>  
+            <form action="{{url('admin/order/print')}}" method="post" id="print-form">    
          <div class="div-search">
             <input style="padding:5px;" name="keyword" type="text" class="form-controls" id="search" placeholder="Tìm kiếm theo tên" value="@if(!empty($keyword)){{$keyword}}@endif" />
               <span style="font-weight: bold">Từ:</span>
-              <input  class="date rounded"  id="startdate" name="startdate" placeholder="1970-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/>
+              <input  class="date rounded"  id="startdate" name="startdate" placeholder="2018-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/>
      
                 <span style="font-weight: bold;">Đến:</span>
                 <input class="date" id="enddate" name="enddate" placeholder="{{date('Y-m-d',time())}}" type="text" value="@if(!empty($enddate)){{$enddate}}@endif" /> 
@@ -56,15 +57,9 @@
           </div>
           <div  class="bill" style="float: right;margin-bottom: 10px;">
              <div>
-                <form action="{{url('admin/order/print')}}" method="post" id="print-form">
+                
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
-                <select style="padding-left: 10px;width: 150px;text-align: center;" name="time" id="">
-                    <option value="default" > -- Chọn thời gian  --</option>
-                    <option value="day">1 ngày qua </option>
-                    <option value="week">1 tuần qua</option>
-                    <option value="month">1 tháng qua </option>
-                    <option value="year">1 năm qua</option>
-                 </select>
+                
                 <a class="print" > <i style="color: black;" class="fa fa-print"></i>In hóa đơn</a>
                 </form>
            </div>
