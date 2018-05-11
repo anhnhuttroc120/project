@@ -59,15 +59,15 @@
              <label for="">Tài khoản: </label> <span>{{$user->username}}</span>
             </div> 
             <div>
-             <label for="">Email: </label> <span>{{$user->email}}</span>
+             <label for="">Email    : </label> <span>{{$user->email}}</span>
              </div>
              <div>
-             <label for="">Mật khẩu:</label> <span>
+             <label for="">Mật khẩu :</label> <span>
 			********
              </span>
              </div>
              <div>
-             <label for="">Hình ảnh:</label>
+             <label for="">Hình ảnh :</label>
 
               <div style="padding-left: 200px;">
               	@if($user->picture != '')
@@ -78,7 +78,7 @@
              </div>
 			</div>
 			<div>
-             <label for="">Địa chỉ: </label> <span>{{$user->address}}</span>
+             <label for="">Địa chỉ   : </label> <span>{{$user->address}}</span>
             </div> 
             <div>
              <label for="">Số Điện thoại: </label> <span>{{$user->phone}}</span>

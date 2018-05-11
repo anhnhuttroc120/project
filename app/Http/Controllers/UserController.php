@@ -13,12 +13,22 @@ use Validator;
 use Hash;
 use Illuminate\Support\Facades\DB;
 use Brian2694\Toastr\Facades\Toastr;
+use Mail;
 
 class UserController extends Controller
 {	
 	public function index()
 	{
 		return view('admin.index');
+	}
+	public function email(){
+		$data = [1,2];
+		Mail::send('email.dangki',$data,function($message){
+                            $message->from('minhvuong1503@gmail.com');
+                            $message->to('namdosatdn@gmail.com','conan Vu')->subject('Xac nhan email');
+         });
+
+
 	}
 
 	public function getDangNhap()

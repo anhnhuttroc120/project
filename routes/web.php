@@ -99,6 +99,4 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 
 
 });
-// Route::get('/trang-chu','ProductController@trangchu');
-//them
-		
+Route::get('test1','UserController@email');

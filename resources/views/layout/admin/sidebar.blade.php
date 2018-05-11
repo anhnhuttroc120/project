@@ -30,35 +30,7 @@
         <!-- end ng dùng -->
 
        <!--  start nhóm người dùng -->
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>Nhóm người dùng</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa fa-check"></i> Danh sách </a></li>
-            <li><a href="pages/forms/advanced.html"><i class="fa fa fa-check"></i> Thêm</a></li>
-           
-          </ul>
-        </li> <!-- end nhóm người dùng -->
-        
-        <!-- start chuyên mục -->
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Chuyên mục</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href=""><i class="fa fa fa-check"></i> Danh sách chuyên mục</a></li>
-            <li><a href=""><i class="fa fa fa-check"></i> Thêm chuyên mục</a></li>
-           
-          </ul>
-        </li><!-- end chuyên mục -->
+     <!-- end chuyên mục -->
 
         
         <!-- start đơn hàng -->

@@ -36,6 +36,8 @@ class OrderController extends Controller
 		$orders = $query->paginate(10)->appends(request()->query());
 		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));			
 		
+
+		
     }
 
     public function detail($id)
