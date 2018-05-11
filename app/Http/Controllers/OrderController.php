@@ -200,4 +200,11 @@ class OrderController extends Controller
 		return $result;
 		
 	}
+	public function chart()
+
+	{	
+		$order = DB::table('order')->select(DB::raw('count(*) as number','status'))->where('status','=',1)->groupBy('status')->first();
+		dd($order);
+		
+	}
 }

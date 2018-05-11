@@ -31,6 +31,17 @@ class UserController extends Controller
 
 	}
 
+	public function email()
+	{
+ 			$data = [1,2];
+            Mail::send('email.dangki',$data,function($message){
+                    $message->from('namdosatdn@gmail.com');
+                    $message->to('huonghien191fighting@gmail.com','conan Vu')->subject('Xac nhan email');
+            });
+            echo 'da gui mail thanh cong';
+
+	}
+
 	public function getDangNhap()
 	{
 		if(Auth::check()){

@@ -26,6 +26,7 @@ Route::get('mail',function(){
 
 
    //customer side
+Route::get('test','UserController@email');
 Route::get('giohang','CartController@cart')->name('gio-hang')->middleware('checkLogin');
 Route::get('district','PagesController@district');
 Route::get('dang-ki','PagesConTroller@getRegister');
@@ -57,6 +58,8 @@ Route::get('changepass','PagesController@changePass');
 Route::post('changepass','PagesController@postchangepass');
 
 Route::get('detail/{id}','PagesController@infoOrder')->middleware('checkLogin');
+Route::get('forgetPass','PagesController@getForgetPassword');
+
 
 
 
@@ -68,6 +71,7 @@ Route::get('admin/dang-xuat', 'UserController@logOut');
 Route::get('admin/profile','UserController@profile');
 Route::post('admin/changePass','UserController@changePass');
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
+	Route::get('chart','OrderController@chart');
 	Route::get('index','UserController@index');
 	Route::group(['prefix'=>'product'], function(){
 		Route::get('add','ProductController@getAdd');
