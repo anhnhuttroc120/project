@@ -200,4 +200,10 @@ class PagesController extends Controller
       return back()->with('success','Bạn đã thay đổi mật khẩu thành công');
     }
 
+    public function getForgetPassword()
+    {
+        return view('auth.passwords.email');
+    }
+
+
 }

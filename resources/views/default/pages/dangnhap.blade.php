@@ -25,7 +25,7 @@
 							<input style="height: 40px;padding: 5px;border: 1px solid #e7e3e7" type="password" id="phone" name="password" required>
 						</div>
 						<div class="form-block">
-							<label style="margin-left: -11px;" for="email"><a  style="color: #39698c;margin-right:25px;" href="#" class="btn">Bạn không thể truy cập vào tài khoản?</a></label>
+							<label style="margin-left: -11px;" for="email"><a  style="color: #39698c;margin-right:25px;" href="{{url('forgetPass')}}" class="btn">Bạn không thể truy cập vào tài khoản?</a></label>
 
 
 							</div>

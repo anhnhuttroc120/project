@@ -87,6 +87,7 @@ class CartController extends Controller
                 return back();
             } else {
                 $address = '';
+                $cityAndDistrict = '';
                 if ($request->has('city') && $request->city != '0') {
                 $query = DB::table('province')->join('district', 'province.provinceid', '=', 'district.provinceid')->where('province.provinceid', '=', $request->city)->where('district.districtid', $request->district)->select('province.name as city' ,'district.name as district')->first();
                 $cityAndDistrict = $query->city .'-' . $query->district;
@@ -116,7 +117,7 @@ class CartController extends Controller
             }
         } catch(\Exception $e) {
             DB::rollBack();
-            Toastr::warning('Vui lòng đăng nhập trước khi đặt hàng nha chế !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+            Toastr::warning('Vui lòng đăng nhập trước khi đặt hàng nha chế !'.$e->getMessage(), 'Thông báo: ', ["positionClass" => "toast-top-right"]);
             return back();
         }     
     } 
