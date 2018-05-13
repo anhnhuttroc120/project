@@ -18,7 +18,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
           <!-- start ng dùng -->
-        <li class="active">
+        <li class="{{(Request::is('admin/user/*')) ? 'active' : ''}}">
           <a href="{{url('admin/user/list')}}">
             <i class="fa fa-user"></i> <span>Người dùng</span>
             <span class="pull-right-container">
@@ -29,12 +29,11 @@
         </li>
         <!-- end ng dùng -->
 
-       <!--  start nhóm người dùng -->
-     <!-- end chuyên mục -->
+
 
         
         <!-- start đơn hàng -->
-        <li>
+        <li class="{{ (Request::is('admin/order/*')) ? 'active' : ''}}">
           <a href="{{url('admin/order/list')}}">
             <i class="fa fa-calendar"></i> <span>Đơn hàng</span>
             <span class="pull-right-container">
@@ -44,9 +43,18 @@
           </a>
         </li>
         <!-- end đơn hàng -->
-         <li class="">
+         <li class="{{ (Request::is('admin/product/*')) ? 'active' : ''}}">
           <a href="{{url('admin/product/list')}}">
             <i class="fa fa-book"></i> <span>Sản phẩm</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          
+        </li> <!-- end nhóm người dùng -->
+         <li class="{{(Request::is('admin/chart')) ? 'active' : ''}}">
+          <a href="{{url('admin/chart')}}">
+            <i class="fa fa-book"></i> <span>Biểu đồ đơn hàng</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

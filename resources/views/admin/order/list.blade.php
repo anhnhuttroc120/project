@@ -173,7 +173,7 @@
         url :url ,
         data:{keyword:value,startdate:startdate,enddate:enddate},
         success: function (data) { 
-          console.log(data.view);
+          console.log(data);
             $('#result').empty();
             $('#result').html(data.view);
         }

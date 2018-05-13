@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col-md-6">
           <!-- AREA CHART -->
-          <div class="box box-primary">
+          <div class="box box-primary" style="display: none;">
             <div class="box-header with-border">
               <h3 class="box-title">Area Chart</h3>
 
@@ -47,7 +47,7 @@
           <!-- /.box -->
 
           <!-- DONUT CHART -->
-          <div class="box box-danger">
+          <div class="box box-danger" style="display: none;">
             <div class="box-header with-border">
               <h3 class="box-title">Donut Chart</h3>
 
@@ -66,9 +66,9 @@
 
         </div>
         <!-- /.col (LEFT) -->
-        <div class="col-md-6">
+        <div class="col-md-12">
           <!-- LINE CHART -->
-          <div class="box box-info">
+          <div class="box box-info" style="display: none;">
             <div class="box-header with-border">
               <h3 class="box-title">Line Chart</h3>
 
@@ -91,6 +91,8 @@
           <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Biểu đồ đơn hàng</h3>
+              <p>Màu <span style="background:#00a65a; ">&emsp;</span> Đơn hàng thành công</p>
+              <p>Màu <span style="background:#d6d7de; ">&emsp;</span> Đơn hàng bị hủy</p>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -159,7 +161,10 @@
     var areaChart       = new Chart(areaChartCanvas)
 
     var areaChartData = {
-      labels  : ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'],
+      labels  : [@foreach($result as $key =>$value)
+      "Tháng " + {{$key}},
+
+       @endforeach],
       datasets: [
         {
           label               : 'Electronics',
@@ -169,7 +174,10 @@
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40,25,26]
+          data                : [@foreach($result as $key =>$value)
+       {{$value['cancel']}},
+
+       @endforeach]
         },
         {
           label               : 'Digital Goods',
@@ -179,7 +187,10 @@
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90,25,26]
+          data                : [@foreach($result as $key =>$value)
+       {{$value['done']}},
+
+       @endforeach]
         }
       ]
     }

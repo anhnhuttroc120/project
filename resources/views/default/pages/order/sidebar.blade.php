@@ -14,9 +14,9 @@
 					<div class="item-admin" style="padding-top: 20px;">
 						<nav class="menu-info">
 						<ul >	
-							<li ><i style="color: black;" class="fa fa-user"></i><span style="margin-left: 10px;"><a href="{{url('profile')}}">Thông tin tài khoản</a></span></li>
-							<li><i style="color: #315510;" class="fa fa-key"></i><span style="margin-left: 10px;"><a href="{{url('changepass')}}">Đổi mật khẩu</a></span></li>
-							<li><i style="color: #f44131;" class="fa fa-shopping-cart"></i><span style="margin-left: 10px;"><a href="{{url('order')}}">Đơn hàng của tôi</a></span></li>
+							<li class="{{(Request::is('profile')) ? 'active2' : ''}}" ><i style="color: black;" class="fa fa-user"></i><span style="margin-left: 10px;"><a href="{{url('profile')}}">Thông tin tài khoản</a></span></li>
+							<li class="{{(Request::is('changepass')) ? 'active2' : ''}}" ><i style="color: #315510;" class="fa fa-key"></i><span style="margin-left: 10px;"><a href="{{url('changepass')}}">Đổi mật khẩu</a></span></li>
+							<li class="{{(Request::is('order')) ? 'active2' : ''}}"><i style="color: #f44131;" class="fa fa-shopping-cart"></i><span style="margin-left: 10px;"><a href="{{url('order')}}">Đơn hàng của tôi</a></span></li>
 						</ul>
 						</nav>
 					</div>

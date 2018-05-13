@@ -1,9 +1,9 @@
  <table id="example1" class="table table-bordered table-striped">
-                <thead>
+                <thead style="background: #398ebd">
                 <tr >
                   <th style="width: 13%;">Mã số đơn hàng</th>
                   <th style="width: 13%;">Tên người order</th>
-                  <th style="width: 13%;">Địa chỉ</th>
+                  <th style="width: 18%;">Địa chỉ</th>
                   <th style="width: 13%;">Ngày Giao hàng</th>
                   <th style="width: 10%;" >Tổng tiền</th>
                   <th style="width: 10%;">Trạng thái</th>
