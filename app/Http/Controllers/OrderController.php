@@ -12,7 +12,7 @@ use Brian2694\Toastr\Facades\Toastr;
 class OrderController extends Controller
 
 {	
-    public function list(Request $request)
+    public function list(Request $request,$id='default')
 
     {
 	 	$query = Order::query();
@@ -34,9 +34,7 @@ class OrderController extends Controller
 		}
 		
 		$orders = $query->paginate(10)->appends(request()->query());
-		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));			
-		
-
+		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));	
 		
     }
 
@@ -204,7 +202,7 @@ class OrderController extends Controller
 
 	{	
 		$order = DB::table('order')->select(DB::raw('count(*) as number','status'))->where('status','=',1)->groupBy('status')->first();
-		dd($order);
+		return view('admin.chart');
 		
 	}
 }

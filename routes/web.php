@@ -91,7 +91,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::put('edit/{id}','UserController@Edit');
 	});
 	Route::group(['prefix'=>'order'],function(){
-		Route::get('list','OrderController@list')->name('order');
+		Route::get('list/{id}','OrderController@list')->name('order');
 		Route::get('detail/{id}','OrderController@detail');
 		Route::post('change-status/{id}','OrderController@changeStatus');
 		Route::get('search','OrderController@Search');
