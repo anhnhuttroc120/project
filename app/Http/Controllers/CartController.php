@@ -90,10 +90,10 @@ class CartController extends Controller
                 $cityAndDistrict = '';
                 if ($request->has('city') && $request->city != '0') {
                 $query = DB::table('province')->join('district', 'province.provinceid', '=', 'district.provinceid')->where('province.provinceid', '=', $request->city)->where('district.districtid', $request->district)->select('province.name as city' ,'district.name as district')->first();
-                $cityAndDistrict = $query->city .'-' . $query->district;
+                $cityAndDistrict = $query->district .' ' . $query->city;
                  }
                 $data['phone'] = isset($request->phone) ? $request->phone : Auth::user()->phone;
-                $data['address'] = isset($request->address) ? $cityAndDistrict.'-'.$request->address : $cityAndDistrict.'-'.Auth::user()->address;
+                $data['address'] = isset($request->address) ? $request->address.' '.$cityAndDistrict : Auth::user()->address.' '.$cityAndDistrict;
                 $data['users_id'] = Auth::user()->id;
                 $data['quantity'] = Cart::count();
                 $data['status'] = 2;

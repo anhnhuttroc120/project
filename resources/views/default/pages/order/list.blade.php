@@ -22,6 +22,7 @@
 				<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; "><i class="fa fa-shopping-cart fa-2x" style="color: black"> </i>SẢN PHẨM ĐÃ CHỌN</a>
 					</div>
+				<div id="result">
 						<table class="table table-bordered">
 							<thead>
 							<tr >
@@ -40,11 +41,11 @@
 								<?php 
 									$result = '';
 									if($or->status == 3) {
-										$link = url('order/'.$or->status.'/'.$or->id);
-										$result = '<a href="'.$link.'" style=""><small style=" width:150px !important;" class="label label-danger"> Hủy</small></a>';
+										
+										$result = '<a data="'.$or->id.'" status="'.$or->status.'" class="status result-'.$or->id.'"  style="cursor:pointer"><small style=" width:100% !important;" class="label label-danger"> Hủy</small></a>';
 									}elseif($or->status == 2) {
-										$link = url('order/'.$or->status . '/'.$or->id);
-										$result = '<a href="'.$link.'" style=""><small style=" width:150px !important;" class="label label-default">  Đang xử lý</small></a>';
+										
+										$result = '<a data="'.$or->id.'" status="'.$or->status.'" class="status result-'.$or->id.'" style="cursor:pointer"><small style=" width:100% !important;" class="label label-default">  Đang xử lý</small></a>';
 									}else{
 
 										 $result = '<small style=" width:150px !important;" class="label label-success" > Đã xử lý</small>';
@@ -55,13 +56,13 @@
 
 									
 								 ?>
-							<tr class="">
+							<tr class="item">
 								<input type="hidden" id="">
 								<td class="center" ><img src="" alt="" >{{$or->id}}</td>
 								<td class="center">{{$or->user->fullname}}</td>
 								<td class="center">{{$or->quantity}}</td>
 								<td class="center">{{number_format($or->total)}} VND</td>
-								<td style="padding-left: 20px; width: 15%;">{!! $result !!}</td>
+								<td class="item-{{$or->id}}" style="width: 15%;">{!! $result !!}</td>
 								<td class="center">{{$date}}</td>
 								<td class="center"><a href="{{url('detail/'.$or->id)}}"><i style="color: red;" class=" fa fa-info-circle"></i></a></td>
 							</tr>
@@ -71,10 +72,38 @@
 					<div style="float:right">
 						{!! $user->render() !!}
 					</div>	
+				</div>	{{-- end result	 --}}
 			</div>
 		</div>
 
 	</div>
 @endsection
 @section('script')
+<script>
+	$(document).ready(function(){
+		$('.status').click(function(){
+			var id = $(this).attr('data');
+			var status = $(this).attr('status');
+			url = "{{url('status')}}";
+			$.ajax({
+
+                    /* the route pointing to the post function */
+                    url: url,
+                    type: 'get',
+                     /* send the csrf-token and the input to the controller */
+                   	data: {id:id,status:status},
+                     /* remind that 'data' is the response of the AjaxController */
+                     success: function (data) { 
+	                     console.log(data);
+	                     $('td.item-'+data.id).html(data.view);
+
+                   	 	
+                   	   
+                       
+                     }
+           }); 
+
+		});
+	});
+</script>
 @endsection

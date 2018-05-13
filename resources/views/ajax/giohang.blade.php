@@ -46,12 +46,17 @@
 
 
 						</table>
+						<?php
+							$subtotal = explode('.', Cart::subtotal());
+
+
+						 ?>
 							<div class="row" style="border-bottom: 1px solid #DEDFDE">
 								<div class="col-md-7"></div>
 								<div class="col-md-5 sumarry" >
-									<p><b>Tổng tiền hàng:</b> <span class="sub-total"  style="padding-left: 10px;">{{Cart::subtotal()}}<sup>đ</sup></span></p>
+									<p><b>Tổng tiền hàng:</b> <span class="sub-total"  style="padding-left: 10px;">{{$subtotal[0]}}<sup>đ</sup></span></p>
 									<p><b>Phí vận chuyển:</b> <span style="padding-left: 10px;">0<sup>đ</sup></span></p>
-									<p><b style="padding-left: 30px;">Tổng cộng:</b> <span class="sub-total" style="padding-left: 10px;color: red;font-weight: bold;">{{Cart::subtotal()}}</span><sup>đ</sup></p>
+									<p><b style="padding-left: 30px;">Tổng cộng:</b> <span class="sub-total" style="padding-left: 10px;color: red;font-weight: bold;">{{$subtotal[0]}}</span><sup>đ</sup></p>
 									
 								</div>
 
