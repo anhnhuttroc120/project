@@ -65,10 +65,10 @@
 				<nav class="main-menu">
 					<ul class="l-inline ov">
 						 
-						<li><a   href="{{url('trang-chu')}}">TRANG CHỦ</a></li>
+						<li class="{{(Request::is('trang-chu') || Request::is('profile') || Request::is('changepass') || Request::is('order')  || Request::is('search/*')) ? "active3" :'' }}"><a   href="{{url('trang-chu')}}">TRANG CHỦ</a></li>
 						
 						@foreach($categories_main as $key => $category)
-						<li><a href="category/{{$category->slug}}/asc">{{$category->name}}</a>
+						<li class="{{(Request::is('category/'.$category->slug.'/*')) ? 'active3' : ''}}"><a href="category/{{$category->slug}}/asc">{{$category->name}}</a>
 							
 						</li>
 						@endforeach

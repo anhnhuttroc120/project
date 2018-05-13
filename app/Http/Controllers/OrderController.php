@@ -24,7 +24,7 @@ class OrderController extends Controller
 	 	}
 	 	if ($request->has('enddate')) {
 	 		$startdate =  ($request->startdate == '') ? '2018-01-01' : $request->startdate;
-	 		$enddate =  ($request->enddate == '') ? date('Y-m-d',time()) : $request->enddate;
+	 		$enddate =  ($request->enddate == '') ? date('Y-m-d H:i:s',time()) : $request->enddate;
 	 		$query->whereBetween('created_at',[$startdate, $enddate]);
 	 	}
 		if ($request->ajax()) {
@@ -77,7 +77,7 @@ class OrderController extends Controller
 			});
 		}
 		$startdate =  empty($request->startdate) ? '2018-01-01' : $request->startdate;
- 		$enddate =  empty($request->enddate) ? date('Y-m-d',time()) : $request->enddate;
+ 		$enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate;
  		$query->whereBetween('created_at', [$startdate, $enddate]);
 		$orders = $query->get();
 		$fileName = $startdate. '-' .$enddate.str_random(6);
@@ -105,7 +105,7 @@ class OrderController extends Controller
 	            $timestamp = strtotime($startdate);
 	            $startdate = date('d-m-Y',$timestamp);
 	            $timestamp = strtotime($enddate);
-	            $enddate   = date('d-m-Y',$timestamp);
+	            $enddate   = date('d-m-Y H:i:s',$timestamp);
 	            $cell->setValue('Từ ngày ' .$startdate. ' đến '.$enddate );
 	            $cell->setAlignment('center');
 	            });
@@ -187,10 +187,13 @@ class OrderController extends Controller
 		
 	}
 	public function chart()
-
 	{	
-		$order = DB::table('order')->select(DB::raw('count(*) as countstatus','status'))->where('status','=',1)->groupBy('status')->first();
-		dd($order);
-		
+		for ($i=1; $i <=6 ; $i++) { 
+			$done = Order::where('status',1)->whereMonth('created_at', $i)->count();
+			$cancel = Order::where('status',3)->whereMonth('created_at', $i)->count();
+			$result[$i]['done'] = $done;
+			$result[$i]['cancel'] = $cancel;
+		}
+		return view('admin.chart', compact('result'));
 	}
 }

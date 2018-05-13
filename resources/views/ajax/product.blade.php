@@ -1,5 +1,5 @@
               <table id="example1" class="table table-bordered table-striped">
-                <thead  >
+                <thead style="background: #398ebd"  >
                 <tr >
                   <th style="width: 13%;">Mã sản phẩm </th>
                   <th style="width: 13%;">Tên sản phẩm</th>

@@ -18,7 +18,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
           <!-- start ng dùng -->
-        <li class="active">
+        <li class="{{(Request::is('admin/user/*')) ? 'active' : ''}}">
           <a href="{{url('admin/user/list')}}">
             <i class="fa fa-user"></i> <span>Người dùng</span>
             <span class="pull-right-container">
@@ -29,40 +29,11 @@
         </li>
         <!-- end ng dùng -->
 
-       <!--  start nhóm người dùng -->
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>Nhóm người dùng</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa fa-check"></i> Danh sách </a></li>
-            <li><a href="pages/forms/advanced.html"><i class="fa fa fa-check"></i> Thêm</a></li>
-           
-          </ul>
-        </li> <!-- end nhóm người dùng -->
-        
-        <!-- start chuyên mục -->
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Chuyên mục</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href=""><i class="fa fa fa-check"></i> Danh sách chuyên mục</a></li>
-            <li><a href=""><i class="fa fa fa-check"></i> Thêm chuyên mục</a></li>
-           
-          </ul>
-        </li><!-- end chuyên mục -->
+       
 
         
         <!-- start đơn hàng -->
-        <li>
+        <li class="{{ (Request::is('admin/order/*')) ? 'active' : ''}}">
           <a href="{{url('admin/order/list')}}">
             <i class="fa fa-calendar"></i> <span>Đơn hàng</span>
             <span class="pull-right-container">
@@ -72,9 +43,18 @@
           </a>
         </li>
         <!-- end đơn hàng -->
-         <li class="">
+         <li class="{{ (Request::is('admin/product/*')) ? 'active' : ''}}">
           <a href="{{url('admin/product/list')}}">
             <i class="fa fa-book"></i> <span>Sản phẩm</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          
+        </li> <!-- end nhóm người dùng -->
+         <li class="{{(Request::is('admin/chart')) ? 'active' : ''}}">
+          <a href="{{url('admin/chart')}}">
+            <i class="fa fa-book"></i> <span>Biểu đồ đơn hàng</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
