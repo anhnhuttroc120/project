@@ -188,9 +188,10 @@ class OrderController extends Controller
 	}
 	public function chart()
 	{	
-		for ($i=1; $i <=6 ; $i++) { 
-			$done = Order::where('status',1)->whereMonth('created_at', $i)->count();
-			$cancel = Order::where('status',3)->whereMonth('created_at', $i)->count();
+		$lengtMonth = date('m');
+		for ($i=1; $i <=$lengtMonth ; $i++) { 
+			$done = Order::where('status', 1)->whereMonth('created_at', $i)->count();
+			$cancel = Order::where('status', 3)->whereMonth('created_at', $i)->count();
 			$result[$i]['done'] = $done;
 			$result[$i]['cancel'] = $cancel;
 		}
