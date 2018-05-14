@@ -73,7 +73,7 @@ class OrderController extends Controller
 			});
 		}
 		$startdate = empty($request->startdate) ? '2018-01-01' : $request->startdate;
- 		$enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
+ 		 $enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
  		$query->whereBetween('created_at', [$startdate, $enddate]);
 		$orders = $query->get();
 		$timestamp = strtotime($startdate);
@@ -105,8 +105,8 @@ class OrderController extends Controller
 	            $sheet->cell('A4',function($cell) use ($startdate, $enddate){
 	            $timestamp = strtotime($startdate);
 	            $startdate = date('d-m-Y',$timestamp);
-	            $timestamp = strtotime($enddate);
-	            $enddate   = date('d-m-Y H:i:s',$timestamp);
+	            $timestampend = strtotime($enddate);
+	            $enddate   = date('d-m-Y',$timestampend);
 	            $cell->setValue('Từ ngày ' .$startdate. ' đến '.$enddate );
 	            $cell->setAlignment('center');
 	            });
@@ -208,7 +208,7 @@ class OrderController extends Controller
     	Toastr::warning('Trạng thái đơn hàng không phù hợp để in hóa đơn !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
     	return back();
     }
-    
+
     private function takeStatus($status)
     {
     	if ($status == 2) $strStatus = ' Đang xử lý';
