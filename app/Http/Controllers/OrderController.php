@@ -8,11 +8,12 @@ use DB;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Brian2694\Toastr\Facades\Toastr;
+use PDF;
 
 class OrderController extends Controller
 
 {	
-    public function list(Request $request)
+    public function list(Request $request,$id='default')
 
     {
 	 	$query = Order::query();
@@ -24,17 +25,17 @@ class OrderController extends Controller
 	 	}
 	 	if ($request->has('enddate')) {
 	 		$startdate =  ($request->startdate == '') ? '2018-01-01' : $request->startdate;
-	 		$enddate =  ($request->enddate == '') ? date('Y-m-d H:i:s',time()) : $request->enddate;
+	 		$enddate =  ($request->enddate == '') ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
 	 		$query->whereBetween('created_at',[$startdate, $enddate]);
 	 	}
 		if ($request->ajax()) {
-			$orders = $query->paginate(10)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);	
+			$orders = $query->paginate(5)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);	
 		 	$view = view('ajax.order', compact('orders'))->render();
 			return response()->json(['view'=>$view], 200);
 		}
 		
-		$orders = $query->paginate(10)->appends(request()->query());
-		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));			
+		$orders = $query->paginate(5)->appends(request()->query());
+		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));	
 		
     }
 
@@ -47,16 +48,13 @@ class OrderController extends Controller
     {
 	    $order = Order::findOrFail($id);
 	    $status = $order->status;
-	    if ($status == 2) $statusOld = ' Đang xử lý';
-	    if ($status == 1) $statusOld = ' Đã xử lý';
-	    if ($status == 3) $statusOld = ' Hủy ';
+	    $statusOld = $this->takeStatus($status);
 	    if (isset($request->status)){
-	    if ($request->status == 2) $statusNew = ' Đang xử lý';
-	    if ($request->status == 1) $statusNew = ' Đã xử lý';
-	    if ($request->status == 3) $statusNew = ' Hủy ';	
+	    	$statusNew = $this->takeStatus($request->status);
+	    }
 	    $order->update(['status'=>$request->status]);
 	    return back()->with('success','Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );
-	    }		
+	    		
     }
 
 	public function Status($id)
@@ -77,11 +75,16 @@ class OrderController extends Controller
 			});
 		}
 		$startdate =  empty($request->startdate) ? '2018-01-01' : $request->startdate;
- 		$enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate;
+ 		$enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
  		$query->whereBetween('created_at', [$startdate, $enddate]);
 		$orders = $query->get();
-		$fileName = $startdate. '-' .$enddate.str_random(6);
-		Excel::create($fileName,function($excel) use($orders, $startdate, $enddate){
+		$timestamp = strtotime($startdate);
+		$fileStartDate = date('Y-m-d', $timestamp);
+		$timestamp = strtotime($enddate);
+		$fileEndDate = date('Y-m-d', $timestamp);
+		$fileName = $fileStartDate. '-' .$fileEndDate.str_random(6);
+		if (count($orders) > 0 ){
+			Excel::create($fileName,function($excel) use($orders, $startdate, $enddate){
 			$excel->sheet('Hóa đơn ', function ($sheet) use ($orders, $startdate,$enddate ) {
 				$sheet->setAllBorders('solid');
 	            $sheet->mergeCells('A1:E1');
@@ -140,21 +143,18 @@ class OrderController extends Controller
 		            $cell->setValue($total. ' VNĐ');
 		            $cell->setAlignment('center');
 		            });
-
-	            } else {
-	            	$sheet->mergeCells('A6:E6');
-	            	$sheet->cell('A6',function($cell){
-			            $cell->setFontWeight('bold');
-			            $cell->setBackground('#FFC7CE');
-			            $cell->setValue('Không có đơn hàng nảo cả');
-		            	$cell->setAlignment('center');
-		            });
 	            }
 	            
     		});
-		})->store('xlsx', public_path('excel'));
-		$path = 'excel/'.$fileName.'.xlsx';
-		return redirect(url($path));	
+			})->store('xlsx', public_path('excel'));
+			$path = 'excel/'.$fileName.'.xlsx';
+			return redirect(url($path));	
+
+		} else {
+			Toastr::warning('Không có đơn hàng nào để in hóa đơn !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+            return back();
+		}
+		
 	}
 
 	private function takeData($orders)
@@ -188,13 +188,43 @@ class OrderController extends Controller
 	}
 	public function chart()
 	{	
-		$lengtMonth = date('m');
-		for ($i=1; $i <=$lengtMonth ; $i++) { 
-			$done = Order::where('status', 1)->whereMonth('created_at', $i)->count();
-			$cancel = Order::where('status', 3)->whereMonth('created_at', $i)->count();
+		$lengMonth = date('m');
+		for ($i=1; $i <=$lengMonth ; $i++) { 
+			$done = Order::where('status',1)->whereMonth('created_at', $i)->count();
+			$cancel = Order::where('status',3)->whereMonth('created_at', $i)->count();
 			$result[$i]['done'] = $done;
 			$result[$i]['cancel'] = $cancel;
 		}
 		return view('admin.chart', compact('result'));
+
 	}
+
+	 public function getPDF($id) {
+    	$order = Order::findOrFail($id);
+    	if ($order->status == 1 ) {
+    		$pdf = PDF::loadView('pdf.customer',compact('order'));
+    		$fileName = str_random(6);
+    		return $pdf->stream($fileName.'.pdf');
+    	}
+    	Toastr::warning('Trạng thái đơn hàng không phù hợp để in hóa đơn !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+    	return back();
+    }
+    private function takeStatus($status)
+    {
+    	if ($status == 2) $strStatus = ' Đang xử lý';
+	    if ($status == 1) $strStatus = ' Đã xử lý';
+	    if ($status == 3) $strStatus = ' Hủy ';
+	    return $strStatus;
+    }
+
+    public function calendar()
+    {
+    	$day = date('d');
+    	$data['today'] = Order::whereDay('date_shipper',$day)->get();
+    	$data['tomorrow'] = Order::whereDay('date_shipper',$day+1)->get();
+    	return view('admin.calendar', compact('data'));
+    	
+    }
+
+
 }

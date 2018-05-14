@@ -28,6 +28,7 @@ class ProductController extends Controller
                 });
             }             
         }
+
         if ($request->has('sort')) {
             $sort = $request->sort;
             switch ($request->sort) {
@@ -44,6 +45,7 @@ class ProductController extends Controller
                     break;
             }
         }
+        $query->orderBy('price','asc');
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
             $query->where('name','like',"%".$keyword."%");

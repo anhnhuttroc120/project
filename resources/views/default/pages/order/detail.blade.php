@@ -17,6 +17,7 @@
 	<div class="container-fluid" style="margin-top: -19px; ">
 		<div class="row">
 				@include('default.pages.order.sidebar')
+				    {!! Toastr::message() !!}
 			
 			<div style="" class="col-md-8">
 				<div style="margin-bottom: 20px;">
@@ -58,6 +59,7 @@
 			                  <td colspan="1" ><span style="color: red;padding-left: 15px;">{{number_format($order->total)}}<sup>đ</sup></span></td>
 			                </tfoot>
 						</table>
+						<a href="{{url('pdf/' .$order->id)}}" class="print" > <i style="color: black;" class="fa fa-print"></i>In hóa đơn</a>
 			</div>
 		</div>
 	</div>

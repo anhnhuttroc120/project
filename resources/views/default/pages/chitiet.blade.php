@@ -66,15 +66,14 @@
 								<p>Kích thước:</p>
 								<div>
 								<select class="wc-select" name="size">
-									@forelse($sizes as $size)
+								@if(!empty($sizes))	
+									@foreach($sizes as $size)
 									<option value="{{$size}}">{{$size}}</option>
-									@empty <option value="''
-
-
-									"></option>
-									@endforelse
+									
+									@endforeach
+								@endif	
 								</select>
-
+	
 									
 								</div>
 								<p>Màu:</p>

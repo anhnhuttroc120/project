@@ -54,6 +54,7 @@ Route::post('profile','PagesController@postprofile')->middleware('checkLogin');
 Route::get('order','PagesController@order');
 Route::get('status','PagesController@status');
 Route::get('changepass','PagesController@changePass');
+Route::get('pdf/{id}','OrderController@getPDF')->name('getPDF');
 
 Route::post('changepass','PagesController@postchangepass');
 
@@ -72,6 +73,7 @@ Route::get('admin/profile','UserController@profile');
 Route::post('admin/changePass','UserController@changePass');
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::get('chart','OrderController@chart');
+	Route::get('calendar','OrderController@calendar');
 	Route::get('index','UserController@index');
 	Route::group(['prefix'=>'product'], function(){
 		Route::get('add','ProductController@getAdd');
@@ -103,6 +105,4 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 
 
 });
-// Route::get('/trang-chu','ProductController@trangchu');
-//them
-		
+

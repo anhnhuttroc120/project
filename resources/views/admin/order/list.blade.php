@@ -12,6 +12,9 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 
 @endsection
 @section('content')
@@ -166,7 +169,8 @@
         var enddate = $('#enddate').val();
 
 
-        var url = "{{route('order')}}";
+        var url = "{{url('admin/order/list')}}";
+        
         $.ajax({
         type :'get',
         url :url ,
