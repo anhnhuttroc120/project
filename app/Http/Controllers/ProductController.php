@@ -37,13 +37,14 @@ class ProductController extends Controller
                 
                 case'desc':
                     $query->orderBy('price', 'desc');
-                    # code...
+                   
                     break;
                 case 'bestseller':
                     $query->orderBy('bestseller', 'desc');  
                     break;
             }
         }
+        $query->orderBy('price','asc');
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
             $query->where('name','like',"%".$keyword."%");

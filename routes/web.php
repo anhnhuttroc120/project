@@ -15,14 +15,6 @@
 
 
 		
-Route::get('mail',function(){
-	     
-	$data = [1=>1,2,3,4,5];
-	echo '<pre>';
-	 print_r($data);
-	 echo '</pre>'; 
-
-});
 
 
    //customer side
@@ -34,6 +26,7 @@ Route::post('dang-ki','PagesConTroller@postRegister');
 Route::get('dang-nhap','PagesConTroller@getDangNhap')->name('login');
 Route::post('dang-nhap','PagesConTroller@postDangNhap');
 Route::get('trang-chu','PagesController@index');
+Route::get('/','PagesController@index');
 Route::get('dang-xuat','PagesController@logOut');
 Route::get('category/{slug}/{asc}','PagesController@category');
 Auth::routes();
@@ -73,6 +66,7 @@ Route::get('admin/profile','UserController@profile');
 Route::post('admin/changePass','UserController@changePass');
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 	Route::get('chart','OrderController@chart');
+	Route::get('calendar','OrderController@calendar');
 	Route::get('index','UserController@index');
 	Route::group(['prefix'=>'product'], function(){
 		Route::get('add','ProductController@getAdd');

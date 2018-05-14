@@ -17,6 +17,7 @@
 	<div class="container-fluid" style="margin-top: -19px; ">
 		<div class="row">
 				@include('default.pages.order.sidebar')
+				    {!! Toastr::message() !!}
 			
 			<div style="" class="col-md-8">
 				<div style="margin-bottom: 20px;">

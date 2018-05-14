@@ -54,7 +54,16 @@
         </li> <!-- end nhóm người dùng -->
          <li class="{{(Request::is('admin/chart')) ? 'active' : ''}}">
           <a href="{{url('admin/chart')}}">
-            <i class="fa fa-book"></i> <span>Biểu đồ đơn hàng</span>
+            <i class="fa fa-map"></i> <span>Biểu đồ đơn hàng</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          
+        </li> <!-- end nhóm người dùng -->
+         <li class="{{(Request::is('admin/calendar')) ? 'active' : ''}}">
+          <a href="{{url('admin/calendar')}}">
+            <i class="fa fa-calendar"></i> <span>Lịch shipper hàng</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

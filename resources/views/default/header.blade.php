@@ -25,7 +25,7 @@
 		<div  class="header-body">
 			<div class="container beta-relative">
 				<div class="pull-left">
-					<a href="index.html" id="logo"><img style="width: 700px;height:152px;" src="images/banner.jpg" width="200px" alt=""></a>
+					<a href="{{url('/')}}" id="logo"><img style="width: 700px;height:152px;" src="images/banner.jpg" width="200px" alt=""></a>
 				</div>
 				<div style="padding-top:30px;" class="pull-right beta-components space-left ov">
 					<div class="space10">&nbsp;</div>
@@ -65,7 +65,7 @@
 				<nav class="main-menu">
 					<ul class="l-inline ov">
 						 
-						<li class="{{(Request::is('trang-chu') || Request::is('profile') || Request::is('changepass') || Request::is('order')  || Request::is('search/*')) ? "active3" :'' }}"><a   href="{{url('trang-chu')}}">TRANG CHỦ</a></li>
+						<li class="{{(Request::is('trang-chu') || Request::is('profile') || Request::is('changepass') || Request::is('order')  || Request::is('search/*') || Request::is('/')) ? "active3" :'' }}"><a   href="{{url('trang-chu')}}">TRANG CHỦ</a></li>
 						
 						@foreach($categories_main as $key => $category)
 						<li class="{{(Request::is('category/'.$category->slug.'/*')) ? 'active3' : ''}}"><a href="category/{{$category->slug}}/asc">{{$category->name}}</a>
