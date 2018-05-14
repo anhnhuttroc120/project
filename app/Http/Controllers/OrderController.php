@@ -14,7 +14,6 @@ class OrderController extends Controller
 
 {	
     public function list(Request $request,$id='default')
-
     {
 	 	$query = Order::query();
 	 	if ($request->has('keyword')) {
@@ -33,10 +32,8 @@ class OrderController extends Controller
 		 	$view = view('ajax.order', compact('orders'))->render();
 			return response()->json(['view'=>$view], 200);
 		}
-		
 		$orders = $query->paginate(5)->appends(request()->query());
-		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));	
-		
+		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));			
     }
 
     public function detail($id)
@@ -44,6 +41,7 @@ class OrderController extends Controller
     	$order = Order::findOrFail($id);
     	return view('admin.order.detail', compact('order'));
     }  
+
     public function changeStatus($id, Request $request)
     {
 	    $order = Order::findOrFail($id);
@@ -74,7 +72,7 @@ class OrderController extends Controller
 	 			$query->where('fullname','like',"%".$keyword . "%");
 			});
 		}
-		$startdate =  empty($request->startdate) ? '2018-01-01' : $request->startdate;
+		$startdate = empty($request->startdate) ? '2018-01-01' : $request->startdate;
  		$enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
  		$query->whereBetween('created_at', [$startdate, $enddate]);
 		$orders = $query->get();
@@ -83,7 +81,7 @@ class OrderController extends Controller
 		$timestamp = strtotime($enddate);
 		$fileEndDate = date('Y-m-d', $timestamp);
 		$fileName = $fileStartDate. '-' .$fileEndDate.str_random(6);
-		if (count($orders) > 0 ){
+		if (count($orders) > 0 ) {
 			Excel::create($fileName,function($excel) use($orders, $startdate, $enddate){
 			$excel->sheet('Hóa đơn ', function ($sheet) use ($orders, $startdate,$enddate ) {
 				$sheet->setAllBorders('solid');
@@ -173,6 +171,7 @@ class OrderController extends Controller
     	}	
     	return $result;
 	}
+
 	private function total($orders){
 		$arrTemp = [];
 		$result = '';
@@ -183,9 +182,9 @@ class OrderController extends Controller
 			}
 			
 		}
-		return $result;
-		
+		return $result;		
 	}
+
 	public function chart()
 	{	
 		$lengMonth = date('m');
@@ -203,12 +202,13 @@ class OrderController extends Controller
     	$order = Order::findOrFail($id);
     	if ($order->status == 1 ) {
     		$pdf = PDF::loadView('pdf.customer',compact('order'));
-    		$fileName = str_random(6);
+    		$fileName = $order->user->fullname;
     		return $pdf->stream($fileName.'.pdf');
     	}
     	Toastr::warning('Trạng thái đơn hàng không phù hợp để in hóa đơn !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
     	return back();
     }
+    
     private function takeStatus($status)
     {
     	if ($status == 2) $strStatus = ' Đang xử lý';
@@ -220,8 +220,8 @@ class OrderController extends Controller
     public function calendar()
     {
     	$day = date('d');
-    	$data['today'] = Order::whereDay('date_shipper',$day)->get();
-    	$data['tomorrow'] = Order::whereDay('date_shipper',$day+1)->get();
+    	$data['today'] = Order::whereDay('date_shipper',$day)->where('status', 2)->get();
+    	$data['tomorrow'] = Order::whereDay('date_shipper',$day+1)->where('status', 2)->get();
     	return view('admin.calendar', compact('data'));
     	
     }

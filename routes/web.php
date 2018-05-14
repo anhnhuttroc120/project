@@ -15,14 +15,6 @@
 
 
 		
-Route::get('mail',function(){
-	     
-	$data = [1=>1,2,3,4,5];
-	echo '<pre>';
-	 print_r($data);
-	 echo '</pre>'; 
-
-});
 
 
    //customer side
@@ -34,6 +26,7 @@ Route::post('dang-ki','PagesConTroller@postRegister');
 Route::get('dang-nhap','PagesConTroller@getDangNhap')->name('login');
 Route::post('dang-nhap','PagesConTroller@postDangNhap');
 Route::get('trang-chu','PagesController@index');
+Route::get('/','PagesController@index');
 Route::get('dang-xuat','PagesController@logOut');
 Route::get('category/{slug}/{asc}','PagesController@category');
 Auth::routes();

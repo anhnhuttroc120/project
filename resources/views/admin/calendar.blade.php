@@ -177,10 +177,10 @@
         right : 'month,agendaWeek,agendaDay'
       },
       buttonText: {
-        today: 'today',
-        month: 'month',
-        week : 'week',
-        day  : 'day'
+        today: 'Hôm nay',
+        month: 'Tháng',
+        week : 'tuần',
+        day  : 'ngày'
       },
       //Random default events
       events    : [

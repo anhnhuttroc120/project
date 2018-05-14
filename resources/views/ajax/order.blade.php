@@ -11,7 +11,7 @@
                 </tr>
                 </thead>
                 <tbody>
-               	 @foreach($orders as $order) 
+               	 @forelse($orders as $order) 
                	 <?php 
                	 	$result = '';
                	 	if($order->status == 3){
@@ -31,7 +31,11 @@
                   <td >{!! $result !!}</td>
                   <td > <a href="{{url('admin/order/detail/'.$order->id)}}">Chi tiết</a> </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                  <td colspan="7">Không có đơn hàng nào đc tìm thấy</td>
+                </tr>
+                @endforelse
                 </tbody>
                 <tfoot>
                </tfoot>  
