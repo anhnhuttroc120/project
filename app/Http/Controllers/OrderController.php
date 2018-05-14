@@ -48,16 +48,13 @@ class OrderController extends Controller
     {
 	    $order = Order::findOrFail($id);
 	    $status = $order->status;
-	    if ($status == 2) $statusOld = ' Đang xử lý';
-	    if ($status == 1) $statusOld = ' Đã xử lý';
-	    if ($status == 3) $statusOld = ' Hủy ';
+	    $statusOld = $this->takeStatus($status);
 	    if (isset($request->status)){
-	    if ($request->status == 2) $statusNew = ' Đang xử lý';
-	    if ($request->status == 1) $statusNew = ' Đã xử lý';
-	    if ($request->status == 3) $statusNew = ' Hủy ';	
+	    	$statusNew = $this->takeStatus($request->status);
+	    }
 	    $order->update(['status'=>$request->status]);
 	    return back()->with('success','Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );
-	    }		
+	    		
     }
 
 	public function Status($id)
@@ -203,13 +200,20 @@ class OrderController extends Controller
 		return view('admin.chart', compact('result'));
 
 	}
-	
+
 	 public function getPDF($id) {
     	$order = Order::findOrFail($id);
-    	// $pro = $order->products;
-    	// dd($pro);
+ 
     	$pdf = PDF::loadView('pdf.customer',compact('order'));
-    	return $pdf->stream('customer.pdf');
+    	$fileName = str_random(6);
+    	return $pdf->stream($fileName.'.pdf');
+    }
+    private function takeStatus($status)
+    {
+    	if ($status == 2) $strStatus = ' Đang xử lý';
+	    if ($status == 1) $strStatus = ' Đã xử lý';
+	    if ($status == 3) $strStatus = ' Hủy ';
+	    return $strStatus;
     }
 
 
