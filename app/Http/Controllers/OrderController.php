@@ -83,7 +83,8 @@ class OrderController extends Controller
 		$timestamp = strtotime($enddate);
 		$fileEndDate = date('Y-m-d', $timestamp);
 		$fileName = $fileStartDate. '-' .$fileEndDate.str_random(6);
-		Excel::create($fileName,function($excel) use($orders, $startdate, $enddate){
+		if (count($orders) > 0 ){
+			Excel::create($fileName,function($excel) use($orders, $startdate, $enddate){
 			$excel->sheet('Hóa đơn ', function ($sheet) use ($orders, $startdate,$enddate ) {
 				$sheet->setAllBorders('solid');
 	            $sheet->mergeCells('A1:E1');
@@ -142,21 +143,18 @@ class OrderController extends Controller
 		            $cell->setValue($total. ' VNĐ');
 		            $cell->setAlignment('center');
 		            });
-
-	            } else {
-	            	$sheet->mergeCells('A6:E6');
-	            	$sheet->cell('A6',function($cell){
-			            $cell->setFontWeight('bold');
-			            $cell->setBackground('#FFC7CE');
-			            $cell->setValue('Không có đơn hàng nảo cả');
-		            	$cell->setAlignment('center');
-		            });
 	            }
 	            
     		});
-		})->store('xlsx', public_path('excel'));
-		$path = 'excel/'.$fileName.'.xlsx';
-		return redirect(url($path));	
+			})->store('xlsx', public_path('excel'));
+			$path = 'excel/'.$fileName.'.xlsx';
+			return redirect(url($path));	
+
+		} else {
+			Toastr::warning('Không có đơn hàng nào để in hóa đơn !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+            return back();
+		}
+		
 	}
 
 	private function takeData($orders)
