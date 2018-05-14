@@ -61,7 +61,7 @@
 	<script src="source/assets/dest/js/waypoints.min.js"></script>
 	<script src="source/assets/dest/js/wow.min.js"></script>
 	<!--customjs-->
-	<script src="source/assets/dest/js/custom2.js"></script>
+{{-- 	<script src="source/assets/dest/js/custom2.js"></script> --}}
 	<script>
 	$(document).ready(function($) {    
 		$(window).scroll(function(){

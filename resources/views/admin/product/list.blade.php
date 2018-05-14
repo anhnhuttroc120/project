@@ -37,9 +37,9 @@
 
             <!-- /.box-header -->
             <div class="box-body">
-                <div id="dialog-confirm" title="Thông báo!" style="display: none;">
-      <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
-  </div>  
+                            <div id="dialog-confirm" title="Thông báo!" style="display: none;">
+                  <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
+              </div>  
 
               {!!Form::open(['url' => 'admin/product/category', 'method' => 'post','files'=>true,'id'=>'admin-form'])!!}
                 

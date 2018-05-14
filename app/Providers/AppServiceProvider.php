@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('password_old',function($attribute,$value,$parameters,$validator){
             return Hash::check($value,current($parameters));
        });
-        $quantitys = range(1,10);
+        $quantitys = range(1,50);
         View::share('quantitys', $quantitys);
     }
 

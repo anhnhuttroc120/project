@@ -26,7 +26,8 @@ Route::get('mail',function(){
 
 
    //customer side
-Route::get('giohang','CartController@cart')->name('gio-hang');
+Route::get('test','UserController@email');
+Route::get('giohang','CartController@cart')->name('gio-hang')->middleware('checkLogin');
 Route::get('district','PagesController@district');
 Route::get('dang-ki','PagesConTroller@getRegister');
 Route::post('dang-ki','PagesConTroller@postRegister');
@@ -40,16 +41,28 @@ Route::get('search/{sort}','PagesController@search');
 // Route::get('search/{keyword}/{order}','PagesController@search');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('chi-tiet/{slug}','PagesController@detail');
-Route::post('add-cart/','CartController@add');
-Route::post('update-cart','CartController@update');
-Route::get('delete-cart/{rowId}','CartController@delete');
+Route::post('add-cart/','CartController@add')->name('add-cart');
+
+Route::post('update-cart','CartController@update')->name('update-cart');
+Route::get('delete-cart/','CartController@delete')->name('delete-cart');
 
 Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
 Route::post('comment','ProductController@postComment');
-Route::get('profile','PagesController@profile');
+Route::get('profile','PagesController@profile')->middleware('checkLogin');;
+Route::post('profile','PagesController@postprofile')->middleware('checkLogin');
 Route::get('order','PagesController@order');
+Route::get('status','PagesController@status');
 Route::get('changepass','PagesController@changePass');
+Route::get('pdf/{id}','OrderController@getPDF')->name('getPDF');
+
+Route::post('changepass','PagesController@postchangepass');
+
+Route::get('detail/{id}','PagesController@infoOrder')->middleware('checkLogin');
+Route::get('forgetPass','PagesController@getForgetPassword');
+
+
+
 
 //admin side
 
@@ -59,6 +72,7 @@ Route::get('admin/dang-xuat', 'UserController@logOut');
 Route::get('admin/profile','UserController@profile');
 Route::post('admin/changePass','UserController@changePass');
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
+	Route::get('chart','OrderController@chart');
 	Route::get('index','UserController@index');
 	Route::group(['prefix'=>'product'], function(){
 		Route::get('add','ProductController@getAdd');
@@ -84,11 +98,10 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::get('search','OrderController@Search');
 		Route::get('date','OrderController@Date');
 		Route::get('status/{id}','OrderController@Status');
+		Route::post('print','OrderController@exportExcel');
 	});
 
 
 
 });
-// Route::get('/trang-chu','ProductController@trangchu');
-//them
-		
+

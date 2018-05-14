@@ -72,6 +72,9 @@ div,form,fieldset,legend,label {
 margin:0;
 padding:0
 }
+.active3{
+	background: #181818;
+}
 
 form {
 display:inline
@@ -2725,6 +2728,7 @@ background-color:#3a5c83;
 color:#fff
 }
 
+
 .beta-author-social i {
 font-size:16px;
 color:#999da0
@@ -2811,9 +2815,7 @@ color:#000
 background-color:red;
 color:#fff
 }
-.active{
-	background: #181818 !important;
-}
+
 
 .history-navigation a:last-child {
 margin-right:0

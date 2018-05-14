@@ -75,7 +75,7 @@
 												@endif
 										</div>
 										<div class="single-item-caption">
-											<a class="add-to-cart pull-left" href=""><i class="fa fa-shopping-cart"></i></a>
+											<a class="add-to-cart pull-left" href="chi-tiet/{{$product->slug}}"><i class="fa fa-info-circle"></i></a>
 											<a class="beta-btn primary" href="chi-tiet/{{$product->slug}}">Chi tiết <i class="fa fa-chevron-right"></i></a>
 											<div   class="clearfix"></div>
 										</div>

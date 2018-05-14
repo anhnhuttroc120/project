@@ -29,48 +29,31 @@
 				</div>
 				<div style="padding-top:30px;" class="pull-right beta-components space-left ov">
 					<div class="space10">&nbsp;</div>
-					<div class="beta-comp">
+					 <div class="beta-comp">
 						<form role="search" method="get" id="searchform" action="{{url('search/asc')}}">
-					        <input type="text"  name="keyword" value="@if(!empty($keyword)){{$keyword}}@endif" name="s" id="s" placeholder="Nhập từ khóa..." />
+					        <input type="text"  name="keyword" value="@if(!empty($keyword)){{$keyword}}@endif"  id="s" placeholder="Nhập từ khóa..." />
 					        <button class="fa fa-search" type="submit" id="searchsubmit"></button>
 						</form>
 					</div>
+					 <div class="beta-comp">
+						<div class="cart" data="1">
+							<div class="beta-select">
+						<i style="color: red" class="fa fa-shopping-cart"></i>
+						       Giỏ hàng(<span class="count"> @if(!empty(Cart::count())){{Cart::count()}}@else 0 @endif </span> )<i class="fa fa-chevron-down"></i>
+					 		</div>
+					
+					
+					<span id="list-header">
 
-					<div class="beta-comp">
-						<div class="cart">
-							<div class="beta-select"><i style="color: red" class="fa fa-shopping-cart"></i> Giỏ hàng(<span class="count"> @if(!empty(Cart::count())){{Cart::count()}}@else 0 @endif </span> )<i class="fa fa-chevron-down"></i></div>
-							<div class="beta-dropdown cart-body">
-						@if(!empty(Cart::content()) && count(Cart::content())>0)
-							@foreach(Cart::content() as $item)	
-								<div class="cart-item">
-									<div class="media">
-										<a class="cart-item-delete" href="#"><i class="fa fa-times"></i></a>
-										<a class="pull-left" href="#"><img src="images/product/{{$item->options->img}}" alt=""></a>
-										<div class="media-body">
-											<span class="cart-item-title">{{$item->name}}</span>
-										
-											<span class="cart-item-amount">{{$item->qty}} X <span>{{number_format($item->price)}}</span><span> VND</span></span>
-										</div>
-									</div>
-								</div>
-							@endforeach
-								
+						{!! view('ajax.header')->render() !!}
+						
 
-								<div class="cart-caption">
-									<div class="cart-total text-right">Tổng tiền: <span class="cart-total-value">{{Cart::subtotal()}} </span><span>VND</span></div>
-									<div class="clearfix"></div>
+					</span> {{-- end result --}}
+					</div> <!-- .cart -->
 
-									<div class="center">
-										<div class="space10">&nbsp;</div>
-										<a href="{{url('giohang')}}" class="beta-btn primary text-center">Đặt hàng <i  class="fa fa-chevron-right"></i></a>
-									</div>
-								</div>
-						@else
-								<p>Không có sản phẩm nào trong giỏ hàng</p>
-						@endif		
-							</div>
-						</div> <!-- .cart -->
-					</div>
+				</div> {{-- end beta-comp --}}
+	
+				</div>
 				</div>
 				<div class="clearfix"></div>
 			</div> <!-- .container -->
@@ -82,10 +65,10 @@
 				<nav class="main-menu">
 					<ul class="l-inline ov">
 						 
-						<li><a   href="{{url('trang-chu')}}">TRANG CHỦ</a></li>
+						<li class="{{(Request::is('trang-chu') || Request::is('profile') || Request::is('changepass') || Request::is('order')  || Request::is('search/*')) ? "active3" :'' }}"><a   href="{{url('trang-chu')}}">TRANG CHỦ</a></li>
 						
 						@foreach($categories_main as $key => $category)
-						<li><a href="category/{{$category->slug}}/asc">{{$category->name}}</a>
+						<li class="{{(Request::is('category/'.$category->slug.'/*')) ? 'active3' : ''}}"><a href="category/{{$category->slug}}/asc">{{$category->name}}</a>
 							
 						</li>
 						@endforeach
@@ -100,3 +83,5 @@
 								<li><a style="" href="category/"></a></li>
 								
 							</ul> --}}
+
+			
