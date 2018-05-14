@@ -166,7 +166,7 @@
         var enddate = $('#enddate').val();
 
 
-        var url = "{{url('admin/order/list/default')}}";
+        var url = "{{url('admin/order/list')}}";
         
         $.ajax({
         type :'get',

@@ -54,6 +54,7 @@ Route::post('profile','PagesController@postprofile')->middleware('checkLogin');
 Route::get('order','PagesController@order');
 Route::get('status','PagesController@status');
 Route::get('changepass','PagesController@changePass');
+Route::get('pdf/{id}','OrderController@getPDF')->name('getPDF');
 
 Route::post('changepass','PagesController@postchangepass');
 
@@ -91,7 +92,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::put('edit/{id}','UserController@Edit');
 	});
 	Route::group(['prefix'=>'order'],function(){
-		Route::get('list/{id}','OrderController@list')->name('order');
+		Route::get('list','OrderController@list')->name('order');
 		Route::get('detail/{id}','OrderController@detail');
 		Route::post('change-status/{id}','OrderController@changeStatus');
 		Route::get('search','OrderController@Search');
@@ -103,4 +104,4 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 
 
 });
-Route::get('test1','UserController@email');
+

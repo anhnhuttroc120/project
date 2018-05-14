@@ -8,6 +8,7 @@ use DB;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Brian2694\Toastr\Facades\Toastr;
+use PDF;
 
 class OrderController extends Controller
 
@@ -24,16 +25,16 @@ class OrderController extends Controller
 	 	}
 	 	if ($request->has('enddate')) {
 	 		$startdate =  ($request->startdate == '') ? '2018-01-01' : $request->startdate;
-	 		$enddate =  ($request->enddate == '') ? date('Y-m-d H:i:s',time()) : $request->enddate;
+	 		$enddate =  ($request->enddate == '') ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
 	 		$query->whereBetween('created_at',[$startdate, $enddate]);
 	 	}
 		if ($request->ajax()) {
-			$orders = $query->paginate(10)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);	
+			$orders = $query->paginate(5)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);	
 		 	$view = view('ajax.order', compact('orders'))->render();
 			return response()->json(['view'=>$view], 200);
 		}
 		
-		$orders = $query->paginate(10)->appends(request()->query());
+		$orders = $query->paginate(5)->appends(request()->query());
 		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));	
 		
     }
@@ -77,10 +78,14 @@ class OrderController extends Controller
 			});
 		}
 		$startdate =  empty($request->startdate) ? '2018-01-01' : $request->startdate;
- 		$enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate;
+ 		$enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
  		$query->whereBetween('created_at', [$startdate, $enddate]);
 		$orders = $query->get();
-		$fileName = $startdate. '-' .$enddate.str_random(6);
+		$timestamp = strtotime($startdate);
+		$fileStartDate = date('Y-m-d', $timestamp);
+		$timestamp = strtotime($enddate);
+		$fileEndDate = date('Y-m-d', $timestamp);
+		$fileName = $fileStartDate. '-' .$fileEndDate.str_random(6);
 		Excel::create($fileName,function($excel) use($orders, $startdate, $enddate){
 			$excel->sheet('Hóa đơn ', function ($sheet) use ($orders, $startdate,$enddate ) {
 				$sheet->setAllBorders('solid');
@@ -188,7 +193,8 @@ class OrderController extends Controller
 	}
 	public function chart()
 	{	
-		for ($i=1; $i <=6 ; $i++) { 
+		$lengMonth = date('m');
+		for ($i=1; $i <=$lengMonth ; $i++) { 
 			$done = Order::where('status',1)->whereMonth('created_at', $i)->count();
 			$cancel = Order::where('status',3)->whereMonth('created_at', $i)->count();
 			$result[$i]['done'] = $done;
@@ -197,4 +203,14 @@ class OrderController extends Controller
 		return view('admin.chart', compact('result'));
 
 	}
+	
+	 public function getPDF($id) {
+    	$order = Order::findOrFail($id);
+    	// $pro = $order->products;
+    	// dd($pro);
+    	$pdf = PDF::loadView('pdf.customer',compact('order'));
+    	return $pdf->stream('customer.pdf');
+    }
+
+
 }

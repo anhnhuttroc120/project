@@ -58,6 +58,7 @@
 			                  <td colspan="1" ><span style="color: red;padding-left: 15px;">{{number_format($order->total)}}<sup>đ</sup></span></td>
 			                </tfoot>
 						</table>
+						<a href="{{url('pdf/' .$order->id)}}" class="print" > <i style="color: black;" class="fa fa-print"></i>In hóa đơn</a>
 			</div>
 		</div>
 	</div>
