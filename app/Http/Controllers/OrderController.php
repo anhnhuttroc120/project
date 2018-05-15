@@ -16,6 +16,7 @@ class OrderController extends Controller
     public function list(Request $request,$id='default')
     {
 	 	$query = Order::query();
+	 	$query->orderBy('id','desc');
 	 	if ($request->has('keyword')) {
 	 		$keyword = $request->keyword;
 	 		$query->whereHas('user',function($query) use($keyword){
@@ -51,14 +52,13 @@ class OrderController extends Controller
 	    	$statusNew = $this->takeStatus($request->status);
 	    }
 	    $order->update(['status'=>$request->status]);
-	    return back()->with('success','Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );
-	    		
+	    return back()->with('success', 'Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );    		
     }
 
 	public function Status($id)
 	{
 		if (!empty($id)) {
-			$orders = Order::where('status', '=', $id)->paginate(4)->appends(request()->query());
+			$orders = Order::where('status', $id)->paginate(4)->appends(request()->query());
 			return view('admin.order.list', compact('orders'));
 		}
 	}
@@ -73,9 +73,9 @@ class OrderController extends Controller
 			});
 		}
 		$startdate = empty($request->startdate) ? '2018-01-01' : $request->startdate;
- 		$enddate =  empty($request->enddate) ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
+ 		 $enddate =  empty($request->enddate) ? date('Y-m-d H:i:s', time()) : $request->enddate. ' 23:59:59';
  		$query->whereBetween('created_at', [$startdate, $enddate]);
-		$orders = $query->get();
+		$orders = $query->where('status', 1)->get();
 		$timestamp = strtotime($startdate);
 		$fileStartDate = date('Y-m-d', $timestamp);
 		$timestamp = strtotime($enddate);
@@ -83,7 +83,7 @@ class OrderController extends Controller
 		$fileName = $fileStartDate. '-' .$fileEndDate.str_random(6);
 		if (count($orders) > 0 ) {
 			Excel::create($fileName,function($excel) use($orders, $startdate, $enddate){
-			$excel->sheet('Hóa đơn ', function ($sheet) use ($orders, $startdate,$enddate ) {
+			$excel->sheet('Hóa đơn ', function ($sheet) use ($orders, $startdate, $enddate ) {
 				$sheet->setAllBorders('solid');
 	            $sheet->mergeCells('A1:E1');
 	            $sheet->cell('A1', function ($cell) {
@@ -104,9 +104,9 @@ class OrderController extends Controller
 	            $sheet->mergeCells('A4:E4');
 	            $sheet->cell('A4',function($cell) use ($startdate, $enddate){
 	            $timestamp = strtotime($startdate);
-	            $startdate = date('d-m-Y',$timestamp);
-	            $timestamp = strtotime($enddate);
-	            $enddate   = date('d-m-Y H:i:s',$timestamp);
+	            $startdate = date('d-m-Y', $timestamp);
+	            $timestampend = strtotime($enddate);
+	            $enddate   = date('d-m-Y', $timestampend);
 	            $cell->setValue('Từ ngày ' .$startdate. ' đến '.$enddate );
 	            $cell->setAlignment('center');
 	            });
@@ -119,7 +119,7 @@ class OrderController extends Controller
 		            $cell->setAlignment('center');
 		            });
 		            $sheet->setBorder('A6:E'.$distance, 'thin');
-		            $sheet->cell('A6:E6',function($cell){
+		            $sheet->cell('A6:E6', function($cell){
 			            $cell->setFontWeight('bold');
 			            $cell->setBackground('#FFC7CE');
 		            });
@@ -134,25 +134,22 @@ class OrderController extends Controller
 		            $sheet->setBorder('A'.$distanceTotal.':D'.$distanceTotal, 'thin');
 		            $sheet->setBorder('E'.$distanceTotal, 'thin');
 		            $total = number_format($this->total($orders));
-		            $sheet->cell('E'.$distanceTotal,function($cell) use($total){
+		            $sheet->cell('E'.$distanceTotal, function($cell) use($total){
 		            $cell->setFontWeight('bold');
 		            $cell->setFontColor('#ff4131');
 		            $cell->setBackground('#FFC7CE');
 		            $cell->setValue($total. ' VNĐ');
 		            $cell->setAlignment('center');
 		            });
-	            }
-	            
+	            }         
     		});
 			})->store('xlsx', public_path('excel'));
 			$path = 'excel/'.$fileName.'.xlsx';
 			return redirect(url($path));	
-
 		} else {
 			Toastr::warning('Không có đơn hàng nào để in hóa đơn !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
             return back();
 		}
-		
 	}
 
 	private function takeData($orders)
@@ -179,8 +176,7 @@ class OrderController extends Controller
 			foreach ($orders as $key => $order) {
 				$arrTemp[] = $order->total;
 				$result = array_sum($arrTemp);
-			}
-			
+			}	
 		}
 		return $result;		
 	}
@@ -189,13 +185,12 @@ class OrderController extends Controller
 	{	
 		$lengMonth = date('m');
 		for ($i=1; $i <=$lengMonth ; $i++) { 
-			$done = Order::where('status',1)->whereMonth('created_at', $i)->count();
-			$cancel = Order::where('status',3)->whereMonth('created_at', $i)->count();
+			$done = Order::where('status', 1)->whereMonth('created_at', $i)->count();
+			$cancel = Order::where('status' ,3)->whereMonth('created_at', $i)->count();
 			$result[$i]['done'] = $done;
 			$result[$i]['cancel'] = $cancel;
 		}
 		return view('admin.chart', compact('result'));
-
 	}
 
 	 public function getPDF($id) {
@@ -208,7 +203,7 @@ class OrderController extends Controller
     	Toastr::warning('Trạng thái đơn hàng không phù hợp để in hóa đơn !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
     	return back();
     }
-    
+
     private function takeStatus($status)
     {
     	if ($status == 2) $strStatus = ' Đang xử lý';
@@ -220,11 +215,9 @@ class OrderController extends Controller
     public function calendar()
     {
     	$day = date('d');
-    	$data['today'] = Order::whereDay('date_shipper',$day)->where('status', 2)->get();
-    	$data['tomorrow'] = Order::whereDay('date_shipper',$day+1)->where('status', 2)->get();
-    	return view('admin.calendar', compact('data'));
-    	
+    	$year = date('y', time());
+    	$data['today'] = Order::whereDay('date_shipper', $day)->where('status', 2)->get();
+    	$data['tomorrow'] = Order::whereDay('date_shipper', $day+1)->where('status', 2)->get();
+    	return view('admin.calendar', compact('data', 'year'));
     }
-
-
 }

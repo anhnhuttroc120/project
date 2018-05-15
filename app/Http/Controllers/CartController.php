@@ -19,7 +19,6 @@ class CartController extends Controller
 {
     public function cart()
     {
-
         $provinces = province::pluck('name','provinceid')->all();
         $provinces['0'] ='-- Chọn tỉnh --';
         ksort($provinces);
@@ -29,27 +28,26 @@ class CartController extends Controller
 
     public function add(Request $request)
     {   
-            if ($request->ajax()) {
-                $product = Product::find($request->id);
-                $images = isset($product->detail->picture) ? json_decode($product->detail->picture,true) : '' ;
-                $image = $images[1];
-                if ($product->detail->sale_off > 0 ) {
-                $price = ((100 - $product->detail->sale_off)*$product->price)/100;
-                } else {
-                $price = $product->price;
-                }         
-                $infoProduct = [
-                    'id' =>$product->id,
-                    'name'=>$product->name,
-                    'price'=>$price,
-                    'qty' =>$request->quantity,
-                    'options'=>['size'=>$request->size, 'color'=> $request->color, 'img'=>$image]
-                ];
-                Cart::add($infoProduct);
-                $cartCount = Cart::count();
-                $header = view('ajax.header')->render();
-                return response()->json(['header'=>$header,'count'=>$cartCount],200);
-            
+        if ($request->ajax()) {
+            $product = Product::find($request->id);
+            $images = isset($product->detail->picture) ? json_decode($product->detail->picture,true) : '' ;
+            $image = $images[1];
+            if ($product->detail->sale_off > 0 ) {
+            $price = ((100 - $product->detail->sale_off)*$product->price)/100;
+            } else {
+            $price = $product->price;
+            }         
+            $infoProduct = [
+                'id' =>$product->id,
+                'name'=>$product->name,
+                'price'=>$price,
+                'qty' =>$request->quantity,
+                'options'=>['size'=>$request->size, 'color'=> $request->color, 'img'=>$image]
+            ];
+            Cart::add($infoProduct);
+            $cartCount = Cart::count();
+            $header = view('ajax.header')->render();
+            return response()->json(['header'=>$header, 'count'=>$cartCount], 200);          
             }
     }
 
@@ -68,7 +66,7 @@ class CartController extends Controller
     public function delete(Request $request)
     {
         if ($request->ajax()) {
-             Cart::remove($request->rowId);
+            Cart::remove($request->rowId);
             $header = view('ajax.header')->render();
             $view = view('ajax.giohang')->render();
             $cartCount = Cart::count();
@@ -97,10 +95,10 @@ class CartController extends Controller
                 $data['users_id'] = Auth::user()->id;
                 $data['quantity'] = Cart::count();
                 $data['status'] = 2;
-                $total =  str_replace(',','',Cart::subtotal());
+                $total =  str_replace(',', '', Cart::subtotal());
                 $data['total'] =  $total;
                 $data['note'] = isset($request->note) ? $request->note : '';
-                $dayTemp = time() + 172800;
+                $dayTemp = time() + 172800; //mặc địnhk thời gian giao hàng sau khi check out là 2 ngày 
                 $data['date_shipper'] = date("Y-m-d", $dayTemp);
                 $order = Order::create($data);
                 foreach ($carts as $key => $item) {

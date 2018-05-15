@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Categories;
@@ -34,17 +33,15 @@ class ProductController extends Controller
                 case 'asc':
                    $query->orderBy('price', 'asc');
                     break;
-                
                 case'desc':
                     $query->orderBy('price', 'desc');
-                   
                     break;
                 case 'bestseller':
                     $query->orderBy('bestseller', 'desc');  
                     break;
             }
         }
-        $query->orderBy('price','asc');
+        $query->orderBy('price', 'asc');
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
             $query->where('name','like',"%".$keyword."%");
@@ -70,7 +67,7 @@ class ProductController extends Controller
             $data               = $request->all();
             $data['slug']       = str_slug($request->name);
             $data['users_id']   = Auth::user()->id;
-            $data['bestseller'] = rand(1,5555);
+            $data['bestseller'] = rand(1,5555); // tao du lieu gia~ cot bestseller
             $product = Product::create($data);   
             if ($request->hasFile('picture')) {
                 $dataImage=[];
@@ -78,7 +75,7 @@ class ProductController extends Controller
                 foreach ($files as $key => $file) {
                    $name        = $file->getClientOriginalName(); //lay tên ảnh gốc
                     $picture = str_random(6).'_'.$name;             
-                    $file->move('images/product',$picture);
+                    $file->move('images/product', $picture);
                     $img     = Image::make('images/product/'.$picture)->resize('286', '381');
                     $img->save('images/product/'.$picture);
                     $dataImage[$key] = $picture;
@@ -121,11 +118,10 @@ class ProductController extends Controller
             $data['users_id'] = Auth::user()->id;
             $product->update($data);    
             $data['products_id'] = $product->id;
-            $data['size']   = isset($request->size) ? json_encode($request->size):'';
-            $data['color']  = isset($request->color) ? json_encode($request->color):'';
+            $data['size']   = isset($request->size) ? json_encode($request->size) : '';
+            $data['color']  = isset($request->color) ? json_encode($request->color) :'';
             $oldImage = json_decode($product->detail->picture, true);
             $arrTemp = [1=>1,2,3,4,5]; // tạo mảng để so sánh mảng hình ảnh mới để truy xuất ra vị trí key của hình ảnh  không đc  sửa
-         
           //Xử lý xóa ảnh, ,zoom ảnh ,  upload ảnh
             if ($request->hasFile('picture')) {  
                 $files=$request->file('picture');
@@ -179,7 +175,7 @@ class ProductController extends Controller
          }
         $product->delete();
         $product->detail->delete();
-        return response(['success'=>'OK'],200);
+        return response(['success'=>'OK'], 200);
     }   
 
     public function postComment(Request $request){

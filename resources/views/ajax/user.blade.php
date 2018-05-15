@@ -13,7 +13,7 @@
                 </thead>
                 
                 <tbody>
-              @foreach($users as $key => $user)
+              @forelse($users as $key => $user)
                 <tr id="item-{{$user->id}}">
                   <td>{{$user->id}}</td>
                   <td>@if(!empty($user->picture))<img src="images/user/{{$user->picture}}">@else
@@ -28,7 +28,11 @@
                   <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href="admin/user/edit/{{$user->id}}"><i class="fa fa-edit"></i></a>  </td>
           
                 </tr>
-          @endforeach
+          @empty
+          <tr>
+            <td style="text-align:center" colspan="6">Không tìm thấy người dùng </td>
+          </tr>
+          @endforelse
                 
                 </tbody>
                 

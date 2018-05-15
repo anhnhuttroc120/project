@@ -12,7 +12,7 @@
                 </thead>
                 <tbody>
                  
-               @foreach($products as $product)
+               @forelse($products as $product)
                   <?php
                   $price=explode('.', $product->price);
                         if(!empty($product->detail->picture)){
@@ -36,7 +36,11 @@
           
                 </tr>
                   
-                @endforeach  
+                @empty
+                <tr>
+                  <td style="text-align: center;" colspan="6">Không sản phẩm nào đc tìm thấy </td>
+                </tr>
+                @endforelse  
          
   
                 </tbody>
