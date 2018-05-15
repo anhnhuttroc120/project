@@ -95,7 +95,5 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::post('print','OrderController@exportExcel');
 	});
 
-
-
 });
 

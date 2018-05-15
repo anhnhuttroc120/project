@@ -21,9 +21,7 @@
 									$picture_main = $pictures[1];
 									if($product->detail->sale_off > 0){
 										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
-									}
-
-								
+									}							
 								?>
 								<div  class="col-sm-3">
 									<div  class="single-item">
