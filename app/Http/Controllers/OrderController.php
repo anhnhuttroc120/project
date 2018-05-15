@@ -52,14 +52,13 @@ class OrderController extends Controller
 	    	$statusNew = $this->takeStatus($request->status);
 	    }
 	    $order->update(['status'=>$request->status]);
-	    return back()->with('success','Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );
-	    		
+	    return back()->with('success', 'Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );    		
     }
 
 	public function Status($id)
 	{
 		if (!empty($id)) {
-			$orders = Order::where('status', '=', $id)->paginate(4)->appends(request()->query());
+			$orders = Order::where('status', $id)->paginate(4)->appends(request()->query());
 			return view('admin.order.list', compact('orders'));
 		}
 	}
@@ -186,8 +185,8 @@ class OrderController extends Controller
 	{	
 		$lengMonth = date('m');
 		for ($i=1; $i <=$lengMonth ; $i++) { 
-			$done = Order::where('status',1)->whereMonth('created_at', $i)->count();
-			$cancel = Order::where('status',3)->whereMonth('created_at', $i)->count();
+			$done = Order::where('status', 1)->whereMonth('created_at', $i)->count();
+			$cancel = Order::where('status' ,3)->whereMonth('created_at', $i)->count();
 			$result[$i]['done'] = $done;
 			$result[$i]['cancel'] = $cancel;
 		}
@@ -216,8 +215,9 @@ class OrderController extends Controller
     public function calendar()
     {
     	$day = date('d');
+    	$year = date('y', time());
     	$data['today'] = Order::whereDay('date_shipper', $day)->where('status', 2)->get();
     	$data['tomorrow'] = Order::whereDay('date_shipper', $day+1)->where('status', 2)->get();
-    	return view('admin.calendar', compact('data'));
+    	return view('admin.calendar', compact('data', 'year'));
     }
 }

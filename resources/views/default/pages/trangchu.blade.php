@@ -13,7 +13,7 @@
    	}
    	.owl-prev span{
    		font-size:  70px;
-   		color: #181818;
+   		color: #ffffff;
    	}
    	button.owl-next{
    		position: relative;
@@ -25,7 +25,7 @@
    	}
    	.owl-next span{
    		font-size:  70px;
-   		 color: #181818;
+   		 color: #ffffff;
    	}
    	.owl-dots{
    		display: none;

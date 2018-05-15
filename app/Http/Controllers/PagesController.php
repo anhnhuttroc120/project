@@ -12,7 +12,6 @@ use DB;
 use App\Categories;
 use App\province;
 use App\Order;
-
 use App\Http\Requests\ChangePassRequest;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -20,7 +19,6 @@ use Intervention\Image\ImageManagerStatic as Image;
 class PagesController extends Controller
 {
     public function index()
-
     {
         $products['bestseller'] = Product::orderBy('bestseller', 'desc')->take(12)->get();
         $products['new'] = Product::orderBy('id', 'desc')->take(12)->get();
@@ -49,20 +47,10 @@ class PagesController extends Controller
         $data = $request->all();            
         $data['status'] = 1;
         $data['password'] = bcrypt($request->password);
-
         $data['picture'] = '';
         $data['is_admin'] = 0;
         $data['created_by'] = '';
-        // $data['maActive'] = csrf_token(); 
         User::create($data); // them vo database
-	
-                   
-                    // Mail::send('email.dangki',$data,function($message){
-                    //         $message->from('namdosatdn@gmail.com');
-                    //         $message->to('boyquay_timgirlnhinhanh_dn2006@yahoo.com.vn','conan Vu')->subject('Xac nhan email');
-                    // });
-                    // echo 'da gui mail thanh cong';
-
         return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công');			
     } 
 
@@ -92,14 +80,14 @@ class PagesController extends Controller
     {   
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
-            $query1 = Product::whereHas('category', function($query) use ($keyword) {
+            $query = Product::whereHas('category', function($query) use ($keyword) {
                 $query->where('name','like',"%".$keyword . "%")->orWhere('slug','like',"%".$keyword."%");
                  })->orwhere('name', 'like', "%".$keyword . "%");
             if ($sort == 'bestseller') { 
-                $query1->orderBy('bestseller', 'desc');
+                $query->orderBy('bestseller', 'desc');
             }
-            $query1->orderBy('price', $sort);
-            $products = $query1->paginate(4)->appends(request()->query());
+            $query->orderBy('price', $sort);
+            $products = $query->paginate(12)->appends(request()->query());
             return view('default.pages.timkiem', compact('keyword', 'products','sort'));
 
         }
@@ -108,7 +96,6 @@ class PagesController extends Controller
     public function detail($slug)
     {
         $product_main = Product::where('slug', $slug)->first();
-        // $comments = Comment::where('product_id',$product_main->id)->get();  
         $products['relate'] = Product::where('category_id', $product_main->category->id)->inRandomOrder()->take(3)->get();
         $products['bestseller'] = Product::orderBy('bestseller', 'desc')->take(4)->get();
         $products['new'] = Product::orderBy('id', 'desc')->take(4)->get();
@@ -138,7 +125,6 @@ class PagesController extends Controller
         $data = $request->all();
         $oldImage           = ($user->picture =='') ? ' ' : $user->picture;
         if ($request->hasFile('picture')) { 
-                echo 'co hinh';
            //ngươi dùng đã thay đổi file
             $file = $request->file('picture');
             $name = $file->getClientOriginalName();
@@ -155,15 +141,13 @@ class PagesController extends Controller
         }
    
         $user-> update($data);
-        return back();
-
-        
+        return back();    
     }
     public function order()
     {
         //$user = User::find(Auth::user()->id);
         //dd($users);
-        $user = Order::where('users_id','=',Auth::user()->id)->paginate(7);
+        $user = Order::where('users_id', Auth::user()->id)->paginate(7);
         //dd($user);
          return view('default.pages.order.list',compact('user')); 
     }
@@ -182,8 +166,6 @@ class PagesController extends Controller
             $view = view('ajax.orderclient', compact('order'))->render();
             return response()->json(['view'=>$view, 'id'=>$order->id], 200);
         }
-
-    
     }
 
     public function infoOrder($id)
