@@ -29,12 +29,14 @@ class OrderController extends Controller
 	 		$query->whereBetween('created_at',[$startdate, $enddate]);
 	 	}
 		if ($request->ajax()) {
-			$orders = $query->paginate(5)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);	
-		 	$view = view('ajax.order', compact('orders'))->render();
-			return response()->json(['view'=>$view], 200);
+			$orders = $query->paginate(10)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);
+			$total = $this->total($orders, 'status');	
+		 	$view = view('ajax.order', compact('orders','total'))->render();
+			return response()->json(['view'=>$view,'total'=>$total], 200);
 		}
-		$orders = $query->paginate(5)->appends(request()->query());
-		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));			
+		$orders = $query->paginate(10)->appends(request()->query());
+		$total = $this->total($orders, 'status');	
+		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate','total'));			
     }
 
     public function detail($id)
@@ -169,14 +171,23 @@ class OrderController extends Controller
     	return $result;
 	}
 
-	private function total($orders){
+	private function total($orders, $type='null'){
 		$arrTemp = [];
-		$result = '';
+		$result = 0;
+
 		if (count($orders)>0) {
 			foreach ($orders as $key => $order) {
+				if ($type == 'null') {
 				$arrTemp[] = $order->total;
 				$result = array_sum($arrTemp);
+				} else {
+					if($order->status==1){
+						$arrTemp[] = $order->total;
+						$result = array_sum($arrTemp);
+					}
+				}
 			}	
+				
 		}
 		return $result;		
 	}
