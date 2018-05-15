@@ -75,6 +75,9 @@ padding:0
 .active3{
 	background: #181818;
 }
+.active2 {
+	color: black !important;
+}
 
 form {
 display:inline

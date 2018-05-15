@@ -194,7 +194,7 @@ class UserController extends Controller
 		$query = User::query();
 		if ($request->has('keyword') && !empty($request->keyword)) {
 			$keyword = $request->keyword;
-			$query->where('username','like',"%".$keyword."%")->orWhere('email','like',"%".$keyword."%");
+			$query->where('fullname','like',"%".$keyword."%")->orWhere('email','like',"%".$keyword."%")->orWhere('username','like',"%".$keyword."%");
 		}
 		if ($request->ajax()) {
 			$users = $query->paginate(4)->appends(['keyword'=>$request->keyword]);	
