@@ -11,6 +11,7 @@ class Order_detail extends Model
     
     protected $fillable = ['quantity','order_id', 'products_id', 'total','config'];
     protected $lifestamp = true;
+
     public function order()
     {
     	return $this->belongsTo('App\Order', 'order_id', 'id');

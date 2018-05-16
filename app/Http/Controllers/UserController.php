@@ -22,7 +22,6 @@ class UserController extends Controller
 		return view('admin.index');
 	}
 	
-
 	public function email()
 	{
  			$data = [1,2];
@@ -52,7 +51,7 @@ class UserController extends Controller
 	 			
 	 		} else {
 	 			return back()->with('notice', 'Tài khoản và mật khẩu không chính xác');
-	 		  }
+	 		}
 	 	}
 
 	}	
@@ -77,7 +76,7 @@ class UserController extends Controller
 			$data['password']=bcrypt($request->password);
 			$data['status'] = 0;
 			$data['created_by'] = Auth::user()->fullname;
-			if($request->hasFile('picture')){
+			if ($request->hasFile('picture')) {
 				$file 		= $request->file('picture'); //lay dc file
 				$name 		= $file->getClientOriginalName();//lay dc ten hinh
 	   			$picture	 = str_random(6) .$name;
@@ -92,14 +91,10 @@ class UserController extends Controller
 			Toastr::success('Bạn đã thêm thành công', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
 			DB::commit();
 			return back();		
-		
-
-		}catch (\Exception $e) {
+		} catch (\Exception $e) {
 			DB::rollBack();
 			Toastr::warning('Đã xảy ra lỗi', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
-
 			return back();
-
 		}		
 	}
 
@@ -128,41 +123,37 @@ class UserController extends Controller
 	{	
 		try{
 			DB::beginTransaction();
-		$user 				= User::findOrFail($id);
-		$data 				= $request->all();
-		$data['status'] 	= 1;
-		$data['crtead_by']	= Auth::user()->fullname;
-		$oldImage 			= ($user->picture =='') ? ' ' : $user->picture;
-	
-		if ($request->hasFile('picture')) { 
-
-		   //ngươi dùng đã thay đổi file
-			$file = $request->file('picture');
-			$name = $file->getClientOriginalName();
-   			$newpicture = str_random(6).$name; // hibhf moi nguoi dung sua
-   			$file->move('images/user',$newpicture);
-   			$img 		= Image::make('images/user/'.$newpicture)->resize('50', '50');
-   			$img->save('images/user/'.$newpicture);
-   			if(file_exists('images/user/'.$oldImage)){
-   				unlink('images/user/'.$oldImage);
-   			}	
-   			$data['picture'] = $newpicture;
-		} else { //  người dùng k thay đổi hình
-			$data['picture'] = $oldImage;
-		}
-		$user->update($data);
-		Toastr::success('Bạn đã sửa thành công người dùng có id là '. $user->id, 'Thông báo: ', ["positionClass" => "toast-top-right"]);
-		DB::commit();
-		return back();
-
+			$user 				= User::findOrFail($id);
+			$data 				= $request->all();
+			$data['status'] 	= 1;
+			$data['crtead_by']	= Auth::user()->fullname;
+			$oldImage 			= ($user->picture =='') ? ' ' : $user->picture;
+			if ($request->hasFile('picture')) { 
+			   //ngươi dùng đã thay đổi file
+				$file = $request->file('picture');
+				$name = $file->getClientOriginalName();
+	   			$newpicture = str_random(6).$name; // hibhf moi nguoi dung sua
+	   			$file->move('images/user',$newpicture);
+	   			$img 		= Image::make('images/user/'.$newpicture)->resize('50', '50');
+	   			$img->save('images/user/'.$newpicture);
+	   			if(file_exists('images/user/'.$oldImage)){
+	   				unlink('images/user/'.$oldImage);
+	   			}	
+	   			$data['picture'] = $newpicture;
+			} else { //  người dùng k thay đổi hình
+				$data['picture'] = $oldImage;
+			}
+			$user->update($data);
+			Toastr::success('Bạn đã sửa thành công người dùng có id là '. $user->id, 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+			DB::commit();
+			return back();
 		} catch(\Exception $e) {
 			DB::rollBack();
 			Toastr::warning('Đã có lỗi xảy ra ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
 			return back();	
 		}
-
-		
 	}
+
 	public function profile()
 	{
 		return view('admin.user.profile');
@@ -176,19 +167,12 @@ class UserController extends Controller
 		 return back()->with('success', 'Bạn đã thay đổi mật khẩu thành công');
 
 	}
+
 	public function data($keyword)
 	{
-		$user = User::where('username','like','%'.$keyword.'%')->paginate(4)->appends(request()->query());
+		$user = User::where('username','like', '%'.$keyword.'%')->paginate(4)->appends(request()->query());
 	}
-	// public function search(Request $request)
 
-	// {
-	
-	// 	 $users = User::paginate(4);
-	// 	   $view = view('ajax.user', compact('users'))->render();
-	// 	return response()->json(['view'=>$view],200);
-		
-	// }
 	public function listUser(Request $request)
 	{
 		$query = User::query();
@@ -201,7 +185,6 @@ class UserController extends Controller
 		 	$view = view('ajax.user', compact('users'))->render();
 			return response()->json(['view'=>$view], 200);
 		}
-		
 		$users = $query->paginate(4)->appends(request()->query());
 		return view('admin.user.list', compact('users', 'keyword'));
 	}			

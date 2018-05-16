@@ -20,7 +20,7 @@ class OrderController extends Controller
 	 	if ($request->has('keyword')) {
 	 		$keyword = $request->keyword;
 	 		$query->whereHas('user',function($query) use($keyword){
-	 			$query->where('fullname', 'like', "%".$keyword . "%");
+	 			$query->where('fullname','like',"%".$keyword . "%")->orWhere('id',$keyword);
 			});		
 	 	}
 	 	if ($request->has('enddate')) {
@@ -29,12 +29,14 @@ class OrderController extends Controller
 	 		$query->whereBetween('created_at',[$startdate, $enddate]);
 	 	}
 		if ($request->ajax()) {
-			$orders = $query->paginate(5)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);	
-		 	$view = view('ajax.order', compact('orders'))->render();
-			return response()->json(['view'=>$view], 200);
+			$orders = $query->paginate(10)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);
+			$total = $this->total($orders, 'status');	
+		 	$view = view('ajax.order', compact('orders','total'))->render();
+			return response()->json(['view'=>$view,'total'=>$total], 200);
 		}
-		$orders = $query->paginate(5)->appends(request()->query());
-		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate'));			
+		$orders = $query->paginate(10)->appends(request()->query());
+		$total = $this->total($orders, 'status');	
+		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate','total'));			
     }
 
     public function detail($id)
@@ -52,14 +54,13 @@ class OrderController extends Controller
 	    	$statusNew = $this->takeStatus($request->status);
 	    }
 	    $order->update(['status'=>$request->status]);
-	    return back()->with('success','Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );
-	    		
+	    return back()->with('success', 'Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );    		
     }
 
 	public function Status($id)
 	{
 		if (!empty($id)) {
-			$orders = Order::where('status', '=', $id)->paginate(4)->appends(request()->query());
+			$orders = Order::where('status', $id)->paginate(4)->appends(request()->query());
 			return view('admin.order.list', compact('orders'));
 		}
 	}
@@ -170,14 +171,23 @@ class OrderController extends Controller
     	return $result;
 	}
 
-	private function total($orders){
+	private function total($orders, $type='null'){
 		$arrTemp = [];
-		$result = '';
+		$result = 0;
+
 		if (count($orders)>0) {
 			foreach ($orders as $key => $order) {
+				if ($type == 'null') {
 				$arrTemp[] = $order->total;
 				$result = array_sum($arrTemp);
+				} else {
+					if($order->status==1){
+						$arrTemp[] = $order->total;
+						$result = array_sum($arrTemp);
+					}
+				}
 			}	
+				
 		}
 		return $result;		
 	}
@@ -186,8 +196,8 @@ class OrderController extends Controller
 	{	
 		$lengMonth = date('m');
 		for ($i=1; $i <=$lengMonth ; $i++) { 
-			$done = Order::where('status',1)->whereMonth('created_at', $i)->count();
-			$cancel = Order::where('status',3)->whereMonth('created_at', $i)->count();
+			$done = Order::where('status', 1)->whereMonth('created_at', $i)->count();
+			$cancel = Order::where('status' ,3)->whereMonth('created_at', $i)->count();
 			$result[$i]['done'] = $done;
 			$result[$i]['cancel'] = $cancel;
 		}
@@ -216,8 +226,9 @@ class OrderController extends Controller
     public function calendar()
     {	
     	$day = date('d');
+    	$year = date('y', time());
     	$data['today'] = Order::whereDay('date_shipper', $day)->where('status', 2)->get();
     	$data['tomorrow'] = Order::whereDay('date_shipper', $day+1)->where('status', 2)->get();
-    	return view('admin.calendar', compact('data'));
+    	return view('admin.calendar', compact('data', 'year'));
     }
 }

@@ -1,4 +1,22 @@
+<?php 
+
+  $countDone = 0;
+  $countCancel = 0;
+  $countWaiting = 0;
+  foreach ($orders as $key => $order) {
+      if($order->status ==1 ){
+        $countDone++;
+
+      }elseif($order->status ==2) {
+        $countWaiting++;
+      }else{
+       $countCancel++;
+      }
+  }
+
+?>
  <table id="example1" class="table table-bordered table-striped">
+
                 <thead style="background: #398ebd">
                 <tr >
                   <th style="width: 13%;">Mã số đơn hàng</th>
@@ -43,4 +61,10 @@
               <div style="float:right" class="pagination">
                 {!! $orders->links() !!}
               </div>
+              <div class="shiping-report">
+                  <p>Tổng đơn hàng đã xử lý: {{$countDone}}</p>
+                  <p>Tổng đơn hàng đang xử lý : {{$countWaiting}}</p>
+                  <p>Tổng đơn hàng hủy : {{$countCancel}}</p>
+                   <p ><b>Tổng tiền đơn hàng đã xử lý</b> : <span style="color: red;" class="subtotal">{{number_format($total)}}  </span> <span style="color: red;">VNĐ</span></p>
+                </div>
          

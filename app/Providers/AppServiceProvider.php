@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('special', $special);
         $role = ['Member','Admin'];
         View::share('role', $role);
-        $arrStatus = [1=>'Đã xử lý',2=>'Đang xử lý',3=>'Hủy'];
+        $arrStatus = [1=>'Đã xử lý', 2=>'Đang xử lý', 3=>'Hủy'];
         View::share('arrStatus', $arrStatus);
         if(\Schema::hasTable('order')){
             $data['done']=  Order::where('status', 1)->count();
