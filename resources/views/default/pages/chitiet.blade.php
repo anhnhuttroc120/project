@@ -40,7 +40,7 @@
 					<div class="row parentImage" data='1'>
 						<div class="col-sm-4">
 							<input type="hidden" name="id" value="{{$product_main->id}}">
-							<img class="imgtofly" src="images/product/{{$picture_main}}" alt="123">
+							<img style="width: 286px;height: 381px;" class="imgtofly" src="images/product/{{$picture_main}}" alt="123">
 						</div>
 						<div class="col-sm-8">
 							<div class="single-item-body">
@@ -55,7 +55,7 @@
 
 							<div class="single-item-desc">
 								<h6 style="font-weight: bold">Mô tả sản phẩm</h6>
-								<p><i class="fa fa-check"></i> Anie.vn giao hàng và thu tiền tận nơi toàn quốc.<i class="fa fa-check"></i>Miễn phí vận chuyển TOÀN QUỐC đối với đơn hàng từ 3 sản phẩm trở lên.<i class="fa fa-check"></i>Nhanh tay click MUA NGAY !</p>
+								<p><i class="fa fa-check"></i> Shop Fashion Girl Team_1 giao hàng và thu tiền tận nơi toàn quốc.<i class="fa fa-check"></i>Miễn phí vận chuyển TOÀN QUỐC đối với đơn hàng từ 250.000 đồng  trở lên.<i class="fa fa-check"></i>Nhanh tay click MUA NGAY !</p>
 
 							</div>
 							<div class="space20">&nbsp;</div>
@@ -131,9 +131,10 @@
 									$pictures = array_reverse($pictures);
 
 									 ?>
-								@foreach($pictures as  $picture)	
+								@foreach($pictures as  $picture)
+								<div class="hinhchitiet">
 								<img  src="images/product/{{$picture}}" alt="123">
-								
+								</div>	
 								@endforeach
 								
 								</div>

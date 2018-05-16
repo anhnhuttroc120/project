@@ -135,8 +135,8 @@ class ProductController extends Controller
                             unlink($url);
                         }
                     }
-                    $img = Image::make('images/product/'.$picture)->resize('286', '381');  //zoom ảnh
-                    $img->save();
+                    // $img = Image::make('images/product/'.$picture)->resize('286', '381');  //zoom ảnh
+                    // $img->save();
                     $listImage[$key] = $picture; //gắn tên ảnh mới zô mảng
                 }
                 foreach ($arrTemp as $key => $value) {

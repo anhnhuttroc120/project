@@ -183,7 +183,7 @@ class UserController extends Controller
 		if ($request->ajax()) {
 			$users = $query->paginate(4)->appends(['keyword'=>$request->keyword]);	
 		 	$view = view('ajax.user', compact('users'))->render();
-			return response()->json(['view'=>$view], 200);
+			return response()->jsonv(['iew'=>$view], 200);
 		}
 		$users = $query->paginate(4)->appends(request()->query());
 		return view('admin.user.list', compact('users', 'keyword'));
