@@ -31,7 +31,7 @@ class PagesController extends Controller
         $query  = Product::where('category_id', $category->id);
         $query->orderBy('price', $sort);
         if ($sort == 'bestseller') {
-          $query->orderBy('bestseller','desc');  
+          $query->orderBy('bestseller', 'desc');  
         }
         $products = $query->paginate(8)->appends(request()->query());
         return view('default.pages.category', compact('products', 'category','sort'));
@@ -89,7 +89,6 @@ class PagesController extends Controller
             $query->orderBy('price', $sort);
             $products = $query->paginate(12)->appends(request()->query());
             return view('default.pages.timkiem', compact('keyword', 'products','sort'));
-
         }
     }    
 
@@ -105,8 +104,7 @@ class PagesController extends Controller
     { 
         $city = $request->idCity;
         $result = ''; 
-
-        $province = province::where('provinceid',$city)->first();
+        $province = province::where('provinceid', $city)->first();
         if ($city != 00) {
             foreach ($province->district as $key => $district) {
                 $result .= '<option  value="'.$district->districtid.'">'.$district->name.'</option>';

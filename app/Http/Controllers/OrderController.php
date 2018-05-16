@@ -71,7 +71,7 @@ class OrderController extends Controller
 		if ($request->has('keyword')) {
 			$keyword = $request->keyword;
 	 		$query->whereHas('user',function($query) use($keyword){
-	 			$query->where('fullname','like',"%".$keyword . "%");
+	 			$query->where('fullname','like',"%".$keyword . "%")->orWhere('id',$keyword);
 			});
 		}
 		$startdate = empty($request->startdate) ? '2018-01-01' : $request->startdate;

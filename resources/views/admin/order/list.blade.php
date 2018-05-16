@@ -187,10 +187,7 @@ function formatNumber (num) {
           console.log(data);
             $('#result').empty();
             $('#result').html(data.view);
-            if(data.total== ''){
-              data.total = 0;
-            }
-            $('.subtotal').html(formatNumber(data.total));
+          
 
         }
       });
