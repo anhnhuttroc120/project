@@ -18,6 +18,7 @@
 
 @endsection
 @section('content')
+
   <div class="content-wrapper">
  {!! Toastr::message() !!}
     <!-- Content Header (Page header) -->
@@ -72,8 +73,9 @@
                 
               
                 <div id="result">
-                    {!! view('ajax.order',compact(['orders']))->render() !!}
+                    {!! view('ajax.order',compact(['orders','total']))->render() !!}
                 </div>
+                
             </div>
             <!-- /.box-body -->
           </div>
@@ -101,6 +103,12 @@
 <script src="AdminLTE-2.4.3/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
+<script>
+  
+function formatNumber (num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+}
+</script>
 <!-- page script -->
 {{-- <script>
   $(function () {+
@@ -179,6 +187,11 @@
           console.log(data);
             $('#result').empty();
             $('#result').html(data.view);
+            if(data.total== ''){
+              data.total = 0;
+            }
+            $('.subtotal').html(formatNumber(data.total));
+
         }
       });
 

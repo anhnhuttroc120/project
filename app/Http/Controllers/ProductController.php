@@ -152,8 +152,7 @@ class ProductController extends Controller
             Toastr::success('Bạn đã sửa thành công sản phẩm mã số ID ' .$product->id, 'Thông báo: ', ["positionClass" => "toast-top-right"]);
             DB::commit();
             return back();
-
-        }catch(\Exception $e){
+        } catch(\Exception $e) {
             DB::rollBack();
             Toastr::warning('Đã xảy ra lỗi không thể thay đổi  ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
             return back();
