@@ -44,6 +44,7 @@
 						</div>
 						<div class="col-sm-8">
 							<div class="single-item-body">
+
 								<h1  style="background: #e7e7e7;padding: 10px;" class="single-item-title">{{$product_main->name}}</h1>
 								<p class="single-item-price">
 									<h6 style="color: #ff9A00">{{number_format($price)}}<sup>đ</sup></h6>
@@ -260,7 +261,7 @@
 			</div>
 		</div> <!-- #content -->
 		<div><hr></div>
-		<div>
+	<div> <!-- wrapper form -->
 			<form method="post" action="{{url('comment')}}">
 				<input type="hidden" name="_token" value="{{csrf_token()}}">
 				<div class="form-group">
@@ -270,34 +271,23 @@
 				</div>
 				<div class="form-group">
 					<label for="name">Tên:</label>
-					<input required="" type="text" name="name" id="name" class="form-control">
+					<input value="" required="" type="text" name="name" id="name" class="form-control">
 				</div>
 				<div class="form-group">
 					<label for="cm">Bình luận:</label>
 					<textarea required rows="10" id="cm" class="form-control" name="content"></textarea>
 				</div>
 				<div class="form-group text-right">
-					<button type="submit" class="btn btn-default">Gửi</button>
+					<a  class="btn btn-default comment">Gửi</a>
 				</div>
 
 			</form>
+		
+		<div id="showcomment">
+			 {!! view('ajax.comment',compact(['product_main']))->render() !!}
+
 		</div>
-		<div class="container" style="padding-bottom: 60px;">
-			<div class="row list-product">
-				<a class="btn btn-primary">Ý kiến phản hồi ({{count($product_main->comments)}})</a>
-				@foreach($product_main->comments as $comment)
-						<div style="margin-top: 10px;">
-							<div class="top">
-								<h5>{{$comment->name}}</h5>
-								<p>{{date('d/m/Y H:i:s', strtotime($comment->created_at))}}</p>
-							</div>
-							<div class="bot">
-								<p>{{$comment->content}}</p>
-							</div>
-						</div>
-						@endforeach
-			</div>
-		</div>
+	</div> <!-- end wrapper form -->
 <!-- 		<div style="width: 501px;">
 			<h3>Bình luận</h3>
 			<form>
@@ -386,6 +376,36 @@
 		});
 	});	
 		
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		 $('.comment').click(function(){
+		 	var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+			var email = $('#email').val();
+			var name  = $('#name').val();
+			var comment = $('#cm').val();
+			var product_id = $('input[name=id]').val();
+			var url =  "{{route('comment')}}";
+			$.ajax({
+
+                    /* the route pointing to the post function */
+                    url: url,
+                    type: 'post',
+                     /* send the csrf-token and the input to the controller */
+                   	data: {_token: CSRF_TOKEN, email:email,name:name,content:comment,id:product_id},
+                     /* remind that 'data' is the response of the AjaxController */
+                     success: function (data) { 
+                     	console.log(data);
+                     	$('#showcomment').html(data.view);
+                     	$('#cm').val('');
+                       
+                     }
+           }); 
+
+
+		 });
+	});
+
 </script>
 
 
