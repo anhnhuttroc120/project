@@ -12,7 +12,7 @@
 						<h4 s class="widget-title">Thông tin</h4>
 						<div>
 							<ul class="footer-a">
-								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Thiết kế web</a></li>
+								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> </a></li>
 								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Phát triển Web</a></li>
 								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Marketing</a></li>
 								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Tips</a></li>
