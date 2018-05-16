@@ -41,7 +41,7 @@ Route::get('delete-cart/','CartController@delete')->name('delete-cart');
 
 Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
-Route::post('comment','ProductController@postComment');
+Route::post('comment','ProductController@postComment')->name('comment');
 Route::get('profile','PagesController@profile')->middleware('checkLogin');;
 Route::post('profile','PagesController@postprofile')->middleware('checkLogin');
 Route::get('order','PagesController@order');
@@ -94,8 +94,6 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
 		Route::get('status/{id}','OrderController@Status');
 		Route::post('print','OrderController@exportExcel');
 	});
-
-
 
 });
 

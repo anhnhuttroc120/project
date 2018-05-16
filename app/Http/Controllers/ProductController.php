@@ -135,8 +135,8 @@ class ProductController extends Controller
                             unlink($url);
                         }
                     }
-                    $img = Image::make('images/product/'.$picture)->resize('286', '381');  //zoom ảnh
-                    $img->save();
+                    // $img = Image::make('images/product/'.$picture)->resize('286', '381');  //zoom ảnh
+                    // $img->save();
                     $listImage[$key] = $picture; //gắn tên ảnh mới zô mảng
                 }
                 foreach ($arrTemp as $key => $value) {
@@ -178,12 +178,15 @@ class ProductController extends Controller
     }   
 
     public function postComment(Request $request){
-      $data = $request->all();
-      $product = Product::where('slug', $request->slug)->first();
-      $data['product_id'] = $product->id;
-      $data['parent_id'] = !empty(Auth::user()) ? Auth::user()->id : ''; 
-      Comment::create($data);
-      return back();
+        if ($request->ajax()) {
+        $id = $request->id;
+        $product_main = Product::find($id);
+        $data = $request->all();
+        $data['product_id'] = $id;
+        Comment::create($data);
+        $view = view('ajax.comment', compact('product_main'))->render();
+        return response(['view'=> $view], 200); 
+        }
 
-    }
+    } 
 }

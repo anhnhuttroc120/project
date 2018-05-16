@@ -47,9 +47,7 @@ class PagesController extends Controller
         $data = $request->all();            
         $data['status'] = 1;
         $data['password'] = bcrypt($request->password);
-        $data['picture'] = '';
         $data['is_admin'] = 0;
-        $data['created_by'] = '';
         User::create($data); // them vo database
         return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công');			
     } 

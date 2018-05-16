@@ -2905,13 +2905,12 @@ padding:8px 0
 }
 .img-portrait{
 	padding-left: 10px;
-	width: 500px;
+	
 
 }
-.img-portrait img{
+.img-portrait img{	
 	padding-left: 10px;
-	width: 251PX;
-	height: 334PX;
+	
 	
 }
 

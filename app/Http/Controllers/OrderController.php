@@ -224,7 +224,7 @@ class OrderController extends Controller
     }
 
     public function calendar()
-    {
+    {	
     	$day = date('d');
     	$year = date('y', time());
     	$data['today'] = Order::whereDay('date_shipper', $day)->where('status', 2)->get();
