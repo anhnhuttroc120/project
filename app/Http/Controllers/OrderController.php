@@ -16,27 +16,32 @@ class OrderController extends Controller
     public function list(Request $request,$id='default')
     {
 	 	$query = Order::query();
-	 	$query->orderBy('id','desc');
+	 	$queryCount = Order::query();
+	 	$query->orderBy('id', 'desc');
 	 	if ($request->has('keyword')) {
 	 		$keyword = $request->keyword;
 	 		$query->whereHas('user',function($query) use($keyword){
-	 			$query->where('fullname','like',"%".$keyword . "%")->orWhere('id',$keyword);
-			});		
+	 			$query->where('fullname','like',"%".$keyword . "%")->orWhere('id', $keyword);
+			});	
+			$queryCount->whereHas('user',function($query) use($keyword){
+	 			$query->where('fullname','like',"%".$keyword . "%")->orWhere('id', $keyword);
+			});	
 	 	}
 	 	if ($request->has('enddate')) {
 	 		$startdate =  ($request->startdate == '') ? '2018-01-01' : $request->startdate;
 	 		$enddate =  ($request->enddate == '') ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
-	 		$query->whereBetween('created_at',[$startdate, $enddate]);
+	 		$query->whereBetween('created_at', [$startdate, $enddate]);
+	 		$queryCount->whereBetween('created_at', [$startdate, $enddate]);
 	 	}
+	 	$countAll = $queryCount->select('status',DB::raw('count(*) as number'))->groupBy('status')->get();
+        $total = $query->sum('total');	  
 		if ($request->ajax()) {
-			$orders = $query->paginate(10)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);
-			$total = $this->total($orders, 'status');	
-		 	$view = view('ajax.order', compact('orders','total'))->render();
-			return response()->json(['view'=>$view,'total'=>$total], 200);
-		}
+			$orders = $query->paginate(10)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate]);	
+		 	$view = view('ajax.order', compact('orders','total','countAll'))->render();
+			return response()->json(['view'=>$view, 'total'=>$total], 200);
+		} 	
 		$orders = $query->paginate(10)->appends(request()->query());
-		$total = $this->total($orders, 'status');	
-		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate','total'));			
+		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate','total','countAll'));			
     }
 
     public function detail($id)

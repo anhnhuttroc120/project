@@ -19,6 +19,7 @@
 @endsection
 @section('content')
 
+
   <div class="content-wrapper">
  {!! Toastr::message() !!}
     <!-- Content Header (Page header) -->
@@ -73,8 +74,9 @@
                 
               
                 <div id="result">
-                    {!! view('ajax.order',compact(['orders','total']))->render() !!}
+                    {!! view('ajax.order',compact(['orders','total','countAll']))->render() !!}
                 </div>
+               
                 
             </div>
             <!-- /.box-body -->
