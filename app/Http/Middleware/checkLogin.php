@@ -19,9 +19,7 @@ class checkLogin
        if(Auth::check()){     
             return $next($request);
          
-        } else {
-
-            return redirect()->intended('dang-nhap');
-            }
+        }
+        return redirect()->intended('dang-nhap');
     }
 }

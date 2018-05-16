@@ -20,7 +20,7 @@ class OrderController extends Controller
 	 	if ($request->has('keyword')) {
 	 		$keyword = $request->keyword;
 	 		$query->whereHas('user',function($query) use($keyword){
-	 			$query->where('fullname','like',"%".$keyword . "%");
+	 			$query->where('fullname', 'like', "%".$keyword . "%");
 			});		
 	 	}
 	 	if ($request->has('enddate')) {
@@ -214,7 +214,7 @@ class OrderController extends Controller
     }
 
     public function calendar()
-    {
+    {	
     	$day = date('d');
     	$data['today'] = Order::whereDay('date_shipper', $day)->where('status', 2)->get();
     	$data['tomorrow'] = Order::whereDay('date_shipper', $day+1)->where('status', 2)->get();
