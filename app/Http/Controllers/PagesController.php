@@ -29,10 +29,10 @@ class PagesController extends Controller
     {   
         $category = Categories::where('slug', $slug)->first();
         $query  = Product::where('category_id', $category->id);
-        $query->orderBy('price', $sort);
         if ($sort == 'bestseller') {
           $query->orderBy('bestseller', 'desc');  
         }
+        $query->orderBy('price', $sort);
         $products = $query->paginate(8)->appends(request()->query());
         return view('default.pages.category', compact('products', 'category','sort'));
     }
@@ -87,7 +87,14 @@ class PagesController extends Controller
                 $query->orderBy('bestseller', 'desc');
             }
             $query->orderBy('price', $sort);
-            $products = $query->paginate(12)->appends(request()->query());
+            if ($request->ajax()) {
+                $position = $request->position;
+                $item =$request->item;
+                $products =  $query->offset($position)->limit($item)->get();
+                $view = view('ajax.search', compact('products'))->render();
+                return response()->json(['view'=>$view], 200);    
+            }
+            $products = $query->paginate(8);
             return view('default.pages.timkiem', compact('keyword', 'products','sort'));
         }
     }    
