@@ -5,13 +5,11 @@
   </div>
 </div>
 
-
-
 <div class="form-group">
 
       <label for="exampleInputUserName">Loại sản phẩm</label>
 
-   {!! Form::select('category', $categories, null, ['class' => 'form-control']) !!}
+   {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
  </div>
  <div class="form-group">
   {!! Form::label('name', 'Giá sản phẩm') !!}
@@ -27,18 +25,28 @@
   </div>
 </div>
  <div class="form-group">
+
   {!! Form::label('name', 'Màu sắc') !!}
   <div class="form-controls">
-  	  {!! Form::label('name', 'Trắng') !!}
-	  {!! Form::checkbox('color[]', 'Trắng') !!}
-	    {!! Form::label('name', 'Đen') !!}
-	  {!! Form::checkbox('color[]', 'Đen') !!}
-	    {!! Form::label('name', 'Hồng') !!}
-	  {!! Form::checkbox('color[]', 'Hồng') !!}
-	    {!! Form::label('name', 'Xanh') !!}
-	  {!! Form::checkbox('color[]', 'Xanh') !!}
-	   {!! Form::label('name', 'Tím') !!}
-	  {!! Form::checkbox('color[]', 'Tím') !!}
+
+     {!! Form::label('name', 'Trắng') !!}
+    {!! Form::checkbox('color[]', 'Trắng') !!}
+
+     {!! Form::label('name', 'Đen') !!}
+    {!! Form::checkbox('color[]', 'Đen') !!}
+
+     {!! Form::label('name', 'Hồng') !!}
+    {!! Form::checkbox('color[]', 'Hồng') !!}
+
+     {!! Form::label('name', 'Xanh') !!}
+    {!! Form::checkbox('color[]', 'Xanh') !!}
+
+     {!! Form::label('name', 'Tím') !!}
+    {!! Form::checkbox('color[]', 'Tím') !!}
+   
+   
+
+
   </div>
 </div>
 <div class="form-group">
@@ -60,7 +68,7 @@
   </div>
    <div class="form-group">
                     <label>Nội Dung</label>
-                    <textarea name="des" id="demo" class="form-control ckeditor" rows="3"></textarea>
+                    <textarea name="description" id="demo" class="form-control ckeditor" rows="3"></textarea>
                 </div>
 
 
@@ -71,31 +79,31 @@
       @endif 
    <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 1</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[1]">
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 2</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[2]">
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 3</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[3]">
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 4</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[4]">
 
       
   </div>
   <div class="form-group">
       <label for="exampleInputFile">Hình ảnh 5</label>
-      <input type="file" id="exampleInputFile" name="picture[]">
+      <input type="file" id="exampleInputFile" name="picture[5]">
 
       
   </div>

@@ -1,6 +1,45 @@
 @extends('default.master')
+@section('css')
+     {{-- <link rel="stylesheet" href="assets/css/docs.theme.min.css"> --}}
+<link rel="stylesheet" href="assets/owlcarousel/assets/owl.carousel.min.css">
+   <link rel="stylesheet" href="assets/owlcarousel/assets/owl.theme.default.min.css">
+   <style>
+   	button.owl-prev{
+   		position: relative;
+   		top:-400px;
+   		right: 520px;
+   		height: 0px;
+
+   	}
+   	.owl-prev span{
+   		font-size:  70px;
+   		color: #ffffff;
+   	}
+   	button.owl-next{
+   		position: relative;
+   		top:-400px;
+   		left: 520px;
+   		height: 0px;
+ 
+
+   	}
+   	.owl-next span{
+   		font-size:  70px;
+   		 color: #ffffff;
+   	}
+   	.owl-dots{
+   		display: none;
+   	}
+   	.owl-nav{
+   		height: 0px;
+   	}
+   	
+   </style>
+
+@endsection
 @section('content')
 @include('default.slide')
+
 <div class="container">
 		<div id="content" class="space-top-none">
 			<div class="main-content">
@@ -13,37 +52,58 @@
 						
 								<div class="clearfix"></div>
 							</div>
-
-							<div class="row">
-								
-								<div  class="col-sm-3">
+						 <div class="large-12 columns">
+							<div class="row owl-carousel owl-theme">
+								@foreach($products['new'] as $product)
+								<?php 
+									$pictures = json_decode($product->detail->picture,true);
+									$picture_main = $pictures[1];
+									if($product->detail->sale_off > 0){
+										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
+									}							
+								?>
+								<div  class="col-sm-3 item">
 									<div  class="single-item">
+									{{-- 	@if($product->detail->sale_off > 0 )
+										<div class="ribbon-wrapper"><div class="ribbon sale">Sale</div></div>
+										@endif --}}
+
 										<div class="single-item-header">
-											<a href="chitiet/"><img src="images/book/" alt=""></a>
+											<a href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
+
+
 										</div>
-										<div class="single-item-body">
-											<p class="name-product" style="height: 50px;"  class="single-item-title"></p>
+										<div class="single-item-body" style="width: 250px;">
+											<p class="name-product" style="height: 50px;"  class="single-item-title">{{$product->name}}</p>
 											<p class="single-item-price">
-												<p class="price" ><sup>đ</sup ></p>
+												@if($product->detail->sale_off >0 )
+												<span class="flash-del price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												<span class="flash-sale price">{{number_format($price_sale)}}<sup>đ</sup ></span>
+												@else
+												<span class="flash-sale price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												@endif
 											</p>
 										</div>
-										<div class="single-item-caption">
-											<a class="add-to-cart pull-left" href="shopping_cart.html"><i class="fa fa-shopping-cart"></i></a>
-											<a class="beta-btn primary" href="product.html">Chi tiết <i class="fa fa-chevron-right"></i></a>
+										
+										<div class="single-item-caption" style="width: 250px;">
+											<a class="add-to-cart pull-left" href="chi-tiet/{{$product->slug}}"><i class="fa fa-info-circle"></i></a>
+											<a class="beta-btn primary" href="chi-tiet/{{$product->slug}}">Chi tiết <i class="fa fa-chevron-right"></i></a>
 											<div   class="clearfix"></div>
 										</div>
 									</div>
 								</div>
-								
-							</div>
+								@endforeach
+							</div> {{-- row --}}
+						</div>{{-- lar12-column	 --}}
+
 						</div> <!-- .beta-products-list -->
 
 						<div class="space50">&nbsp;</div>
-
+					@foreach($categories_main as $category)	
 						<div class="beta-products-list">
-							<h4 class="product-sell">Sản phẩm bán chạy</h4>
+							<h4 class="product-sell">{{$category->name}}</h4>
 							<div class="beta-products-details">
-								<p class="pull-left">438 styles found</p>
+								
 								<div class="clearfix"></div>
 							</div>
 						
@@ -51,34 +111,113 @@
 							<div class="row">
 							
 								
+								@foreach($category->products as $key =>$product)
+								<?php 
+
+								if($key == 12){
+									break;
+								}
+								$pictures = json_decode($product->detail->picture,true);
+								$picture_main = $pictures[1];
+								if($product->detail->sale_off > 0){
+										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
+									}
+
+								?>
 
 								<div  class="col-sm-3">
 									<div  class="single-item">
+										@if($product->detail->sale_off > 0 )
 										<div class="ribbon-wrapper"><div class="ribbon sale">Sale</div></div>
+										@endif
+
 										<div class="single-item-header">
-											<a href="chitiet/"><img src="images/book/" alt=""></a>
+											<a href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
 										</div>
 										<div class="single-item-body">
-										<p class="name-product" style="height: 50px;"  class="single-item-title"></p>
+										<p class="name-product" style="height: 50px;"  class="single-item-title">{{$product->name}}</p>
 											<p class="single-item-price">
-												<p class="price"> <sup>đ</sup><p>
+												@if($product->detail->sale_off >0 )
+												<span class="flash-del price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												<span class="flash-sale price">{{number_format($price_sale)}}<sup>đ</sup ></span>
+												@else
+												<span class="flash-sale price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												@endif
 											</p>
 										</div>
 										<div class="single-item-caption">
-											<a class="add-to-cart pull-left" href="shopping_cart.html"><i class="fa fa-shopping-cart"></i></a>
-											<a class="beta-btn primary" href="product.html">Chi tiết <i class="fa fa-chevron-right"></i></a>
+											<a class="add-to-cart pull-left" href="chi-tiet/{{$product->slug}}"><i class="fa fa-info-circle"></i></a>
+											<a class="beta-btn primary" href="chi-tiet/{{$product->slug}}">Chi tiết <i class="fa fa-chevron-right"></i></a>
 											<div   class="clearfix"></div>
 										</div>
 									</div>
 								</div>
-							
+								@endforeach
 							
 							</div>
-							<div class="space40">&nbsp;</div>
+							
 
 						
 							
 						</div> <!-- .beta-products-list -->
+							<div class="space40">&nbsp;</div>
+					@endforeach			
+						<div class="beta-products-list">
+							<h4 class="product-sell">Sản phẩm bán chạy</h4>
+							<div class="beta-products-details">
+								
+								<div class="clearfix"></div>
+							</div>
+						
+								
+							<div class="row">
+							
+								
+								@foreach($products['bestseller'] as $product)
+								<?php 
+								$pictures = json_decode($product->detail->picture,true);
+								$picture_main = $pictures[1];
+								if($product->detail->sale_off > 0){
+										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
+									}
+
+								?>
+								<div  class="col-sm-3">
+									<div  class="single-item">
+										@if($product->detail->sale_off > 0 )
+										<div class="ribbon-wrapper"><div class="ribbon sale">Sale</div></div>
+										@endif
+
+										<div class="single-item-header">
+											<a href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>
+										</div>
+										<div class="single-item-body">
+										<p class="name-product" style="height: 50px;"  class="single-item-title">{{$product->name}}</p>
+											<p class="single-item-price">
+												@if($product->detail->sale_off >0 )
+												<span class="flash-del price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												<span class="flash-sale price">{{number_format($price_sale)}}<sup>đ</sup ></span>
+												@else
+												<span class="flash-sale price">{{number_format($product->price)}}<sup>đ</sup ></span>
+												@endif
+											</p>
+										</div>
+										<div class="single-item-caption">
+											<a class="add-to-cart pull-left" href="chi-tiet/{{$product->slug}}"><i class="fa fa-info-circle"></i></a>
+											<a class="beta-btn primary" href="chi-tiet/{{$product->slug}}">Chi tiết <i class="fa fa-chevron-right"></i></a>
+											<div   class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+								@endforeach
+							
+							</div>
+							
+
+						
+							
+						</div> <!-- .beta-products-list -->
+						<div class="space40">&nbsp;</div>
 					{{-- 	back -to-top --}}
 					
 					</div>
@@ -90,3 +229,41 @@
 		</div> <!-- #content -->
 </div> <!-- .container -->
 @endsection
+@section('script')
+
+  <script src="assets/owlcarousel/owl.carousel.js"></script>
+<script>   
+$('#myCarousel').carousel({ 
+    interval:   2000    
+});
+</script>
+<script>
+            $(document).ready(function() {
+              $('.owl-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                responsiveClass: true,
+                responsive: {
+                  0: {
+                    items: 1,
+                    nav: true
+                  },
+                  600: {
+                    items: 3,
+                    nav: false
+                  },
+                  1000: {
+                    items: 4,
+                    nav: true,
+                    loop: true,
+                    margin: 20,
+                    autoplay:true
+                  }
+                }
+              })
+            })
+          </script>
+        
+@endsection
+
+

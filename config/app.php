@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -161,7 +161,14 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        Brian2694\Toastr\ToastrServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class
+
+        
+        
 
     ],
 
@@ -213,7 +220,13 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
          'Html' => Collective\Html\HtmlFacade::class,
-         'Image' => Intervention\Image\Facades\Image::class
+         'Image' => Intervention\Image\Facades\Image::class,
+         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
+         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+         'PDF' => Barryvdh\DomPDF\Facade::class
+       
+
 
     ],
 

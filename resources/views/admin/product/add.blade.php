@@ -1,6 +1,8 @@
 @extends('layout.admin.master')
 @section('css')
-
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 @endsection
 @section('content')
 
@@ -12,12 +14,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-       Sản phẩm
-        <small>Thêm</small>
+       Thêm 
+        <small>Sản phẩm</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li class="active">Sản phẩm</li>
+        <li class="active"><a href="{{url('admin/product/list')}}">Sản phẩm</a></li>
       </ol>
     </section>
 
@@ -33,7 +35,23 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
+          <div>
        
+            
+      
+       {!! Toastr::message() !!}
+
+    @if($errors->any())
+       <div class="alert alert-danger">
+        <ul style="list-style-type: none">
+            @foreach ($errors->all() as $error)
+                <li >{{ $error }}</li>
+            @endforeach
+        </ul>
+       
+    </div>
+    @endif
+          </div>
        
            {!! Form::open(['url' => 'admin/product/add', 'method' => 'post','files'=>true]) !!}
               <div class="box-body">
@@ -78,4 +96,5 @@
 <!-- AdminLTE for demo purposes -->
 <script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
 <script src="ckeditor/ckeditor.js"></script>
+
 @endsection

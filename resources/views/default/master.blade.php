@@ -5,8 +5,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Laravel </title>
 	<base href="{{asset('')}}">
-	<link href='http://fonts.googleapis.com/css?family=Dosis:300,400' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
+	   <link href='http://fonts.googleapis.com/css?family=Dosis:300,400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="source/assets/dest/css/font-awesome.min.css">
 	<link rel="stylesheet" href="source/assets/dest/vendors/colorbox/example3/colorbox.css">
@@ -20,7 +22,6 @@
 {{-- 	<link rel="stylesheet" title="style" href="source/assets/dest/css/fontawesome509/fontawesome-all.min.css"> --}}
 	
 </head>
-
 
 	@include('default.header')
 	<div class="inner-header">
@@ -60,7 +61,7 @@
 	<script src="source/assets/dest/js/waypoints.min.js"></script>
 	<script src="source/assets/dest/js/wow.min.js"></script>
 	<!--customjs-->
-	<script src="source/assets/dest/js/custom2.js"></script>
+{{-- 	<script src="source/assets/dest/js/custom2.js"></script> --}}
 	<script>
 	$(document).ready(function($) {    
 		$(window).scroll(function(){
@@ -71,7 +72,31 @@
 			}
 		})
 	})
+
+
 	</script>
+	<script>
+		 jQuery(document).ready(function($) {
+                'use strict';
+			
+        // this will get the full URL at the address bar
+        var url = window.location.href;
+
+        // passes on every "a" tag
+        $(".menu-info a").each(function() {
+        	// var a = $('.menu-info a').attr('href');
+
+            // checks if its the same on the address bar
+            if (url == (this.href)) {
+                $(this).closest("li").addClass("active2");
+				 $(this).parents('li').addClass('parent-active');
+           	
+           		 }
+           });		 
+        
+    }); 
+	</script>
+	
 	@yield('script')
 </body>
 </html>

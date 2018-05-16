@@ -1,13 +1,16 @@
 @extends('layout.admin.master')
 
 @section('css')
+<link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
 
 
 <link rel="stylesheet" href="AdminLTE-2.4.3/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+
 {{-- <link rel="stylesheet" href="team1/team1.css"> --}}
 
 @endsection
 @section('content')
+
  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -17,55 +20,41 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li><a href="#">Người dùng</a></li>
-        <li class="active"> Danh sách người dùng</li>
+        <li><a href="">Người dùng</a></li>
+       
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
+       <div id="dialog-confirm" title="Thông báo!" style="display: none;">
+      <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
+  </div>  
       <div class="row">
         <div class="col-xs-12">
+          <form action="{{url('admin/user/search')}}" method="get" id="form-search">
+            <div class="form-group">
+              <input  style="padding: 5px;" type="text" name="keyword" placeholder="Tìm kiếm theo tên" id="search" value="@if(!empty($keyword)){{$keyword}}@endif" >
+            </div>
+          </form>
        
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Danh sách</h3>
+              <h3 class="box-title"><a class="btn" href="{{url('admin/user/add')}}" style="color: #e7e7e7;background: #E3458B;">Thêm người dùng</a></h3>
+
             </div>
 
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead  >
-                <tr>
-                  <th style="width: 13%;">Rendering engine</th>
-                  <th style="width: 13%;">Browser</th>
-                  <th style="width: 13%;">Platform(s)</th>
-                  <th style="width: 13%;">Engine version</th>
-                  <th style="width: 13%;" >CSS grade</th>
-                  <th style="width: 10%;">Hành động</th>
-                  
-                </tr>
-                </thead>
-                <tbody>
-              @for($i=1;$i<50;$i++)  	
-                <tr>
-                  <td>{{$i}}</td>
-                  <td>Internet
-                    Explorer 4.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                  <td style="width: 50px;" ><a  style="color: red";  href=""><i class="fa fa-trash"></i></a>
-                  <span style="font-weight: bold;margin-right: 5px;">|</span><a  style="color: green";  href=""><i class="fa fa-edit"></i></a>  </td>
-          
-                </tr>
-              @endfor
-  
-                </tbody>
-                
-              </table>
+
+             <div id="result">
+            @if($users)
+                {!! view('ajax.user',compact(['users']))->render()  !!}
+            @endif
+
+
+              </div> {{-- ket thuc result --}}
             </div>
             <!-- /.box-body -->
           </div>
@@ -77,6 +66,7 @@
     </section>
     <!-- /.content -->
   </div>
+
 @endsection
 @section('script')
 <script src="AdminLTE-2.4.3/bower_components/jquery/dist/jquery.min.js"></script>
@@ -106,6 +96,28 @@
       'autoWidth'   : true
     })
   })
+</script>
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="js/userdelete.js"></script>
+<script>
+  $(document).ready(function(){
+   
+    $('#search').on('keyup', function(){
+      var value = $(this).val();
+      var url = "{{route('index')}}";
+      $.ajax({
+        type :'get',
+        url :url ,
+        data:{keyword:value},
+        success: function (data) { 
+            $('#result').empty();
+            $('#result').html(data.view).slideDown(300,'linear');
+        }
+      })
+    });
+   
+   });
 </script>
 @endsection
 

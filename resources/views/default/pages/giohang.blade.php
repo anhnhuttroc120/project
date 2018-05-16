@@ -1,46 +1,60 @@
 @extends('default.master')
-
+@section('css')
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+@endsection
 @section('content')
+
+
+
+
 	<div class="container"><div class="pull-right">
 				<div class="beta-breadcrumb font-large">
 					<a href="index.html">Trang chủ</a> / <span>Giỏ hàng</span>
 				</div>
 			</div></div>
 	<div class="container">
-		
+		@if(!empty(Cart::content()) && count(Cart::content())>0)	
+			<form  action="{{url('check-out')}}" method="post" id="form-checkout"> 
+				<input type="hidden" name="_token" value="{{csrf_token()}}">
+
 		<div class="row" style="margin-bottom: 20px;"> {{-- start row --}}
+			   {!! Toastr::message() !!}
 
 			<div class="col-md-5">
 						<div >
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold;width: "><i class="fa fa-truck fa-2x" style="color: black"> </i>GIAO HÀNG TỚI</a>
 						</div>
 					<p style="margin-top:10px;">Bạn vui lòng nhập đầy đủ thông tin bên dưới</p>
-					<form action="#" method="post">
+					
 						<div class="form-block">
 							<label for="email">Họ tên <span style="color:red">*</span></label>
-							<input type="text" id="email" name="username">
+							<input type="text"  name="username" disabled="" value="{{$user->fullname}}">
 						</div>
 						<div class="form-block">
 							<label for="email">Điện thoại <span style="color:red">*</span></label>
-							<input type="email" id="email" name="email" required>
+							<input type="text"  name="phone" autocomplete='email' value="{{$user->phone}}" >
 						</div>
 
 						<div class="form-block">
 							<label for="your_last_name">Tỉnh/Thành phố <span style="color:red">*</span></label>
-							<select style="height: 40px;" name="city" id="">
-								<option value="0">Chọn</option>
+							<select style="height: 40px;" name="city"  autocomplete='address-level2'>
+							@foreach($provinces as $id => $province)
+								<option value="{{$id}}">{{$province}}</option>
+							@endforeach	
 							</select>
 						</div>
 						<div class="form-block">
 							<label for="your_last_name">Quận/Huyện<span style="color:red">*</span> </label>
-							<select style="height: 40px;" name="district" id="">
+							<select style="height: 40px;" name="district" id="" autocomplete='address-level2'>
 								<option value="0">Chọn</option>
 							</select>
 						</div>
 
 						<div class="form-block">
 							<label for="adress">Địa chỉ<span style="color:red">*</span></label>
-							<input type="text" id="adress" value="" name="address" required>
+							<input type="text"  name="address" autocomplete='address-line1' value="{{$user->address}}">
 						</div>
 
 
@@ -51,72 +65,28 @@
 							</textarea>
 						</div>
 						
-
-
-					</form>
-			
-
-
 			</div>
 
 			<div class="col-md-7">
 					<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; "><i class="fa fa-shopping-cart fa-2x" style="color: black"> </i>SẢN PHẨM ĐÃ CHỌN</a>
 					</div>
-					<form  action="#" method="post">
+				
 						
-						<table class="table table-bordered">
-							<thead>
-							<tr >
-								<th class="text-center">Sản phẩm</th>
-								<th class="text-center">Size - Màu</th>
-								<th class="text-center">Giá tiền</th>
-								<th class="text-center">Số lượng</th>
-								
-								<th class="text-center">Thành tiền</th>
-								<th class="text-center">Xóa</th>
-								
-							</tr>
-							</thead>
-							<tbody>
-								@for($i=0;$i<10;$i++)
-							<tr class="shopping-cart">
-								<td ><img src="images/product/2.jpg" alt="" ></td>
-								<td><p>XL-Hồng</p></td>
-								<td><p>225.000đ</p></td>
-								<td><p><select name="quantity[]" id=""><option value="">1</option>
-									<option value="">2</option>
-									<option value="">3</option>
-									<option value="">4</option>
-									<option value="">5</option>
-									</select></p>
-
-								</td>
-								<td><p>450.000đ</p></td>
-								<td><p style="padding-left: 10px;"><i style="color: red;" class="fa fa-trash-o"></i></p></td>
-							</tr>
-							@endfor
-							</tbody>
-
-
-						</table>
-							<div class="row" style="border-bottom: 1px solid #DEDFDE">
-								<div class="col-md-8"></div>
-								<div class="col-md-4 sumarry" >
-									<p><b>Tổng tiền hàng:</b> <span style="padding-left: 30px;">335.000<sup>đ</sup></span></p>
-									<p><b>Phí vận chuyển:</b> <span style="padding-left: 30px;">0<sup>đ</sup></span></p>
-									<p><b style="padding-left: 30px;">Tổng cộng:</b> <span style="padding-left: 30px;color: red;font-weight: bold;">335.000<sup>đ</sup></span></p>
-									
-								</div>
-
-							</div>
+						<div class="result">
+						{!! view('ajax.giohang')->render() !!}
+						</div> {{-- end result	 --}}
 							<div  style="margin-top:10px;" class="row">
 								<div class="col-md-12 bookcart">
-									<a style="background: #A5A6A5" href="#" class="btn">TIẾP TỤC MUA HÀNG</a>
-									<a style="background: #63AA38;float: right;" href="#" class="btn">ĐẶT HÀNG</a>
+
+									<a style="background: #A5A6A5" href="{{url('trang-chu')}}" class="btn">TIẾP TỤC MUA HÀNG</a>
+									<button  style="background: #63AA38;float: right;font-size: 16px;color: #e7e7e7"  class="btn checkout">ĐẶT HÀNG</button>
 								</div>
 							</div>	
 					</form>
+					@else
+					<h4>Không có sản phẩm nào trong giỏ hàng.Click vào <a style="color: blue" href="{{url('trang-chu')}}">đây</a> về trang chủ tiếp tục mua hàng. </h4>
+					@endif
 
 				
 			</div> <!-- COL MD-7 -->
@@ -130,3 +100,46 @@
 
 	</div>
 @endsection
+@section('script')
+<script>
+	
+function formatNumber (num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+}
+</script>
+
+<script>
+	$(document).ready(function(){
+		$('a.checkout').click(function(){
+			$('#form-checkout').submit();
+		});
+
+	});
+</script>
+
+<script>
+	$(document).ready(function(){
+
+		$('select[name=city]').change(function(){
+			var idCity = $(this).val();
+			
+			 $.ajax({
+
+                    /* the route pointing to the post function */
+                    url: 'district',
+                    type: 'get',
+                     /* send the csrf-token and the input to the controller */
+                   	data: {idCity:idCity},
+                    dataType: 'text',
+                     /* remind that 'data' is the response of the AjaxController */
+                     success: function (data) { 
+                     	$('select[name=district]').html(data);
+                   
+                     }
+           }); 
+			
+		});
+	});
+</script>	
+
+@endsection					

@@ -1,0 +1,33 @@
+
+.top{
+
+}
+.top h5{
+
+font-weight: bold;
+
+font-size: 15px;
+margin-bottom: -11px;
+}
+.top p{
+
+opacity: 0.2;
+}
+.bot{
+
+}
+.bot p{
+	    padding-top: 5px;
+}
+body{
+	position: relative !important;
+}
+.img-product-fly{
+	position: absolute;
+	z-index: 999912932193;
+	width: 100px;
+	height: 70px;
+	object-fit: cover;
+	border-radius: 100%;
+	transition: all 1s ease;
+}

@@ -1,47 +1,42 @@
-@extends('layouts.app')
-
+@extends('default.master')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
+        <div id="content">
+            
+            <form action="{{ route('password.email') }}" method="post" class="beta-form-checkout">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <h4 style="font-weight: bold;">Quên mật khẩu</h4>
+                        <div class="space20">&nbsp;</div>       
+                            <div class="card-body">
+                                @if (session('status'))
+                                    <div class="alert alert-success">
+                                        {{ session('status') }}
+                                    </div>
+                                @endif
+                        <div class="form-block">
+                            <label for="email">Địa chỉ email</label>
+                            <input type="text" id="email"  name="email" class="{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}">
                                 @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                    <span style="color: red;margin-left: 220px;" class="invalid-feedback">
+                                       {{ $errors->first('email') }}
                                     </span>
                                 @endif
-                            </div>
                         </div>
+                        
+                                
+                        <div class="form-block" style="padding-left: 200px;">
+                            <button style="background: #ce3029;color:#e7e7e7" type="submit" class="btn">Gửi về email</button>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="col-sm-3"></div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+            </form>
+        </div> <!-- #content -->
+
+
+
 @endsection
