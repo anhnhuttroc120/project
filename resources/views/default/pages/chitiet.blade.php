@@ -40,7 +40,7 @@
 					<div class="row parentImage" data='1'>
 						<div class="col-sm-4">
 							<input type="hidden" name="id" value="{{$product_main->id}}">
-							<img class="imgtofly" src="images/product/{{$picture_main}}" alt="123">
+							<img style="width: 286px;height: 381px;" class="imgtofly" src="images/product/{{$picture_main}}" alt="123">
 						</div>
 						<div class="col-sm-8">
 							<div class="single-item-body">
@@ -132,9 +132,10 @@
 									$pictures = array_reverse($pictures);
 
 									 ?>
-								@foreach($pictures as  $picture)	
+								@foreach($pictures as  $picture)
+								<div class="pictureproduct">
 								<img  src="images/product/{{$picture}}" alt="123">
-								
+								</div>	
 								@endforeach
 								
 								</div>
