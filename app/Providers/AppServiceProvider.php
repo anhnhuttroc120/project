@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Schema::defaultStringLength(191);
+
         if(\Schema::hasTable('category')){
             $categories = Categories::pluck('name','id')->all();
             $categories['default']= '--Tất cả loại sản phẩm --'  ;
@@ -46,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
        });
         $quantitys = range(1,50);
         View::share('quantitys', $quantitys);
+
     }
 
     /**
