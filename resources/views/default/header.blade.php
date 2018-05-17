@@ -1,9 +1,10 @@
 <div id="header">
-		<div style="background: #cecfce" class="header-top">
+		<div style="background: #99FFFF" class="header-top">
 			<div  class="container">
 				
 				<div class="pull-right auto-width-right">
 					<ul class="top-details menu-beta l-inline">
+
 						@if(Auth::check())
 					
 						<li style="position: relative"><a href="{{url('profile')}}"><i class="fa fa-user"></i>Chào bạn ! {{Auth::user()->fullname}} </a>
@@ -19,7 +20,12 @@
 						
 					</ul>
 				</div>
-				<div class="clearfix"></div>
+
+				<div class="clearfix" style="margin-top: 10px; "><marquee width="50%">Shop giao hàng toàn quốc từ 3 ngày đến 5 ngày. Thanh toán khi nhận hàng</marquee>
+				</div>
+				
+				
+				
 			</div> <!-- .container -->
 		</div> <!-- .header-top -->
 		<div  class="header-body">
