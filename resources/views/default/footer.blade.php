@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-sm-4">
       <h5 style="margin-bottom: 20px;color: white;">Thông Tin Shop</h5>
-      
+      	<hr>
       		<div>
 				<ul class="footer">
 					<li style="color: white;"><a href="blog_fullwidth_2col.html"><img src="images/logo/address.png"></a> Mua hàng: 246 Ngũ Hành sơn, Quận Ngũ hành Sơn, Thành phố Đà Nẵng</li>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-sm-4">
       		<h5 style="margin-bottom: 20px;color: white;"> Hướng Dẫn Mua Hàng</h5>
-      		 
+      		 <hr>
 				<ul>
 					<li><a href="blog_fullwidth_2col.html" style="color: white;"><i class="fa fa-chevron-right"></i> Chính sách bảo mật</a></li>
 					<li><a href="blog_fullwidth_2col.html" style="color: white;"><i class="fa fa-chevron-right"></i> Quy chế hoạt động</a></li>
@@ -29,6 +29,7 @@
     </div>
     <div class="col-sm-4">
       <h5 style="color: white;">Đăng Ký Theo Dõi</h5> 
+      <hr>
       		<form action="#" method="post">
 				<input style="background: #e7e7e7;color: black; margin-top: 30px;"   type="email" name="your_email">
 				<button class="pull-right info" type="submit" style="margin-top: 30px; background-color: blue;">Subscribe <i class="fa fa-chevron-right"></i></button>
