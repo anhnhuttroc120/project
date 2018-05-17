@@ -19,6 +19,7 @@
 @endsection
 @section('content')
 
+
   <div class="content-wrapper">
  {!! Toastr::message() !!}
     <!-- Content Header (Page header) -->
@@ -73,8 +74,9 @@
                 
               
                 <div id="result">
-                    {!! view('ajax.order',compact(['orders','total']))->render() !!}
+                    {!! view('ajax.order',compact(['orders','total','countAll']))->render() !!}
                 </div>
+               
                 
             </div>
             <!-- /.box-body -->
@@ -187,10 +189,7 @@ function formatNumber (num) {
           console.log(data);
             $('#result').empty();
             $('#result').html(data.view);
-            if(data.total== ''){
-              data.total = 0;
-            }
-            $('.subtotal').html(formatNumber(data.total));
+          
 
         }
       });

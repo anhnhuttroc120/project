@@ -30,7 +30,7 @@
 				<div style="padding-top:30px;" class="pull-right beta-components space-left ov">
 					<div class="space10">&nbsp;</div>
 					 <div class="beta-comp">
-						<form role="search" method="get" id="searchform" action="{{url('search/asc')}}">
+						<form role="search" method="get" id="searchform" action="{{url('search')}}">
 					        <input type="text"  name="keyword" value="@if(!empty($keyword)){{$keyword}}@endif"  id="s" placeholder="Nhập từ khóa..." />
 					        <button class="fa fa-search" type="submit" id="searchsubmit"></button>
 						</form>
@@ -68,7 +68,7 @@
 						<li class="{{(Request::is('trang-chu') || Request::is('profile') || Request::is('changepass') || Request::is('order')  || Request::is('search/*') || Request::is('/')) ? "active3" :'' }}"><a   href="{{url('trang-chu')}}">TRANG CHỦ</a></li>
 						
 						@foreach($categories_main as $key => $category)
-						<li class="{{(Request::is('category/'.$category->slug.'/*')) ? 'active3' : ''}}"><a href="category/{{$category->slug}}/asc">{{$category->name}}</a>
+						<li class="{{(Request::is('category/'.$category->slug)) ? 'active3' : ''}}"><a href="category/{{$category->slug}}">{{$category->name}}</a>
 							
 						</li>
 						@endforeach

@@ -49,7 +49,7 @@
 								<div class="clearfix"></div>
 							</div>
 
-							<div class="row">
+					<div class="row product-search">
 						@foreach($products as $product)
 								<?php 
 									$pictures = json_decode($product->detail->picture,true);
@@ -87,18 +87,18 @@
 						</div> <!-- .beta-products-list -->
 
 						<div class="space50">&nbsp;</div>
-
+						@if(count($products) >=8)
+						<div class="list" style="padding-left: 500px;">
+							<a class="btn btn-success load-more">Xem thêm sản phẩm <i style="color: #ffffff;" class="fa fa-chevron-down"></i></a>
+						</div>
+						@endif
 						
 					{{-- 	back -to-top --}}
 					
 					</div>
 				</div> <!-- end section with sidebar and main content -->
 				<div class="row">
-					<div class="col-sm-12">
-						<div class="pagination" style="padding-left: 500px;">
-							{{$products->links('vendor.pagination.default')}}
-							
-						</div>
+					
 							
 					</div>
 				</div>
@@ -114,15 +114,42 @@
 <script>
 	$(document).ready(function(){
 		$('select[name=order]').change(function(){
-		
 			var order = $(this).val();
 			var keyword = $('h2.product-new').attr('data');
-			var url =  '{{url('search/')}}' + '/'  + order + '?keyword=' + keyword; 
-			
-               $(location).attr('href', url);
+			var url =  '{{url('search/')}}'   + '?keyword=' + keyword +'&sort=' +order ;
+			$(location).attr('href', url);
 
 		});
 
+	});
+</script>
+<script>
+	$(document).ready(function(){
+		var position = 8;
+		var item = 4;
+		$('.load-more').click(function(){
+			var order = $('select[name=order]').val();
+			var keyword = $('h2.product-new').attr('data');
+			var url =  '{{url('search/')}}'    + '?keyword=' + keyword +'&sort=' +order ;
+			$.ajax({
+
+                    /* the route pointing to the post function */
+                    url: url,
+                    type: 'get',
+                     /* send the csrf-token and the input to the controller */
+                   	data: {position:position , item:item},
+                      // remind that 'data' is the response of the AjaxController 
+                     success: function (data) { 
+                     	position +=4;
+                		if (data.view !='') {
+                			$('.product-search .col-sm-3:last').after(data.view);		
+                		} else {
+                			$('.list').remove();
+                		}
+                     	
+                     }
+           }); 
+		});
 	});
 </script>
 @endsection

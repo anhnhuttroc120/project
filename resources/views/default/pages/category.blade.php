@@ -104,7 +104,7 @@
 
 			</div> <!-- .main-content -->
 		</div> <!-- #content -->
-</div> <!-- .container -->
+</div> <!-- .container <--></-->
 @endsection
 @section('script')
 <script>
@@ -112,9 +112,8 @@
 		$('select[name=arrange]').change(function(){
 			var category = $('h2.product-new').attr('data');
 			var arrange = $(this).val();
-			    var url =  '{{url('category/')}}' + '/'  + category + '/' + arrange;
-             
-              $(location).attr('href', url);
+			 var url =  '{{url('category/')}}' + '/'  + category + '?sort=' + arrange;
+             $(location).attr('href', url);
 
 		});
 

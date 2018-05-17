@@ -1,18 +1,28 @@
 <?php 
-
-  $countDone = 0;
-  $countCancel = 0;
-  $countWaiting = 0;
-  foreach ($orders as $key => $order) {
-      if($order->status ==1 ){
-        $countDone++;
-
-      }elseif($order->status ==2) {
-        $countWaiting++;
-      }else{
-       $countCancel++;
+if(count($countAll)>0){
+    foreach ($countAll as $key => $order) {
+      switch ($order->status) {
+          case '1':
+              $count['done'] = $order->number;
+              break;
+          case '2':
+              $count['waiting'] = $order->number;
+              break;
+          case '3':
+              $count['cancel'] = $order->number;
+              break; 
+         
       }
-  }
+     } 
+}    
+      $count['done'] = !empty($count['done']) ? $count['done'] : 0;
+      $count['waiting'] = !empty($count['waiting']) ? $count['waiting'] : 0;
+      $count['cancel'] = !empty($count['cancel']) ? $count['cancel'] : 0;
+  
+
+
+  
+
 
 ?>
  <table id="example1" class="table table-bordered table-striped">
@@ -61,10 +71,11 @@
               <div style="float:right" class="pagination">
                 {!! $orders->links() !!}
               </div>
-              <div class="shiping-report">
-                  <p>Tổng đơn hàng đã xử lý: {{$countDone}}</p>
-                  <p>Tổng đơn hàng đang xử lý : {{$countWaiting}}</p>
-                  <p>Tổng đơn hàng hủy : {{$countCancel}}</p>
-                   <p ><b>Tổng tiền đơn hàng đã xử lý</b> : <span style="color: red;" class="subtotal">{{number_format($total)}}  </span> <span style="color: red;">VNĐ</span></p>
+               <div class="shiping-report">
+                  <p>Tổng đơn hàng đã xử lý: {{ $count['done']}}  </p>
+                  <p>Tổng đơn hàng đang xử lý : {{$count['waiting']}} </p>
+                  <p>Tổng đơn hàng hủy :{{$count['cancel']}} </p>
+                   <p ><b>Tổng tiền đơn hàng </b> : <span style="color: red;" class="subtotal">{{number_format($total)}}  </span> <span style="color: red;">VNĐ</span></p>
                 </div>
          
+              

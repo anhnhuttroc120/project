@@ -111,8 +111,8 @@
         url :url ,
         data:{keyword:value},
         success: function (data) { 
-            $('#result').empty();
-            $('#result').html(data.view).slideDown(300,'linear');
+          
+            $('#result').html(data.view);
         }
       })
     });
