@@ -285,7 +285,22 @@
 			</form>
 		
 		<div id="showcomment">
-			 {!! view('ajax.comment',compact(['product_main']))->render() !!}
+			 <div class="container" style="padding-bottom: 60px;">
+			<div class="row list-product">
+				<a class="btn btn-primary">Ý kiến phản hồi (<span class="countComment">{{count($product_main->comments)}}</span>)</a>
+				@foreach($product_main->comments as $comment)
+						<div class="item-comment" style="margin-top: 10px;">
+							<div class="top">
+								<h5>{{$comment->name}}</h5>
+								<p>{{date('d/m/Y H:i:s', strtotime($comment->created_at))}}</p>
+							</div>
+							<div class="bot">
+								<p>{{$comment->content}}</p>
+							</div>
+						</div>
+				@endforeach
+			</div>
+		</div>
 
 		</div>
 	</div> <!-- end wrapper form -->
@@ -397,7 +412,8 @@
                      /* remind that 'data' is the response of the AjaxController */
                      success: function (data) { 
                      	console.log(data);
-                     	$('#showcomment').html(data.view);
+                     	$('#showcomment .item-comment:last').after(data.view);
+                     	$('.countComment').html(data.countComment);
                      	$('#cm').val('');
                        
                      }

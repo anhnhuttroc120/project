@@ -114,10 +114,9 @@
 <script>
 	$(document).ready(function(){
 		$('select[name=order]').change(function(){
-		
 			var order = $(this).val();
 			var keyword = $('h2.product-new').attr('data');
-			var url =  '{{url('search/')}}' + '/'  + order + '?keyword=' + keyword; 
+			var url =  '{{url('search/')}}'   + '?keyword=' + keyword +'&sort=' +order ;
 			$(location).attr('href', url);
 
 		});
@@ -131,7 +130,7 @@
 		$('.load-more').click(function(){
 			var order = $('select[name=order]').val();
 			var keyword = $('h2.product-new').attr('data');
-			var url =  '{{url('search/')}}' + '/'  + order + '?keyword=' + keyword;
+			var url =  '{{url('search/')}}'    + '?keyword=' + keyword +'&sort=' +order ;
 			$.ajax({
 
                     /* the route pointing to the post function */
@@ -139,11 +138,11 @@
                     type: 'get',
                      /* send the csrf-token and the input to the controller */
                    	data: {position:position , item:item},
-                     /* remind that 'data' is the response of the AjaxController */
+                      // remind that 'data' is the response of the AjaxController 
                      success: function (data) { 
                      	position +=4;
-                		if(data.view !=''){
-                		$('.product-search .col-sm-3:last').after(data.view);		
+                		if (data.view !='') {
+                			$('.product-search .col-sm-3:last').after(data.view);		
                 		} else {
                 			$('.list').remove();
                 		}

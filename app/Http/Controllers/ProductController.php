@@ -180,12 +180,12 @@ class ProductController extends Controller
     public function postComment(Request $request){
         if ($request->ajax()) {
         $id = $request->id;
-        $product_main = Product::find($id);
         $data = $request->all();
         $data['product_id'] = $id;
-        Comment::create($data);
-        $view = view('ajax.comment', compact('product_main'))->render();
-        return response(['view'=> $view], 200); 
+        $comment = Comment::create($data);
+        $countComment = Comment::where('product_id', $id)->count();
+        $view = view('ajax.comment', compact('comment'))->render();
+        return response(['view'=> $view,'countComment'=>$countComment], 200); 
         }
 
     } 
