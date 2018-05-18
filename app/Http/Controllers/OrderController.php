@@ -33,6 +33,7 @@ class OrderController extends Controller
 	 		$query->whereBetween('created_at', [$startdate, $enddate]);
 	 		$queryCount->whereBetween('created_at', [$startdate, $enddate]);
 	 	}
+	 	
 	 	$countAll = $queryCount->select('status',DB::raw('count(*) as number'))->groupBy('status')->get();
         $total = $query->sum('total');	  
 		if ($request->ajax()) {

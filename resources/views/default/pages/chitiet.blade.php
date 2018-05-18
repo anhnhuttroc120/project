@@ -272,7 +272,7 @@
 				</div>
 				<div class="form-group">
 					<label for="name">Tên:</label>
-					<input value="" required="" type="text" name="name" id="name" class="form-control">
+					<input  required type="text" name="name" id="name" class="form-control">
 				</div>
 				<div class="form-group">
 					<label for="cm">Bình luận:</label>
@@ -285,7 +285,22 @@
 			</form>
 		
 		<div id="showcomment">
-			 {!! view('ajax.comment',compact(['product_main']))->render() !!}
+			 <div class="container" style="padding-bottom: 60px;">
+			<div class="row list-product">
+				<a class="btn btn-primary">Ý kiến phản hồi ({{count($product_main->comments)}})</a>
+				@foreach($product_main->comments as $comment)
+						<div class="item-comment" style="margin-top: 10px;">
+							<div class="top">
+								<h5>{{$comment->name}}</h5>
+								<p>{{date('d/m/Y H:i:s', strtotime($comment->created_at))}}</p>
+							</div>
+							<div class="bot">
+								<p>{{$comment->content}}</p>
+							</div>
+						</div>
+						@endforeach
+			</div>
+		</div>
 
 		</div>
 	</div> <!-- end wrapper form -->
@@ -393,11 +408,10 @@
                     url: url,
                     type: 'post',
                      /* send the csrf-token and the input to the controller */
-                   	data: {_token: CSRF_TOKEN, email:email,name:name,content:comment,id:product_id},
+                  	data: {_token: CSRF_TOKEN, email:email,name:name,content:comment,id:product_id},
                      /* remind that 'data' is the response of the AjaxController */
                      success: function (data) { 
-                     	console.log(data);
-                     	$('#showcomment').html(data.view);
+                     	$('#showcomment .item-comment:last').after(data.view);
                      	$('#cm').val('');
                        
                      }

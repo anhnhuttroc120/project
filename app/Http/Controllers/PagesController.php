@@ -160,11 +160,7 @@ class PagesController extends Controller
         if($request->ajax()) {
             $id = $request->id;
             $order = Order::findOrFail($id);
-            if ($request->status == 3) {
-                 $data['status'] = 2;
-            } else {
-                $data['status'] = 3;
-            }
+            $data['status'] = ($request->status == 2) ? 3 : 2;
             $order->update($data);
             $view = view('ajax.orderclient', compact('order'))->render();
             return response()->json(['view'=>$view, 'id'=>$order->id], 200);
