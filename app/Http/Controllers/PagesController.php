@@ -25,8 +25,9 @@ class PagesController extends Controller
         return view('default.pages.trangchu', compact('products'));
     }
 
-    public function category($slug, $sort = 'asc')
+    public function category(Request $request, $slug)
     {   
+        $sort = ($request->has('sort')) ? $request->sort :'asc';
         $category = Categories::where('slug', $slug)->first();
         $query  = Product::where('category_id', $category->id);
         if ($sort == 'bestseller') {
@@ -34,7 +35,7 @@ class PagesController extends Controller
         }
         $query->orderBy('price', $sort);
         $products = $query->paginate(8)->appends(request()->query());
-        return view('default.pages.category', compact('products', 'category','sort'));
+        return view('default.pages.category', compact('products', 'category', 'sort'));
     }
 
     public function getRegister()
@@ -74,27 +75,28 @@ class PagesController extends Controller
         return redirect('trang-chu');
     }
 
-    public function search(Request $request, $sort ='asc')
+    public function search(Request $request)
     {   
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
             $query = Product::whereHas('category', function($query) use ($keyword) {
                 $query->where('name','like',"%".$keyword . "%")->orWhere('slug','like',"%".$keyword."%");
                  })->orwhere('name', 'like', "%".$keyword . "%");
-            if ($sort == 'bestseller') { 
-                $query->orderBy('bestseller', 'desc');
-            }
-            $query->orderBy('price', $sort);
-            if ($request->ajax()) {
-                $position = $request->position;
-                $item =$request->item;
-                $products =  $query->offset($position)->limit($item)->get();
-                $view = view('ajax.search', compact('products'))->render();
-                return response()->json(['view'=>$view], 200);    
-            }
-            $products = $query->paginate(8);
-            return view('default.pages.timkiem', compact('keyword', 'products','sort'));
         }
+        $sort = ($request->has('sort')) ? $request->sort :'asc';
+        if ($sort == 'bestseller') { 
+            $query->orderBy('bestseller', 'desc');
+        }
+        $query->orderBy('price', $sort);
+        if ($request->ajax()) {
+            $position = $request->position;
+            $item =$request->item;
+            $products =  $query->offset($position)->limit($item)->get();
+            $view = view('ajax.search', compact('products'))->render();
+            return response()->json(['view'=>$view], 200);    
+        }
+        $products = $query->paginate(8);
+        return view('default.pages.timkiem', compact('keyword', 'products','sort'));   
     }    
 
     public function detail($slug)
@@ -160,7 +162,7 @@ class PagesController extends Controller
         if($request->ajax()) {
             $id = $request->id;
             $order = Order::findOrFail($id);
-            $data['status'] = ($request->status == 2) ? 3 : 2;
+            $data['status'] = ($request->status == 3) ? 2 : 3;
             $order->update($data);
             $view = view('ajax.orderclient', compact('order'))->render();
             return response()->json(['view'=>$view, 'id'=>$order->id], 200);

@@ -287,7 +287,9 @@
 		<div id="showcomment">
 			 <div class="container" style="padding-bottom: 60px;">
 			<div class="row list-product">
-				<a class="btn btn-primary">Ý kiến phản hồi ({{count($product_main->comments)}})</a>
+
+				<a class="btn btn-primary">Ý kiến phản hồi (<span class="countComment">{{count($product_main->comments)}}</span>)</a>
+			<div class="wrapper-comment">
 				@foreach($product_main->comments as $comment)
 						<div class="item-comment" style="margin-top: 10px;">
 							<div class="top">
@@ -298,41 +300,16 @@
 								<p>{{$comment->content}}</p>
 							</div>
 						</div>
-						@endforeach
+
+				@endforeach
+			</div>		
+
 			</div>
 		</div>
 
 		</div>
 	</div> <!-- end wrapper form -->
-<!-- 		<div style="width: 501px;">
-			<h3>Bình luận</h3>
-			<form>
-				<input type="hidden" name="">
-				<div>
-					<label>Email</label><br>
-					<input type="email" name="email" placeholder="Email" style="width: 500px;">
-				</div>
-				<div>
-					<label>Tên</label> <br>
-					<input type="text" name="name" style="width: 500px;">
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlTextarea1">Bình luận</label>
-    				<textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="10" style="width: 500px;"></textarea>
-				</div>
-				<div style="float: right;">
-					<button type="submit" style="background: #ff6100;font-size: 15px;color: #e7e7e7" class="btn" >Gửi</button>
-				</div>
-			</form>
-		</div> -->
-		<!-- <div style="padding-top: 100px; padding-bottom: 30px;">
-			<p style="font-weight: bold; line-height: 30px;">Project-team1:</p>
-			<p>2018-05-02 00:00:00</p>
-			<p style="font-weight: bold;line-height: 30px;">Tên:</p>
-			<p>Dũng</p>
-			<p style="font-weight: bold;">Nội dung:</p>
-			<p>ai mà biết</p>
-		</div> -->
+
 	</div> <!-- .container -->
 @endsection
 @section('script')
@@ -411,7 +388,14 @@
                   	data: {_token: CSRF_TOKEN, email:email,name:name,content:comment,id:product_id},
                      /* remind that 'data' is the response of the AjaxController */
                      success: function (data) { 
-                     	$('#showcomment .item-comment:last').after(data.view);
+                     	console.log(data);
+                     	if ($('.item-comment').length>0) {
+	                     	$('#showcomment .item-comment:last').after(data.view);
+	                     	
+                     	} else {
+	                     	$('.wrapper-comment').html(data.view);
+                     	}
+                     	$('.countComment').html(data.countComment);
                      	$('#cm').val('');
                        
                      }
