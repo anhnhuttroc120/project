@@ -133,7 +133,7 @@
 
 									 ?>
 								@foreach($pictures as  $picture)
-								<div class="pictureproduct">
+								<div style="max-width: 810px;" class="pictureproduct">
 								<img  src="images/product/{{$picture}}" alt="123">
 								</div>	
 								@endforeach
@@ -379,6 +379,7 @@
 			var comment = $('#cm').val();
 			var product_id = $('input[name=id]').val();
 			var url =  "{{route('comment')}}";
+			
 			$.ajax({
 
                     /* the route pointing to the post function */

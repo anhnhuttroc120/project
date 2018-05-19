@@ -135,7 +135,7 @@ class ProductController extends Controller
                             unlink($url);
                         }
                     }
-                    // $img = Image::make('images/product/'.$picture)->resize('286', '381');  //zoom ảnh
+                    // $img = Image::make('images/product/'.$picture)->resize('810', '965');  //zoom ảnh
                     // $img->save();
                     $listImage[$key] = $picture; //gắn tên ảnh mới zô mảng
                 }
@@ -184,16 +184,10 @@ class ProductController extends Controller
         $id = $request->id;
         $data = $request->all();
         $data['product_id'] = $id;
-<<<<<<< HEAD
-        $comment =   Comment::create($data);
-        $view = view('ajax.comment', compact('comment'))->render();
-        return response(['view'=> $view], 200); 
-=======
         $comment = Comment::create($data);
         $countComment = Comment::where('product_id', $id)->count();
         $view = view('ajax.comment', compact('comment'))->render();
         return response(['view'=> $view,'countComment'=>$countComment], 200); 
->>>>>>> 461e186797846ac1bbab1ce6ad182060b6d62af1
         }
 
     } 
