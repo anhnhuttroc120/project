@@ -532,6 +532,7 @@
     </section>
     <!-- /.content -->
   </div>
+ 
 @endsection
 @section('script')
 <script src="AdminLTE-2.4.3/bower_components/jquery/dist/jquery.min.js"></script>

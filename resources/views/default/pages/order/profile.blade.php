@@ -17,7 +17,7 @@
 	<div class="container-fluid" style="margin-top: -19px;  ">
 		<div class="row">
 				@include('default.pages.order.sidebar')
-			
+			{!! Toastr::message() !!}
 			<div style="" class="col-md-8">
 				<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; ">Thông tin tài khoản</a>

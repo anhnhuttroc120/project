@@ -2,9 +2,12 @@
 
 @section('css')
 <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 
-
-<link rel="stylesheet" href="AdminLTE-2.4.3/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{{-- 
+<link rel="stylesheet" href="AdminLTE-2.4.3/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css"> --}}
 
 {{-- <link rel="stylesheet" href="team1/team1.css"> --}}
 
@@ -31,9 +34,19 @@
       <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
   </div>  
       <div class="row">
+        {!! Toastr::message() !!}
         <div class="col-xs-12">
           <form action="{{url('admin/user/search')}}" method="get" id="form-search">
             <div class="form-group">
+              <select style="height: 30px;" name="role" id="role">
+                @foreach($arrRole as $key =>$value)
+                @if(!empty($role) && $role == $key)
+                <option selected value="{{$key}}">{{$value}}</option>
+                @else
+                   <option value="{{$key}}">{{$value}}</option>
+                @endif
+                @endforeach
+              </select>
               <input  style="padding: 5px;" type="text" name="keyword" placeholder="Tìm kiếm theo tên" id="search" value="@if(!empty($keyword)){{$keyword}}@endif" >
             </div>
           </form>
@@ -73,18 +86,18 @@
 <!-- Bootstrap 3.3.7 -->
 <script src="AdminLTE-2.4.3/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DataTables -->
-<script src="AdminLTE-2.4.3/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="AdminLTE-2.4.3/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+{{-- <script src="AdminLTE-2.4.3/bower_components/datatables.net/js/jquery.dataTables.min.js"></script> --}}
+{{-- <script src="AdminLTE-2.4.3/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> --}}
 <!-- SlimScroll -->
-<script src="AdminLTE-2.4.3/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+{{-- <script src="AdminLTE-2.4.3/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script> --}}
 <!-- FastClick -->
 <script src="AdminLTE-2.4.3/bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="AdminLTE-2.4.3/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
+{{-- <script src="AdminLTE-2.4.3/dist/js/demo.js"></script> --}}
 <!-- page script -->
-<script>
+{{-- <script>
   $(function () {+
     $('#example1').DataTable()
     $('#example2').DataTable({
@@ -96,28 +109,68 @@
       'autoWidth'   : true
     })
   })
-</script>
+</script> --}}
 <script src="js/jquery.js"></script>
 <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="js/userdelete.js"></script>
+<script >
+function deleteItem(id) {
+
+var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  $("#dialog-confirm").dialog({
+
+    resizable : false,
+    height : 200,
+    modal : true,
+    buttons : {
+      "Có" : function() {
+
+        $.get('admin/user/delete/'+id, function(data) {
+          if(data.status == 'success' ){
+             $('#item-' + id).remove(); 
+          }else{
+            var url = "{{route('index')}}";
+            $(location).attr('href', url);
+          }
+          
+
+        });
+        $(this).dialog("close");
+      },
+      Không : function() {
+        $(this).dialog("close");
+      }
+    }
+  });
+  
+}
+</script>
 <script>
   $(document).ready(function(){
    
     $('#search').on('keyup', function(){
-      var value = $(this).val();
+      callAjax();
+    });
+    $('#role').change(function(){
+       callAjax();
+    });
+   
+   });
+</script>
+<script>
+  function callAjax(){
+     var value = $('#search').val();
+      var role = $('#role').val()
       var url = "{{route('index')}}";
       $.ajax({
         type :'get',
         url :url ,
-        data:{keyword:value},
+        data:{keyword:value,role:role},
         success: function (data) { 
           
             $('#result').html(data.view);
         }
       })
-    });
-   
-   });
+  }
 </script>
 @endsection
 

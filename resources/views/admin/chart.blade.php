@@ -90,9 +90,10 @@
           <!-- BAR CHART -->
           <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Biểu đồ đơn hàng</h3>
+              <h3 class="box-title">Biểu đồ đơn hàng tính đến {{$now}}</h3>
               <p>Màu <span style="background:#00a65a; ">&emsp;</span> Đơn hàng thành công</p>
-              <p>Màu <span style="background:#d6d7de; ">&emsp;</span> Đơn hàng bị hủy</p>
+              <p>Màu <span style="background:red; ">&emsp;</span> Đơn hàng bị hủy</p>
+              <p>Màu <span style="background:#d6d7de; ">&emsp;</span> Tổng sản phẩm bán được</p>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -168,12 +169,12 @@
       datasets: [
         {
           label               : 'Electronics',
-          fillColor           : 'rgba(210, 214, 222, 1)',
-          strokeColor         : 'rgba(210, 214, 222, 1)',
-          pointColor          : 'rgba(210, 214, 222, 1)',
+          fillColor           : 'red',
+          strokeColor         : 'red',
+          pointColor          : 'red',
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
+          pointHighlightStroke: 'red',
           data                : [@foreach($result as $key =>$value)
        {{$value['cancel']}},
 
@@ -189,6 +190,21 @@
           pointHighlightStroke: 'rgba(60,141,188,1)',
           data                : [@foreach($result as $key =>$value)
        {{$value['done']}},
+
+
+       @endforeach]
+        },
+         {
+          label               : 'Digital Goods',
+          fillColor           : 'rgba(210, 214, 222, 1)',
+          strokeColor         : 'rgba(210, 214, 222, 1)',
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(210, 214, 222, 1)',
+          data                : [@foreach($result as $key =>$value)
+       {{$value['total']}},
+       
 
        @endforeach]
         }
@@ -360,3 +376,11 @@
   })
 </script>
 @endsection
+
+{{--   label               : 'Electronics',
+          fillColor           : 'rgba(210, 214, 222, 1)',
+          strokeColor         : 'rgba(210, 214, 222, 1)',
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)', --}}

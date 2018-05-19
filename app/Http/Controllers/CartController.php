@@ -13,6 +13,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Order;
 use App\Order_detail;
 use App\province;
+use App\district;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
@@ -70,7 +71,7 @@ class CartController extends Controller
             $header = view('ajax.header')->render();
             $view = view('ajax.giohang')->render();
             $cartCount = Cart::count();
-          return response()->json(['view'=>$view, 'header'=>$header,'count'=>$cartCount], 200);
+            return response()->json(['view'=>$view, 'header'=>$header, 'count'=>$cartCount], 200);
         }
 
     }
@@ -87,9 +88,10 @@ class CartController extends Controller
                 $address = '';
                 $cityAndDistrict = '';
                 if ($request->has('city') && $request->city != '0') {
-                $query = DB::table('province')->join('district', 'province.provinceid', '=', 'district.provinceid')->where('province.provinceid', '=', $request->city)->where('district.districtid', $request->district)->select('province.name as city' ,'district.name as district')->first();
-                $cityAndDistrict = $query->district .' ' . $query->city;
-                 }
+                    $award = district::where('districtid', $request->district)->first();
+                    $city = $award->province->name;
+                    $cityAndDistrict = $award->name .' ' . $city;
+                }
                 $data['phone'] = isset($request->phone) ? $request->phone : Auth::user()->phone;
                 $data['address'] = isset($request->address) ? $request->address.' '.$cityAndDistrict : Auth::user()->address.' '.$cityAndDistrict;
                 $data['users_id'] = Auth::user()->id;
@@ -111,7 +113,9 @@ class CartController extends Controller
                 }
                 Cart::destroy();
                 DB::commit();
-                return view('default.notice.giohang');
+                $URL = url('order');
+                $success = 'Bạn đã đặt hàng thành công vui lòng đợi 1-2 ngày để giao hàng ! .Click vào <a href="'.$URL.'"> đây </a> để xem thông tin đơn hàng vừa đặt';
+                return back()->with('success', $success);
             }
         } catch(\Exception $e) {
             DB::rollBack();

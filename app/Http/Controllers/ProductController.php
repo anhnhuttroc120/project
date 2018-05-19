@@ -185,7 +185,7 @@ class ProductController extends Controller
         $comment = Comment::create($data);
         $countComment = Comment::where('product_id', $id)->count();
         $view = view('ajax.comment', compact('comment'))->render();
-        return response(['view'=> $view,'countComment'=>$countComment], 200); 
+        return response(['view'=> $view, 'countComment'=>$countComment], 200); 
         }
 
     } 
