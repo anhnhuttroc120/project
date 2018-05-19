@@ -23,9 +23,11 @@
 								<td><p>{{$item->options->size}}-{{$item->options->color}}</p></td>
 								<td><p>{{number_format($item->price)}} VNĐ</p></td>
 							<div>
-								<td>
+								<td style="">
 
-								 <p><select name="quantity" data="{{$item->rowId}}">
+								
+								 	<input style="width: 50px;height: 23px;margin-top:15px;padding-left: 5px;" type="number" name="quantity" value="{{$item->qty}}" data="{{$item->rowId}}"/>
+								 	{{-- <select name="quantity" data="{{$item->rowId}}">
 								 	@foreach($quantitys as $key =>$quantity)
 								 	@if($item->qty == $quantity)
 								 	<option selected value="{{$quantity}}">{{$quantity}}</option>
@@ -34,12 +36,13 @@
 								 	@endif
 								 	@endforeach
 								
-									</select></p>
+									</select> --}}
+								
 
 								</td>
 								<td ><span style="line-height: 50px;" class="{{$item->rowId}}" id="{{$item->rowId}}" >{{number_format($item->qty * $item->price)}} </span><span> VND</span></td>
 							</div>
-								<td><a class="delete-cart"  style="cursor: pointer;"  data="{{$item->rowId}}" style="padding-left: 10px;line-height: 50px;"><i  style="color: red;font-size: 15px;" class="fa fa-trash-o "></i></a></td>
+								<td style="line-height: 50px;text-align: center"><a class="delete-cart"  style="cursor: pointer;"  data="{{$item->rowId}}" style="padding-left: 10px;"><i  style="color: red;font-size: 15px;" class="fa fa-trash-o "></i></a></td>
 							</tr>
 							@endforeach
 							</tbody>
@@ -67,19 +70,18 @@
 	$(document).ready(function(){
 		
 		 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-		$('select[name=quantity]').change(function(){
+		$('input[name=quantity]').change(function(){
 			var qty = $(this).val();
 			var rowId = $(this).attr('data');
-			var url = "{{route('update-cart')}}";
-			
+			var url = "{{route('update-cart')}}";	
 			 $.ajax({
 
-                    /* the route pointing to the post function */
+                   
                     url: url,
                     type: 'post',
-                     /* send the csrf-token and the input to the controller */
+               
                    	data: {_token: CSRF_TOKEN, qty:qty,rowId:rowId},
-                     /* remind that 'data' is the response of the AjaxController */
+                  
                      success: function (data) { 
                      	$('#list-header').html(data.header);
                      	$('.result').html(data.view);

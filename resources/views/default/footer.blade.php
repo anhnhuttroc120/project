@@ -1,4 +1,4 @@
-<div style="background: #f97742; border-top: 5px solid black;" id="footer"  >
+<div style="background: #FD5916; border-top: 5px solid black;" id="footer"  >
 		<div class="container">
   <div class="row">
     <div class="col-sm-4">

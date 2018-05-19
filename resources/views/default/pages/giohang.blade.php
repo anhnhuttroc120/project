@@ -15,13 +15,17 @@
 				</div>
 			</div></div>
 	<div class="container">
-		@if(!empty(Cart::content()) && count(Cart::content())>0)	
+		{{-- @if(!empty(Cart::content()) && count(Cart::content())>0)	 --}}
 			<form  action="{{url('check-out')}}" method="post" id="form-checkout"> 
 				<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 		<div class="row" style="margin-bottom: 20px;"> {{-- start row --}}
 			   {!! Toastr::message() !!}
-
+			    @if (Session::has('success'))
+			        <div class="alert alert-success">
+			          {!! Session::get('success') !!}
+			        </div>
+				@endif
 			<div class="col-md-5">
 						<div >
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold;width: "><i class="fa fa-truck fa-2x" style="color: black"> </i>GIAO HÀNG TỚI</a>
@@ -60,7 +64,7 @@
 
 						<div class="form-block">
 							<label for="phone">Ghi chú</label>
-							<textarea style="width: 60%" name="note" id="" value="">
+							<textarea  style="padding-left:  1px !important;" rows="3" cols="35" name="note" >
 								
 							</textarea>
 						</div>
@@ -84,9 +88,9 @@
 								</div>
 							</div>	
 					</form>
-					@else
+				{{-- 	@else
 					<h4>Không có sản phẩm nào trong giỏ hàng.Click vào <a style="color: blue" href="{{url('trang-chu')}}">đây</a> về trang chủ tiếp tục mua hàng. </h4>
-					@endif
+					@endif --}}
 
 				
 			</div> <!-- COL MD-7 -->

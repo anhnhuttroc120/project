@@ -33,7 +33,11 @@ class AppServiceProvider extends ServiceProvider
         $role = ['Member','Admin'];
         View::share('role', $role);
         $arrStatus = [1=>'Đã xử lý', 2=>'Đang xử lý', 3=>'Hủy'];
+        $arrOrderStatus = ['default'=>'--Tất cả trạng thái -- ',1=>'Đã xử lý', 2=>'Đang xử lý', 3=>'Hủy'];
         View::share('arrStatus', $arrStatus);
+        View::share('arrOrderStatus', $arrOrderStatus);
+        $arrRole = ['default'=>'--Sắp xếp theo Tất cả --','Sắp xếp theo Thành viên',' Sắp xếp theo Admin'];
+        View::share('arrRole', $arrRole);
         if(\Schema::hasTable('order')){
             $data['done']=  Order::where('status', 1)->count();
             $data['waiting'] = Order::where('status', 2)->count();

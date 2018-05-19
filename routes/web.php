@@ -23,7 +23,7 @@ Route::get('giohang','CartController@cart')->name('gio-hang')->middleware('check
 Route::get('district','PagesController@district');
 Route::get('dang-ki','PagesConTroller@getRegister');
 Route::post('dang-ki','PagesConTroller@postRegister');
-Route::get('dang-nhap','PagesConTroller@getDangNhap')->name('login');
+Route::get('dang-nhap','PagesConTroller@getDangNhap');
 Route::post('dang-nhap','PagesConTroller@postDangNhap');
 Route::get('trang-chu','PagesController@index');
 Route::get('/','PagesController@index');

@@ -15,6 +15,7 @@ use App\Order;
 use App\Http\Requests\ChangePassRequest;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
+use Brian2694\Toastr\Facades\Toastr;
 
 class PagesController extends Controller
 {
@@ -50,7 +51,8 @@ class PagesController extends Controller
         $data['password'] = bcrypt($request->password);
         $data['is_admin'] = 0;
         User::create($data); // them vo database
-        return view('default.notice.resgiter')->with('success', 'Bạn đã đăng kí thành công');			
+        $url = '<a href="'.url('dang-nhap').'"> đây </a>';
+        return back()->with('success', 'Bạn đã đăng kí thành công ! Click vào '. $url . 'để đăng nhập');			
     } 
 
     public function getDangNhap()
@@ -144,8 +146,8 @@ class PagesController extends Controller
         } else { //  người dùng k thay đổi hình
             $data['picture'] = $oldImage;
         }
-   
         $user-> update($data);
+        Toastr::success('Bạn vừa cập nhập thành công thông tin tài khoản ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
         return back();    
     }
     public function order()

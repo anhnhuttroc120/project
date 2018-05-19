@@ -6,7 +6,11 @@
 			<form action="{{url('dang-ki')}}" method="post" class="beta-form-checkout">
 				<input type="hidden" name="_token" value="{{csrf_token()}}">
 				<div class="row">
-			
+					 @if (Session::has('success'))
+			        <div class="alert alert-success">
+			          {!! Session::get('success') !!}
+			        </div>
+					@endif
 					<div class="col-sm-6">
 						<h4 style="font-weight: bold;">Đăng kí</h4>
 						<div class="space20">&nbsp;</div>

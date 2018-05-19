@@ -27,7 +27,9 @@
   </div>
   @endif
    <div class="form-group">
+    @if(Auth::user()->id != $id)
       {!!Form::select('is_admin',$role,null,['class'=>'form-control','id'=>'exampleInputFullName']) !!}
+      @endif
   </div>
   <div class="form-group">
       <label for="exampleInputPhone">Phone</label>

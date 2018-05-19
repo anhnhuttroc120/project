@@ -22,6 +22,28 @@ class UserController extends Controller
 		return view('admin.index');
 	}
 	
+	public function listUser(Request $request)
+	{
+		$query = User::query();
+		if ($request->has('keyword') && !empty($request->keyword)) {
+			$keyword = $request->keyword;
+			$query->where('fullname','like',"%".$keyword."%")->orWhere('email','like',"%".$keyword."%")->orWhere('username','like',"%".$keyword."%");
+		}
+		if ($request->has('role')) {
+			$role = $request->role;
+			if ($role !='default'){
+				$query->where('is_admin', $role);
+			}
+		}
+		if ($request->ajax()) {
+			$users = $query->paginate(4)->appends(['keyword'=>$request->keyword, 'role'=>$request->role]);	
+		 	$view = view('ajax.user', compact('users'))->render();
+			return response()->json(['view'=>$view], 200);
+		}
+		$users = $query->paginate(4)->appends(request()->query());
+		return view('admin.user.list', compact('users', 'keyword', 'role'));
+	}			
+		
 	public function email()
 	{
  			$data = [1,2];
@@ -100,23 +122,35 @@ class UserController extends Controller
 
 	public function Delete($id)
 	{
-		$user 		= User::findOrFail($id);
+		$user = User::findOrFail($id);
+		if (count($user->orders) > 0 ){
+			Toastr::warning('Người dùng này không thể xóa', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+			return  response()->json(['status'=>'error'], 200);
+		}
 		$user->delete();
 		if($user->picture !=''){
 			$picture 	= $user->picture;
 			if (file_exists('images/user/'.$picture)) {
 			unlink('images/user/'.$picture);
 			}
-
 		}
-		return  response(['success'=>'OK'],200);
+		return  response()->json(['status'=>'success'], 200);
 
 	}
 
 	public function getEdit($id)
 	{
 		$user = User::findOrFail($id);
-		return view('admin.user.update', compact('user'));
+		if( $user->is_admin == 1 && Auth::user()->id != $id || Auth::user()->is_admin == 0 && $user->is_admin == 1  || Auth::user()->is_admin==0 && Auth::user()->id != $id ) {
+			Toastr::warning('Không đủ chức quyền để cập nhật !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+			return back();
+		}
+		return view('admin.user.update', compact('user','id'));
+	}
+	private function notAccess($listAdmin)
+	{		
+		
+		
 	}
 
 	public function Edit(EditUserRequest $request, $id)
@@ -172,24 +206,5 @@ class UserController extends Controller
 	{
 		$user = User::where('username','like', '%'.$keyword.'%')->paginate(4)->appends(request()->query());
 	}
-
-	public function listUser(Request $request)
-	{
-		$query = User::query();
-		if ($request->has('keyword') && !empty($request->keyword)) {
-			$keyword = $request->keyword;
-			$query->where('fullname','like',"%".$keyword."%")->orWhere('email','like',"%".$keyword."%")->orWhere('username','like',"%".$keyword."%");
-		}
-		if ($request->ajax()) {
-			$users = $query->paginate(4)->appends(['keyword'=>$request->keyword]);	
-		 	$view = view('ajax.user', compact('users'))->render();
-			return response()->json(['view'=>$view], 200);
-		}
-		$users = $query->paginate(4)->appends(request()->query());
-		return view('admin.user.list', compact('users', 'keyword'));
-	}			
-		
 	
-
- 
 }

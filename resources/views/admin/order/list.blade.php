@@ -52,6 +52,15 @@
                 </div>  
             <form action="{{url('admin/order/print')}}" method="post" id="print-form">    
          <div class="div-search">
+            <select style="height: 30px;" name="status" id="status">
+              @foreach($arrOrderStatus as $key =>$value)
+              @if(!empty($status) && $status == $key)
+              <option selected value="{{$key}}">{{$value}}</option>
+              @else
+              <option value="{{$key}}">{{$value}}</option>
+              @endif
+              @endforeach
+            </select>
             <input style="padding:5px;" name="keyword" type="text" class="form-controls" id="search" placeholder="Tìm kiếm theo tên" value="@if(!empty($keyword)){{$keyword}}@endif" />
               <span style="font-weight: bold">Từ:</span>
               <input  class="date rounded"  id="startdate" name="startdate" placeholder="2018-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/>
@@ -175,7 +184,7 @@ function formatNumber (num) {
       function callAjax(){
         var value = $('#search').val();
         var startdate = $('#startdate').val();
-
+        var  status = $('#status').val();
         var enddate = $('#enddate').val();
 
 
@@ -184,7 +193,7 @@ function formatNumber (num) {
         $.ajax({
         type :'get',
         url :url ,
-        data:{keyword:value,startdate:startdate,enddate:enddate},
+        data:{keyword:value,startdate:startdate,enddate:enddate,status:status},
         success: function (data) { 
           console.log(data);
             $('#result').empty();
@@ -208,6 +217,9 @@ function formatNumber (num) {
       callAjax();
     });
       $('#startdate').change(function(){
+      callAjax();
+    });
+       $('#status').change(function(){
       callAjax();
     });
    
