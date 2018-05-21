@@ -72,7 +72,7 @@
 							
 						</li>
 						@endforeach
-						<li   class="lienhe" > <img style="width: 150px;height: 61px;"  src="images/right_menu.png" alt=""></li>
+						<li style="height: 61px;"  > <img style="width: 150px;height: 61px;"  src="images/right_menu.png" alt=""></li>
 					</ul>
 					<div class="clearfix"></div>
 				</nav>

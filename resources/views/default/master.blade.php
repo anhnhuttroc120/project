@@ -17,6 +17,15 @@
 	<link rel="stylesheet" title="style" href="source/assets/dest/css/style.css">
 	<link rel="stylesheet" href="source/assets/dest/css/animate.css">
 	<link rel="stylesheet" title="style" href="source/assets/dest/css/huong-style.css">
+	<link rel="stylesheet" href="css/loading.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+	<script>
+		$(window).load(function() {
+		// Animate loader off screen 
+		$(".se-pre-con").fadeOut("fast");
+			});
+		</script>
 	@yield('css')
 	
 {{-- 	<link rel="stylesheet" title="style" href="source/assets/dest/css/fontawesome509/fontawesome-all.min.css"> --}}
@@ -25,7 +34,8 @@
 
 	@include('default.header')
 	<div class="inner-header">
-		
+	<div class="se-pre-con"></div>
+
 
 	
 	@yield('content')
@@ -53,9 +63,10 @@
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 	{{-- <script src="source/assets/dest/vendors/bxslider/jquery.bxslider.min.js"></script> --}}
 	<script src="source/assets/dest/vendors/colorbox/jquery.colorbox-min.js"></script>
-	<script src="source/assets/dest/vendors/animo/Animo.js"></script>
+	{{-- <script src="source/assets/dest/vendors/animo/Animo.js"></script> --}}
 	<script src="source/assets/dest/vendors/dug/dug.js"></script>
 	<script src="source/assets/dest/js/scripts.min.js"></script>
+	
 	{{-- <script src="source/assets/dest/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
 	<script src="source/assets/dest/rs-plugin/js/jquery.themepunch.revolution.min.js"></script> --}}
 	{{-- <script src="source/assets/dest/js/waypoints.min.js"></script> --}}
@@ -74,6 +85,7 @@
 
 
 	</script>
+		
 	{{-- <script>
 		 jQuery(document).ready(function($) {
                 'use strict';
