@@ -25,11 +25,11 @@ class OrderController extends Controller
 			});	
 			$queryCount->whereHas('user',function($query) use($keyword){
 	 			$query->where('fullname','like',"%".$keyword . "%")->orWhere('id', $keyword);
-			});	
+			 });	
 	 	}
 	 	if ($request->has('enddate')) {
 	 		$startdate =  ($request->startdate == '') ? '2018-01-01' : $request->startdate;
-	 		$enddate =  ($request->enddate == '') ? date('Y-m-d H:i:s',time()) : $request->enddate. ' 23:59:59';
+	 		$enddate =  ($request->enddate == '') ? date('Y-m-d H:i:s', time()) : $request->enddate. ' 23:59:59';
 	 		$query->whereBetween('created_at', [$startdate, $enddate]);
 	 		$queryCount->whereBetween('created_at', [$startdate, $enddate]);
 	 	}
@@ -40,11 +40,11 @@ class OrderController extends Controller
 	 			$queryCount->where('status', $status);
 	 		}
 	 	}
-	 	$countAll = $queryCount->select('status',DB::raw('count(*) as number'))->groupBy('status')->get();
-        $total = $query->sum('total');	  
+        $total = $query->sum('total');
+        $countAll = $queryCount->select('status',DB::raw('count(*) as number'))->groupBy('status')->get();	  
 		if ($request->ajax()) {
 			$orders = $query->paginate(10)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate, 'status'=>$request->status]);	
-		 	$view = view('ajax.order', compact('orders','total','countAll'))->render();
+		 	$view = view('ajax.order', compact('orders', 'total', 'countAll'))->render();
 			return response()->json(['view'=>$view, 'total'=>$total], 200);
 		} 	
 		$orders = $query->paginate(10)->appends(request()->query());
@@ -69,14 +69,6 @@ class OrderController extends Controller
 	    return back()->with('success', 'Bạn đã thay đổi trạng thái đơn hàng có mã số ' .$order->id.'  từ trạng thái '. $statusOld . ' sang trạng thái  '. $statusNew );    		
     }
 
-	public function Status($id)
-	{
-		if (!empty($id)) {
-			$orders = Order::where('status', $id)->paginate(4)->appends(request()->query());
-			return view('admin.order.list', compact('orders'));
-		}
-	}
-
 	public function exportExcel(Request $request)
 	{
 		$query = Order::query();
@@ -89,7 +81,7 @@ class OrderController extends Controller
 		if ($request->has('keyword')) {
 			$keyword = $request->keyword;
 	 		$query->whereHas('user',function($query) use($keyword){
-	 			$query->where('fullname','like',"%".$keyword . "%")->orWhere('id',$keyword);
+	 			$query->where('fullname','like',"%".$keyword . "%")->orWhere('id', $keyword);
 			});
 		}
 		$startdate = empty($request->startdate) ? '2018-01-01' : $request->startdate;
@@ -148,7 +140,7 @@ class OrderController extends Controller
 		   			$cell->setValue('Tổng tiền ');
 		            $cell->setAlignment('center');
 		            $cell->setFontWeight('bold');
-		             $cell->setBackground('#FFC7CE');
+		            $cell->setBackground('#FFC7CE');
 		            });
 		            $sheet->setBorder('A'.$distanceTotal.':D'.$distanceTotal, 'thin');
 		            $sheet->setBorder('E'.$distanceTotal, 'thin');
@@ -191,7 +183,6 @@ class OrderController extends Controller
 	private function total($orders, $type='null'){
 		$arrTemp = [];
 		$result = 0;
-
 		if (count($orders)>0) {
 			foreach ($orders as $key => $order) {
 				if ($type == 'null') {
@@ -221,7 +212,6 @@ class OrderController extends Controller
 			$result[$i]['cancel'] = $cancel;
 			$result[$i]['total'] = $totalProduct;
 		}
-		
 		return view('admin.chart', compact('result', 'now'));
 	}
 
@@ -246,7 +236,7 @@ class OrderController extends Controller
 
     public function calendar()
     {	
-    	$day = date('d');
+    	$day = date('d', time());
     	$data['today'] = Order::whereDay('date_shipper', $day)->where('status', 2)->get();
     	$data['tomorrow'] = Order::whereDay('date_shipper', $day+1)->where('status', 2)->get();
     	return view('admin.calendar', compact('data'));

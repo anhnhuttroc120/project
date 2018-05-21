@@ -36,11 +36,11 @@ class UserController extends Controller
 			}
 		}
 		if ($request->ajax()) {
-			$users = $query->paginate(4)->appends(['keyword'=>$request->keyword, 'role'=>$request->role]);	
+			$users = $query->paginate(8)->appends(['keyword'=>$request->keyword, 'role'=>$request->role]);	
 		 	$view = view('ajax.user', compact('users'))->render();
 			return response()->json(['view'=>$view], 200);
 		}
-		$users = $query->paginate(4)->appends(request()->query());
+		$users = $query->paginate(8)->appends(request()->query());
 		return view('admin.user.list', compact('users', 'keyword', 'role'));
 	}			
 		
@@ -131,7 +131,7 @@ class UserController extends Controller
 		if($user->picture !=''){
 			$picture 	= $user->picture;
 			if (file_exists('images/user/'.$picture)) {
-			unlink('images/user/'.$picture);
+				unlink('images/user/'.$picture);
 			}
 		}
 		return  response()->json(['status'=>'success'], 200);

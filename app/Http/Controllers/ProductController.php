@@ -44,7 +44,7 @@ class ProductController extends Controller
         $query->orderBy('price', 'asc');
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
-            $query->where('name','like',"%".$keyword."%");
+            $query->where('name', 'like', "%".$keyword."%");
         } 
         if ($request->ajax()) {
             $products = $query->paginate(8)->appends(['category'=>$request->category, 'sort'=>$request->sort, 'keyword'=>$request->keyword]);
@@ -67,7 +67,7 @@ class ProductController extends Controller
             $data               = $request->all();
             $data['slug']       = str_slug($request->name);
             $data['users_id']   = Auth::user()->id;
-            $data['bestseller'] = rand(1,5555); // tao du lieu gia~ cot bestseller
+            $data['bestseller'] = rand(1, 5555); // tao du lieu gia~ cot bestseller
             $product = Product::create($data);   
             if ($request->hasFile('picture')) {
                 $dataImage=[];
@@ -135,7 +135,7 @@ class ProductController extends Controller
                             unlink($url);
                         }
                     }
-                    // $img = Image::make('images/product/'.$picture)->resize('286', '381');  //zoom ảnh
+                    // $img = Image::make('images/product/'.$picture)->resize('810', '965');  //zoom ảnh
                     // $img->save();
                     $listImage[$key] = $picture; //gắn tên ảnh mới zô mảng
                 }
@@ -159,6 +159,7 @@ class ProductController extends Controller
         }
         
     }   
+    
     public function delete($id)
     {
         $product = Product::findOrFail($id); //tim san phảm xóa //tìm thong tin chi tiet san phẩm //xóa sản phẩm
@@ -177,7 +178,8 @@ class ProductController extends Controller
         return response(['success'=>'OK'], 200);
     }   
 
-    public function postComment(Request $request){
+    public function postComment(Request $request)
+    {
         if ($request->ajax()) {
         $id = $request->id;
         $data = $request->all();

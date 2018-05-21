@@ -114,7 +114,7 @@ class CartController extends Controller
                 Cart::destroy();
                 DB::commit();
                 $URL = url('order');
-                $success = 'Bạn đã đặt hàng thành công vui lòng đợi 1-2 ngày để giao hàng ! .Click vào <a href="'.$URL.'"> đây </a> để xem thông tin đơn hàng vừa đặt';
+                $success = 'Bạn đã đặt hàng thànhx công vui lòng đợi 1-2 ngày để giao hàng ! .Click vào <a href="'.$URL.'"> đây </a> để xem thông tin đơn hàng vừa đặt';
                 return back()->with('success', $success);
             }
         } catch(\Exception $e) {
