@@ -80,7 +80,7 @@ class OrderController extends Controller
 	public function exportExcel(Request $request)
 	{
 		$query = Order::query();
-		if($request->has('status') && $request->status==1){
+		if ($request->has('status') && $request->status==1) {
 			$query->where('status', $request->status);
 		} else {
 			Toastr::warning('Vui lòng chọn những đơn hàng ở trạng thái đã xử lý', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
