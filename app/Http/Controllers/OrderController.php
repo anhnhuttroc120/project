@@ -13,7 +13,7 @@ use PDF;
 class OrderController extends Controller
 
 {	
-    public function list(Request $request,$id='default')
+    public function list(Request $request)
     {
 	 	$query = Order::query();
 	 	$queryCount = Order::query();
@@ -41,14 +41,14 @@ class OrderController extends Controller
 	 		}
 	 	}
         $total = $query->sum('total');
-        $countAll = $queryCount->select('status',DB::raw('count(*) as number'))->groupBy('status')->get();	  
+        $countAll = $queryCount->select('status',DB::raw('count(id) as number'))->groupBy('status')->get();	  
 		if ($request->ajax()) {
 			$orders = $query->paginate(10)->appends(['keyword'=>$request->keyword, 'startdate'=>$startdate, 'enddate'=>$enddate, 'status'=>$request->status]);	
 		 	$view = view('ajax.order', compact('orders', 'total', 'countAll'))->render();
 			return response()->json(['view'=>$view, 'total'=>$total], 200);
 		} 	
 		$orders = $query->paginate(10)->appends(request()->query());
-		return view('admin.order.list', compact('orders', 'keyword','startdate','enddate', 'total', 'countAll', 'status'));			
+		return view('admin.order.list', compact('orders', 'total', 'countAll'));			
     }
 
     public function detail($id)
@@ -202,17 +202,28 @@ class OrderController extends Controller
 
 	public function chart()
 	{	
-		$lengMonth = date('m');
 		$now = date('d-m-Y H:i:s', time());
-		for ($i=1; $i <=$lengMonth ; $i++) { 
-			$done = Order::where('status', 1)->whereMonth('created_at', $i)->count();
-			$cancel = Order::where('status' ,3)->whereMonth('created_at', $i)->count();
-			$totalProduct = Order::where('status', 1)->whereMonth('created_at', $i)->sum('quantity');	
-			$result[$i]['done'] = $done;
-			$result[$i]['cancel'] = $cancel;
-			$result[$i]['total'] = $totalProduct;
-		}
-		return view('admin.chart', compact('result', 'now'));
+		$countOrders = Order::select(
+            DB::raw("DATE_FORMAT(created_at, '%m') AS month"),
+            DB::raw('COUNT(id) AS count'),
+            'status')->whereIn('status', [1, 3])->groupBy('month', 'status')->get()->toArray();
+		$sumtoTal = Order::select(
+	        DB::raw("DATE_FORMAT(created_at, '%m') AS month"),
+	        DB::raw('SUM(quantity) AS totalProduct')
+	        )->where('status', 1)->groupBy('month')->get()->toArray();    		
+		foreach ($countOrders as $key => $order) {
+		 	$result[$order['month']][$order['status']] = $order['count']	 		;
+		 }
+		 	//NẾU THÁNG ĐÓ TRẠNG THÁI  ĐƠN HÀNG  BỊ NULL  THÌ PHẢI GÁN  NÓ BẰNG 0
+		foreach ($result as $key => $value) {
+ 			if(!array_key_exists (1, $value)) {
+ 				$result[$key][1] = 0;
+ 			}
+ 			if(!array_key_exists (3, $value)) {
+ 				$result[$key][3] = 0;
+ 			}
+		} 				 	
+		return view('admin.chart', compact('result', 'now', 'sumtoTal'));
 	}
 
 	 public function getPDF($id) {

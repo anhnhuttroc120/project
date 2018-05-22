@@ -30,7 +30,9 @@ class PagesController extends Controller
     {   
         $sort = ($request->has('sort')) ? $request->sort :'asc';
         $category = Categories::where('slug', $slug)->first();
-        $query  = Product::where('category_id', $category->id);
+        $query  = Product::whereHas('category', function($querysub) use ($slug){
+            $querysub->where('slug', $slug);
+        });
         if ($sort == 'bestseller') {
           $query->orderBy('bestseller', 'desc');  
         }
@@ -154,7 +156,7 @@ class PagesController extends Controller
     {
         //$user = User::find(Auth::user()->id);
         //dd($users);
-        $user = Order::where('users_id', Auth::user()->id)->paginate(7);
+        $user = Order::where('users_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(7);
         //dd($user);
          return view('default.pages.order.list',compact('user')); 
     }

@@ -54,19 +54,19 @@
          <div class="div-search">
             <select style="height: 30px;" name="status" id="status">
               @foreach($arrOrderStatus as $key =>$value)
-              @if(!empty($status) && $status == $key)
+              @if(Request::get('status')== $key)
               <option selected value="{{$key}}">{{$value}}</option>
               @else
               <option value="{{$key}}">{{$value}}</option>
               @endif
               @endforeach
             </select>
-            <input style="padding:5px;" name="keyword" type="text" class="form-controls" id="search" placeholder="Tìm kiếm theo tên" value="@if(!empty($keyword)){{$keyword}}@endif" />
+            <input style="padding:5px;" name="keyword" type="text" class="form-controls" id="search" placeholder="Tìm kiếm theo tên" value="@if(Request::get('keyword')) {{ Request::get('keyword') }} @endif" />
               <span style="font-weight: bold">Từ:</span>
-              <input  class="date rounded"  id="startdate" name="startdate" placeholder="2018-01-01" value="@if(!empty($startdate)){{$startdate}}@endif" type="text"/>
+              <input  class="date rounded"  id="startdate" name="startdate" placeholder="2018-01-01" value="@if(Request::get('startdate')) {{ Request::get('startdate') }} @endif" type="text"/>
      
                 <span style="font-weight: bold;">Đến:</span>
-                <input class="date" id="enddate" name="enddate" placeholder="{{date('Y-m-d',time())}}" type="text" value="@if(!empty($enddate)){{$enddate}}@endif" /> 
+                <input class="date" id="enddate" name="enddate" placeholder="{{date('Y-m-d',time())}}" type="text" value="@if(Request::get('enddate')) {{ Request::get('enddate') }} @endif" /> 
             
           </div>
           <div  class="bill" style="float: right;margin-bottom: 10px;">

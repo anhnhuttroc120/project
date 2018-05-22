@@ -52,7 +52,7 @@ class ProductController extends Controller
             return response()->json(['view'=>$view], 200);
         } 
         $products = $query->paginate(8)->appends(request()->query());  
-        return view('admin.product.list', compact(['products', 'sort', 'keyword', 'category']));
+        return view('admin.product.list', compact('products'));
     }
 
     public function getAdd()

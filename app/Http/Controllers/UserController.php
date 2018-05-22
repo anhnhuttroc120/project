@@ -25,13 +25,17 @@ class UserController extends Controller
 	public function listUser(Request $request)
 	{
 		$query = User::query();
-		if ($request->has('keyword') && !empty($request->keyword)) {
+		
+		if ($request->has('keyword') && !empty($request->keyword )) {
 			$keyword = $request->keyword;
-			$query->where('fullname','like',"%".$keyword."%")->orWhere('email','like',"%".$keyword."%")->orWhere('username','like',"%".$keyword."%");
+			$query->where(function ($query) use($keyword){
+                $query->where('fullname','like',"%".$keyword."%")
+                      ->orWhere('username','like',"%".$keyword."%");
+            });
 		}
 		if ($request->has('role')) {
 			$role = $request->role;
-			if ($role !='default'){
+			if ($role != 'default'){
 				$query->where('is_admin', $role);
 			}
 		}
@@ -41,7 +45,7 @@ class UserController extends Controller
 			return response()->json(['view'=>$view], 200);
 		}
 		$users = $query->paginate(8)->appends(request()->query());
-		return view('admin.user.list', compact('users', 'keyword', 'role'));
+		return view('admin.user.list', compact('users'));
 	}			
 		
 	public function email()
@@ -140,12 +144,12 @@ class UserController extends Controller
 
 	public function getEdit($id)
 	{
-		$user = User::findOrFail($id);
-		if( $user->is_admin == 1 && Auth::user()->id != $id || Auth::user()->is_admin == 0 && $user->is_admin == 1  || Auth::user()->is_admin==0 && Auth::user()->id != $id ) {
+		$user = User::findOrFail($id);		
+		if( $user->is_admin == 2 && Auth::user()->id != $id || Auth::user()->is_admin == 1 && $user->is_admin == 2  || Auth::user()->is_admin==1 && Auth::user()->id != $id ) {
 			Toastr::warning('Không đủ chức quyền để cập nhật !', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
 			return back();
 		}
-		return view('admin.user.update', compact('user','id'));
+		return view('admin.user.update', compact('user', 'id'));
 	}
 	private function notAccess($listAdmin)
 	{		

@@ -104,12 +104,7 @@ class CartController extends Controller
                 $data['date_shipper'] = date("Y-m-d", $dayTemp);
                 $order = Order::create($data);
                 foreach ($carts as $key => $item) {
-                    $data['quantity'] = $item->qty; 
-                    $data['order_id'] = $order->id; 
-                    $data['products_id'] = $item->id;
-                    $data['config'] = $item->options->size . '-' .$item->options->color;
-                    $data['total'] = str_replace(',', '', $item->price * $item->qty);
-                    Order_detail::create($data);
+                    $order->products()->attach($item->id, ['quantity'=>$item->qty, 'config'=> $item->options->size . '-' .$item->options->color, 'total'=>str_replace(',', '', $item->price * $item->qty)]);
                 }
                 Cart::destroy();
                 DB::commit();

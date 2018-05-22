@@ -176,7 +176,7 @@
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'red',
           data                : [@foreach($result as $key =>$value)
-       {{$value['cancel']}},
+       {{$value[3]}},
 
        @endforeach]
         },
@@ -189,7 +189,7 @@
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
           data                : [@foreach($result as $key =>$value)
-       {{$value['done']}},
+       {{$value[1]}},
 
 
        @endforeach]
@@ -202,8 +202,8 @@
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(210, 214, 222, 1)',
-          data                : [@foreach($result as $key =>$value)
-       {{$value['total']}},
+          data                : [@foreach($sumtoTal as $key =>$value)
+       {{$value['totalProduct']}},
        
 
        @endforeach]

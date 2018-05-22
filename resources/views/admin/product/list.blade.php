@@ -46,7 +46,7 @@
               <select name="category" id="category">
               
                 @foreach($categories as $key => $value)
-                @if(!empty($category) && $category== $key)
+                @if(Request::get('category') == $key)
                 <option selected value="{{$key}}">{{$value}}</option>
                 @else
                 <option  value="{{$key}}">{{$value}}</option>
@@ -56,14 +56,14 @@
               <select name="sort" id="sort">
               
                 @foreach($sorts as $key => $value)
-                @if(!empty($sort) && $sort == $key)
+                @if(Request::get('sort') == $key)
                 <option selected value="{{$key}}">{{$value}}</option>
                 @else
                 <option  value="{{$key}}">{{$value}}</option>
                 @endif
                 @endforeach
               </select>
-              <input  style="width: 200px;"  type="text"  name="keyword" id="search" placeholder="Tìm kiếm theo tên sản phẩm" value="@if(!empty($keyword)) {{$keyword}}@endif">
+              <input  style="width: 200px;"  type="text"  name="keyword" id="search" placeholder="Tìm kiếm theo tên sản phẩm" value="@if(Request::get('keyword')){{Request::get('keyword')}} @endif">
                 <div id="result">
                     {!! view('ajax.product',compact(['products']))->render() !!}
                 </div>

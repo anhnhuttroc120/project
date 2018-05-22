@@ -14,7 +14,7 @@
 			</div>
 			<div class="pull-right">
 				<div class="beta-breadcrumb font-large">
-					<a href="{{url('trang-chu')}}">Trang chủ</a> /<span>{{$category->name}}</span>
+					<a href="{{url('trang-chu')}}">Trang chủ</a> /<span>{{$products}}</span>
 				</div>
 			</div>
 			<div class="clearfix"></div>

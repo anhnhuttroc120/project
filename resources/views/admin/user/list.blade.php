@@ -40,14 +40,14 @@
             <div class="form-group">
               <select style="height: 30px;" name="role" id="role">
                 @foreach($arrRole as $key =>$value)
-                @if(!empty($role) && $role == $key)
+                @if(Request::get('role') == $key )
                 <option selected value="{{$key}}">{{$value}}</option>
                 @else
                    <option value="{{$key}}">{{$value}}</option>
                 @endif
                 @endforeach
               </select>
-              <input  style="padding: 5px;" type="text" name="keyword" placeholder="Tìm kiếm theo tên" id="search" value="@if(!empty($keyword)){{$keyword}}@endif" >
+              <input  style="padding: 5px;" type="text" name="keyword" placeholder="Tìm kiếm theo tên" id="search" value="@if(Request::get('keyword')) {{Request::get('keyword')}}@endif" >
             </div>
           </form>
        
@@ -146,12 +146,15 @@ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 </script>
 <script>
   $(document).ready(function(){
+  
    
-    $('#search').on('keyup', function(){
-      callAjax();
-    });
     $('#role').change(function(){
-       callAjax();
+     callAjax();
+    });
+     $('#search').on('keyup', function(){
+     callAjax();
+  
+          
     });
    
    });
@@ -159,14 +162,15 @@ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 <script>
   function callAjax(){
      var value = $('#search').val();
-      var role = $('#role').val()
+      var role = $('#role').val();
       var url = "{{route('index')}}";
+
       $.ajax({
         type :'get',
         url :url ,
         data:{keyword:value,role:role},
         success: function (data) { 
-          
+          console.log(data);
             $('#result').html(data.view);
         }
       })
