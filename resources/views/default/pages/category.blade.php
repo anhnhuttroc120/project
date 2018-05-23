@@ -32,7 +32,7 @@
 							<div style="margin-top:10px;float:right;">
 								<select style="width: 300px;" class="form-control" name="arrange" id="">		
 								@foreach($sorts as $key =>$value)
-								@if(isset($sort) && $sort == $key)	
+								@if(Request::get('sort') == $key)	
 								<option style="font-weight: bold;" selected value="{{$key}}">&#xf00c; {{$value}}</option>
 								@else
 								<option  value="{{$key}}">&emsp;&nbsp;{{$value}}</option>

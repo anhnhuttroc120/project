@@ -4,7 +4,7 @@
 								<th class="text-center">Sản phẩm</th>
 								<th class="text-center">Size - Màu</th>
 								<th class="text-center">Giá tiền</th>
-								<th class="text-center">Số lượng</th>
+								<th style="width: 15%;" class="text-center">Số lượng</th>
 								
 								<th class="text-center">Thành tiền</th>
 								<th class="text-center">Xóa</th>
@@ -18,25 +18,17 @@
 
 								?>
 							<tr class="shopping-cart {{$item->rowId}}" data="{{$item->rowId}}">
-								<input type="hidden" id="{{$item->rowId}}">
+								<input type="hidden" rowId="{{$item->rowId}}">
 								<td ><img src="images/product/{{$item->options->img}}" alt="{{$item->name}}" ></td>
 								<td><p>{{$item->options->size}}-{{$item->options->color}}</p></td>
 								<td><p>{{number_format($item->price)}} VNĐ</p></td>
 							<div>
-								<td style="">
+								<td  class="quantity_box">
 
-								
-								 	<input style="width: 50px;height: 23px;margin-top:15px;padding-left: 5px;" type="number" name="quantity" value="{{$item->qty}}" data="{{$item->rowId}}"/>
-								 	{{-- <select name="quantity" data="{{$item->rowId}}">
-								 	@foreach($quantitys as $key =>$quantity)
-								 	@if($item->qty == $quantity)
-								 	<option selected value="{{$quantity}}">{{$quantity}}</option>
-								 	@else
-								 	<option  value="{{$quantity}}">{{$quantity}}</option>
-								 	@endif
-								 	@endforeach
-								
-									</select> --}}
+									<span style="width: 30px;border: 1px solid #ccc;padding-left: 5px;padding-right: 5px;"> - </span>
+								 	<input  readonly="readonly" style="width: 40px;height: 23px;margin-top:15px;padding-left: 9px;padding-right:0px;" type="text" name="quantity" value="{{$item->qty}}" data="{{$item->rowId}}"/>
+								 	<span style="border: 1px solid #ccc;width: 30px;padding-left: 5px;margin-left: -4px;padding-right: 5px;"> + </span>
+								 	
 								
 
 								</td>
@@ -68,35 +60,6 @@
 
 <script>
 	$(document).ready(function(){
-		
-		 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-		$('input[name=quantity]').change(function(){
-			var qty = $(this).val();
-			var rowId = $(this).attr('data');
-			var url = "{{route('update-cart')}}";	
-			 $.ajax({
-
-                   
-                    url: url,
-                    type: 'post',
-               
-                   	data: {_token: CSRF_TOKEN, qty:qty,rowId:rowId},
-                  
-                     success: function (data) { 
-                     	$('#list-header').html(data.header);
-                     	$('.result').html(data.view);
-                     	$('.count').html(data.count);
-                   	
-                     }
-           }); 
-
-
-		});
-
-	});
-</script>
-<script>
-	$(document).ready(function(){
 		$('.delete-cart').click(function(){
 			var rowId = $(this).attr('data');
 			var url = "{{route('delete-cart')}}"
@@ -120,4 +83,77 @@
 			
 		});
 	});
+</script>
+	<script>
+$(document).ready(function(){
+			
+			$('.quantity_box span:nth-child(1)').click(function(){
+				var parent = 	$(this).parents('tr');
+				var quantity = parseInt(parent.find('input[name=quantity]').val());
+    	   		 var rowId = parent.find('input[type=hidden]').attr('rowId');
+    	   		 if(quantity == 1){
+    	   		 	return false;
+    	   		 }
+    	   		 callAjax('down',quantity,rowId);
+    	   		 parent.find('input[name=quantity]').val(quantity-1);	
+			});
+			$('.quantity_box span:nth-child(3)').click(function(){
+				var parent = $(this).parents('tr')
+			
+				var quantity = parseInt(parent.find('input[name=quantity]').val());
+				
+				if (quantity > 9) {
+           	 		return false;
+    	   		 }
+    	   		 var rowId = parent.find('input[type=hidden]').attr('rowId');
+    	   		 callAjax('up',quantity,rowId);
+    	   		 parent.find('input[name=quantity]').val(quantity+1);
+			});
+			
+			// $('.quantity_box input').blur(function(){
+				
+			// 	var parent = 	$(this).parents('tr')
+		
+			// 	var quantity = parent.find('input[name=quantity]').val();
+				
+			// 	if (quantity > 10 || quantity < 1 || isNaN(quantity) ) {
+   //         		 	quantity = 1;
+   //    			  }
+   //    			  	parent.find('input[name=quantity]').val(quantity);
+			// });
+			// $(".quantity_box input").blur(function () {
+		 //        var quantity = parseInt($('.quantity_box input').val());
+		 //        if (quantity > 10 || quantity < 1 || isNaN(quantity) ) {
+   //         		 	quantity = 1;
+   //    			  }
+   //    			  $('.quantity_box input').val(quantity);
+
+   // 			 });
+ });
+	</script>
+
+<script>
+	function callAjax(type,qty,rowId){
+			var url = "{{route('update-cart')}}";	
+			 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+			  $.ajax({
+	
+                   
+                    url: url,
+                    type: 'post',
+               
+                   	data: {_token: CSRF_TOKEN, qty:qty,rowId:rowId,type:type},
+                  
+                     success: function (data) { 
+                     	$('#list-header').html(data.header);
+                     	$('.result').html(data.view);
+                     	$('.count').html(data.count);
+                   	
+                     }
+           }); 
+	}	
+
+		
+
+	
 </script>

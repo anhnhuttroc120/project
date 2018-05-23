@@ -12,7 +12,7 @@ use PDF;
 
 class OrderController extends Controller
 
-{	
+{		
     public function list(Request $request)
     {
 	 	$query = Order::query();
@@ -214,7 +214,7 @@ class OrderController extends Controller
 		foreach ($countOrders as $key => $order) {
 		 	$result[$order['month']][$order['status']] = $order['count']	 		;
 		 }
-		 	//NẾU THÁNG ĐÓ TRẠNG THÁI  ĐƠN HÀNG  BỊ NULL  THÌ PHẢI GÁN  NÓ BẰNG 0
+		 	//NẾU THÁNG ĐÓ ĐẾM TRẠNG THÁI ĐƠN HÀNG  BỊ NULL  THÌ PHẢI GÁN  NÓ BẰNG 0
 		foreach ($result as $key => $value) {
  			if(!array_key_exists (1, $value)) {
  				$result[$key][1] = 0;

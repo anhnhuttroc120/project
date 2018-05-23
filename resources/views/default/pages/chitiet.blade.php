@@ -2,6 +2,47 @@
 @section('css')
 <link rel="stylesheet" href="css/pagination.css">
 <link rel="stylesheet" href="css/comment.css">
+<style>
+	.size li ,.color li{
+		display: inline-table;
+		border: 1px solid #cccccc;
+		cursor: pointer;
+		width: 25px;
+		text-align: center;
+	}
+	.activesize{
+		background: black;
+		color: #fff;
+	}
+	.size li:hover , .color li:hover{
+		background: black;
+		color: #fff;
+	}
+	.quantity_box {
+		list-style: none;
+	}
+	.quantity_box li , .quantity_box input{
+		display: inline-block;
+
+	}
+	.quantity_box input{
+		width: 30px;
+		padding:5px !important;
+		height: 40px;
+		
+	/*	text-align: center;	*/
+	}
+	.quantity_box li{
+		 width: 15px;
+    text-align: center;
+    line-height: 40px;
+    background-color: #ff6000;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+
+	}
+</style>
 @endsection
 @section('content')
 <div class="container">
@@ -66,42 +107,40 @@
 
 								<p>Kích thước:</p>
 								<div>
-								<select class="wc-select" name="size">
+								{{-- <select class="wc-select" name="size"> --}}
 								@if(!empty($sizes))	
-									@foreach($sizes as $size)
-									<option value="{{$size}}">{{$size}}</option>
-									
-									@endforeach
+								
+									<ul class="size">
+											@foreach($sizes as $size)
+										<li data-size="{{$size}}">{{$size}}</li>
+											@endforeach
+									</ul>
+									{{-- <option value="{{$size}}">{{$size}}</option>
+									 --}}
+								
 								@endif	
-								</select>
+								{{-- </select> --}}
 	
 									
 								</div>
 								<p>Màu:</p>
 								<div>
-								<select class="wc-select" name="color">
+								<ul class="color">
+											@foreach($colors as $color)
+										<li style="padding: 4px;" data-color="{{$color}}">{{$color}}</li>
+											@endforeach
+									</ul>
 									
-									@foreach($colors as $color)
-									<option value="{{$color}}">{{$color}}</option>
-									@endforeach
-									</select>
+			
 								</div>
 								<p>Số lượng:</p>
 								
-								<select class="wc-select" name="quantity">
-									@for($i = 1 ; $i<=10; $i++)
-									<option value="{{$i}}">{{$i}}</option>
-									@endfor
-								</select>
-								<p>Màu sắc:
-								@foreach($colors as $key => $color) 
-									@if($key == count($colors)-1)
-									<b>{{$color}}  </b>
-									@else
-									<b>{{$color}} ,  </b>
-									@endif
-									@endforeach 
-								</p>
+								<ul class="quantity_box">
+									<li> - </li>
+									<input type="text" name="quantity" value="1" >
+									<li> + </li>
+								</ul>
+								
 								<div style="margin-top:10px;">
 								
 								<a  style="background: #ff6100;font-size: 25px;color: #e7e7e7" class="btn add-cart" >Thêm vào giỏ hàng</a>
@@ -313,11 +352,39 @@
 	</div> <!-- .container -->
 @endsection
 @section('script')
+<script type="text/javascript">
+		$(document).ready(function(){
+			$('ul.size li:first').addClass('activesize');
+			$('ul.size li').click(function(){
+
+				$('ul.size li').removeClass('activesize');
+				$(this).addClass('activesize');
+			});
+			
+		});
+	
+</script>
+<script type="text/javascript">
+		$(document).ready(function(){
+			$('ul.color li:first').addClass('activesize');
+			$('ul.color li').click(function(){
+
+				$('ul.color li').removeClass('activesize');
+				$(this).addClass('activesize');
+			});
+			
+		});
+	
+</script>
+
 <script>
+
 	$(document).ready(function(){
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		
 		$('.add-cart').click(function(){
+			var size = '';
+			var color = '';
 			var cart = $('.cart');
 	
 			var parent = $(this).parents('.parentImage');
@@ -344,9 +411,21 @@
 					
 				},1000);
 			},500);
-			var quantity = $('select[name=quantity]').val();
-			var size = $('select[name=size]').val();
-			var color = $('select[name=color]').val();
+			var quantity = $('input[name=quantity]').val();
+			$('ul.size li').each(function(){
+					if($(this).hasClass("activesize")){
+						 size = $(this).attr('data-size');
+						
+					}
+				
+				});
+			$('ul.color li').each(function(){
+					if($(this).hasClass("activesize")){
+						 color = $(this).attr('data-color');
+						
+					}
+				
+				});
 			var id = $('input[name=id]').val();
 			var url = "{{route('add-cart')}}";
 			$.ajax({
@@ -408,6 +487,31 @@
 
 </script>
 
+
+	<script>
+$(document).ready(function(){
+			$('ul.quantity_box li:nth-child(1)').click(function(){
+				var quantity = parseInt($('.quantity_box input').val())
+				if (quantity > 1) {
+           	 		$('.quantity_box input').val(quantity - 1);
+    	   		 }
+			});
+			$(".quantity_box li:nth-child(3)").click(function () {
+		        var quantity = parseInt($('.quantity_box input').val());
+		        if (quantity < 10) {
+           		 $('.quantity_box input').val(quantity + 1);
+      			  }
+   			 });
+			$(".quantity_box input").blur(function () {
+		        var quantity = parseInt($('.quantity_box input').val());
+		        if (quantity > 10 || quantity < 1 || isNaN(quantity) ) {
+           		 	quantity = 1;
+      			  }
+      			  $('.quantity_box input').val(quantity);
+
+   			 });
+ });
+	</script>
 
 
 @endsection

@@ -28,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
             View::share('categories', $categories);
             View::share('categories_main', $categories_main);
         }
+        if(\Schema::hasTable('order')){
+            $statusHTML = Order::statusHTML();
+            View::share('statusHTML', $statusHTML);
+        }
         $special = ['Không','Có'];
         View::share('special', $special);
         $role = ['Member','Admin'];

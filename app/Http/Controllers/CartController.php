@@ -55,11 +55,16 @@ class CartController extends Controller
     public function update(Request $request)
     {
     	if ($request->ajax()) {
-    		$cartUpdate = Cart::update($request->rowId, $request->qty);
+            if ($request->type == 'up') {
+    		  $cartUpdate = Cart::update($request->rowId, $request->qty+1);
+            } else {
+             $cartUpdate = Cart::update($request->rowId, $request->qty-1);   
+            }
             $header = view('ajax.header')->render();
             $view = view('ajax.giohang')->render();
             $cartCount = Cart::count();
-    		return response()->json(['view'=>$view, 'header'=>$header, 'count'=>$cartCount], 200);
+            return response()->json(['view'=>$view, 'header'=>$header, 'count'=>$cartCount], 200);
+
     	}
 
     }
