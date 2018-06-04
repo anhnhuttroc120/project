@@ -20,7 +20,7 @@ class CartController extends Controller
 {
     public function cart()
     {
-        $provinces = province::pluck('name','provinceid')->all();
+        $provinces = province::pluck('name', 'provinceid')->all();
         $provinces['0'] ='-- Chọn tỉnh --';
         ksort($provinces);
         $user = Auth::user();
@@ -32,7 +32,7 @@ class CartController extends Controller
         if ($request->ajax()) {
             $product = Product::find($request->id);
             $images = isset($product->detail->picture) ? json_decode($product->detail->picture,true) : '' ;
-            $image = $images[1];
+            $image = reset($images);
             if ($product->detail->sale_off > 0 ) {
             $price = ((100 - $product->detail->sale_off)*$product->price)/100;
             } else {

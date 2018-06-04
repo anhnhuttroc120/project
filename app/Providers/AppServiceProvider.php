@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         if(\Schema::hasTable('category')){
             $categories = Categories::pluck('name','id')->all();
             $categories['default']= '--Tất cả loại sản phẩm --'  ;
-            $categories_main = Categories::all();
+            $categories_main = Categories::where('parent_id','<>',null)->get();
             ksort($categories);
             View::share('categories', $categories);
             View::share('categories_main', $categories_main);
@@ -34,6 +34,10 @@ class AppServiceProvider extends ServiceProvider
         }
         $special = ['Không','Có'];
         View::share('special', $special);
+        $Arrcolors = ['Trắng','Đen','Xanh','Hồng','Tím'];
+        View::share('Arrcolors', $Arrcolors);
+         $ArrSize = ['S','M','L','XL'];
+        View::share('ArrSize', $ArrSize);
         $role = ['Member','Admin'];
         View::share('role', $role);
         $arrStatus = [1=>'Đã xử lý', 2=>'Đang xử lý', 3=>'Hủy'];

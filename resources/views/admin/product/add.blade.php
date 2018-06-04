@@ -1,6 +1,7 @@
 @extends('layout.admin.master')
 @section('css')
 <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+<link rel="stylesheet" href="css/addproduct.css">
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 @endsection
@@ -25,61 +26,63 @@
 
     <!-- Main content -->
      <section class="content">
-      <div class="row">
-        <!-- left column -->
-        <div class="col-md-12">
-          <!-- general form elements -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Quick Example</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-          <div>
-       
-            
-      
-       {!! Toastr::message() !!}
+        {!! Toastr::message() !!}
 
-    @if($errors->any())
-       <div class="alert alert-danger">
-        <ul style="list-style-type: none">
-            @foreach ($errors->all() as $error)
-                <li >{{ $error }}</li>
-            @endforeach
-        </ul>
-       
-    </div>
-    @endif
-          </div>
-       
+      <div class="row">
+
+        @if($errors->any())
+           <div style="margin-left: 10px;width: 700px;" class="alert alert-danger">
+            <ul style="list-style-type: none">
+                @foreach ($errors->all() as $error)
+                    <li >{{ $error }}</li>
+                @endforeach
+            </ul>
+           
+           </div>
+        @endif
+        <!-- left column -->
+        <div class="col-md-6">
+          <!-- general form elements -->
+
            {!! Form::open(['url' => 'admin/product/add', 'method' => 'post','files'=>true]) !!}
               <div class="box-body">
              @include('form.product.product')
-      
-                
               </div>
-              <!-- /.box-body -->
-
+           
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
               </div>
-            {!! Form::close() !!}
+           
+
           </div>
+
           <!-- /.box -->
 
           <!-- Form Element sizes -->
          
 
        
-         
 
+  <div class="col-md-6" style="margin-top:10px;">
+      <div class="form-group">
+         <div class="form-group">
+                    <label>Nội Dung</label>
+                    <textarea name="description"  class="form-control ckeditor" >
+                      {{old('description')}}
+                    </textarea>
         </div>
+      
+      </div>
+
+  </div> {{-- col-md-6 --}}
+   {!! Form::close() !!}
+        </div>
+            <!-- /.row -->
         <!--/.col (left) -->
         <!-- right column -->
         
-      </div>
-      <!-- /.row -->
+
+  
     </section>
     <!-- /.content -->
   </div>
@@ -95,6 +98,91 @@
 <script src="AdminLTE-2.4.3/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
-<script src="ckeditor/ckeditor.js"></script>
+<script src="http://cdn.ckeditor.com/4.9.2/full/ckeditor.js"></script>
+
+  <script>
+  $(document).ready(function(){
+     jQuery(function($){
+            var fileDiv = document.getElementById("upload");
+            var fileInput = document.getElementById("upload-input");
+            var btnSelect = document.getElementById('btn_select');
+            fileInput.addEventListener("change",function(e){
+                var files = this.files
+                console.log(files);
+                showThumbnail(files)
+            },false)
+
+            btnSelect.addEventListener("click",function(e){
+                $(fileInput).show().focus().click().hide();
+                e.preventDefault();
+            },false)
+
+
+            fileDiv.addEventListener("dragenter",function(e){
+                e.stopPropagation();
+                e.preventDefault();
+            },false);
+
+            fileDiv.addEventListener("dragover",function(e){
+                e.stopPropagation();
+                e.preventDefault();
+            },false);
+
+            fileDiv.addEventListener("drop",function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                var dt = e.dataTransfer;
+                var files = dt.files;
+                console.log(files);
+                fileInput.files = files;
+                showThumbnail(files)
+            },false);
+
+            function showThumbnail(files){
+                $('.box-image').remove();
+                for(var i=0;i<files.length;i++){
+                    var file = files[i]
+
+                    var container = document.createElement('div');
+                    container.classList.add('box-image');
+
+                    var image = document.createElement("img");
+                    image.classList.add("img-thumbnail");
+                    image.file = file;
+                    container.appendChild(image);
+
+                    var thumbnail = document.getElementById("thumbnail");
+                    thumbnail.appendChild(container);
+
+                    var reader = new FileReader()
+                    reader.onload = (function(aImg){
+                        return function(e){
+                            aImg.src = e.target.result;
+                        };
+                    }(image))
+                    var ret = reader.readAsDataURL(file);
+                    var canvas = document.createElement("canvas");
+                    ctx = canvas.getContext("2d");
+                    image.onload= function(){
+                        ctx.drawImage(image,50,50)
+                    }
+                }
+            };
+        });
+  });
+</script>
+<script>
+  CKEDITOR.replace('description', {
+                filebrowserBrowseUrl: '{{ asset('ckfinder/ckfinder.html') }}',
+                filebrowserImageBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Images') }}',
+                filebrowserFlashBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Flash') }}',
+                filebrowserUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
+                filebrowserImageUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
+                filebrowserFlashUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
+            });
+
+</script>
+          
+
 
 @endsection

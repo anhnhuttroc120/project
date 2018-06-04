@@ -64,36 +64,38 @@ Route::post('admin/dang-nhap','UserController@postDangNhap');
 Route::get('admin/dang-xuat', 'UserController@logOut');
 Route::get('admin/profile','UserController@profile');
 Route::post('admin/changePass','UserController@changePass');
-Route::group(['prefix'=>'admin','middleware'=>'auth'], function(){
-	Route::get('chart','OrderController@chart');
-	Route::get('calendar','OrderController@calendar');
-	Route::get('index','UserController@index');
-	Route::group(['prefix'=>'product'], function(){
-		Route::get('add','ProductController@getAdd');
-		Route::post('add','ProductController@Add')->name('add');
-		Route::get('list','ProductController@index')->name('product');
-		Route::get('updated/{slug}','ProductController@getUpdate');
-		Route::get('category/{id}','ProductController@category');
-		Route::patch('updated/{id}','ProductController@Update');
-		Route::get('delete/{id}','ProductController@delete');
-	});
-	Route::group(['prefix'=>'user'],function(){
-		Route::get('list','UserController@listUser')->name('index');
-		Route::get('add','UserController@getAdd');
-		Route::post('add','UserController@Add');
-		Route::get('delete/{id}','UserController@Delete');
-		Route::get('edit/{id}','UserController@getEdit');
-		Route::put('edit/{id}','UserController@Edit');
-	});
-	Route::group(['prefix'=>'order'],function(){
-		Route::get('list','OrderController@list')->name('order');
-		Route::get('detail/{id}','OrderController@detail');
-		Route::post('change-status/{id}','OrderController@changeStatus');
-		Route::get('search','OrderController@Search');
-		Route::get('date','OrderController@Date');
-		Route::get('status/{id}','OrderController@Status');
-		Route::post('print','OrderController@exportExcel');
-	});
+Route::group(['prefix'=>'admin','middleware'=>'checkLogin'], function(){
+	Route::group(['middleware'=>'auth'], function(){
+		Route::get('chart','OrderController@chart');
+		Route::get('calendar','OrderController@calendar');
+		Route::get('index','UserController@index');
+		Route::group(['prefix'=>'product'], function(){
+			Route::get('add','ProductController@getAdd');
+			Route::post('add','ProductController@Add')->name('add');
+			Route::get('list','ProductController@index')->name('product');
+			Route::get('updated/{slug}','ProductController@getUpdate');
+			Route::get('category/{id}','ProductController@category');
+			Route::patch('updated/{id}','ProductController@Update');
+			Route::get('delete/{id}','ProductController@delete');
+		});
+		Route::group(['prefix'=>'user'],function(){
+			Route::get('list','UserController@listUser')->name('index');
+			Route::get('add','UserController@getAdd');
+			Route::post('add','UserController@Add');
+			Route::get('delete/{id}','UserController@Delete');
+			Route::get('edit/{id}','UserController@getEdit');
+			Route::put('edit/{id}','UserController@Edit');
+		});
+		Route::group(['prefix'=>'order'],function(){
+			Route::get('list','OrderController@list')->name('order');
+			Route::get('detail/{id}','OrderController@detail');
+			Route::post('change-status/{id}','OrderController@changeStatus');
+			Route::get('search','OrderController@Search');
+			Route::get('date','OrderController@Date');
+			Route::get('status/{id}','OrderController@Status');
+			Route::post('print','OrderController@exportExcel');
+		});
+	});	
 
 });
 

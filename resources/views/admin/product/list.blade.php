@@ -3,9 +3,12 @@
 @section('css')
 
 
+
 <link rel="stylesheet" href="AdminLTE-2.4.3/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 {{-- <link rel="stylesheet" href="team1/team1.css"> --}}
 <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+<link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
+  <script src='js/sweet-alert.min.js'></script>
 
 @endsection
 @section('content')

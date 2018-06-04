@@ -1,0 +1,66 @@
+/*div.wraper-picture img{
+    position: relative;
+}
+button.glyphicon-remove{
+    position: absolute;
+}*/
+
+div.drop-area{
+    height: auto !important;
+    border: 1px dashed #999 !important;
+    text-align: center;
+    padding:10px;
+    cursor:pointer;
+    min-height: 230px;
+}
+div#thumbnail{
+    z-index: 9;
+}
+div#thumbnail img{
+    width:100px;
+    height:100px;
+    margin:5px;
+}
+div#thumbnail img::before{
+    content: 'X';
+    position: absolute;
+    top:5px;
+    right:-5px;
+}
+
+div.box-image{
+    display: inline-block !important;
+    position: relative;
+    margin: 5px !important;
+    z-index: 9999;
+}
+button.del{
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 15px;
+    font-size: 10px;
+    line-height: 1.42;
+    padding: 2px 0;
+    text-align: center;
+
+}
+div.wp-image{
+    position: relative;
+    display: inline-block !important;
+}
+
+div.wp-image{
+    position: relative;
+    display: inline-block !important;
+}
+img.listimage-edit{
+    display:inline-block;
+    float:left;
+    min-width: 100px !important;
+    max-width:120px !important;
+    max-height: 120px !important;
+    margin:5px;
+}

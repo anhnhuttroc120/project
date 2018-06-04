@@ -49,18 +49,18 @@
 								<div class="clearfix"></div>
 							</div>
 
-					<div class="row product-search">
+					<div class="row product-search animated fadeIn">
 						@foreach($products as $product)
 								<?php 
 									$pictures = json_decode($product->detail->picture,true);
-									$picture_main = $pictures[1];
+									$picture_main = reset($pictures);
 									if($product->detail->sale_off > 0){
 										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
 									}
 
 								
 								?>
-								<div  class="col-sm-3">
+								<div  class="col-sm-3 ">
 									<div  class="single-item">
 										<div class="single-item-header">
 											<a href="chi-tiet/{{$product->slug}}"><img src="images/product/{{$picture_main}}" alt=""></a>

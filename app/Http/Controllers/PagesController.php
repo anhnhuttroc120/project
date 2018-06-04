@@ -16,7 +16,9 @@ use App\Http\Requests\ChangePassRequest;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
 use Brian2694\Toastr\Facades\Toastr;
-
+use Gloudemans\Shoppingcart\Facades\Cart;
+use Validator;
+use Illuminate\Support\MessageBag;
 class PagesController extends Controller
 {
     public function index()
@@ -46,15 +48,33 @@ class PagesController extends Controller
         return view('default.pages.dangki');
     }
     
-    public function postRegister(CreateRequest $request)
-    {				
-        $data = $request->all();            
-        $data['status'] = 1;
-        $data['password'] = bcrypt($request->password);
-        $data['is_admin'] = 0;
-        User::create($data); // them vo database
-        $url = '<a href="'.url('dang-nhap').'"> đây </a>';
-        return back()->with('success', 'Bạn đã đăng kí thành công ! Click vào '. $url . 'để đăng nhập');			
+    public function postRegister(Request $request)
+    {		
+        if ($request->ajax()) {
+            $rules = [
+            'email' =>'unique:users,email',
+            'username' => 'unique:users,username'
+            ];
+            $messages = [
+               'email.unique' => 'Email đã tồn tại',
+                'username.unique' => 'Tên tài khoản đã tồn tại',         
+            ];
+            $data = $request->all();
+            $data['status'] = 1;
+            $data['password'] = bcrypt($request->password);
+            $data['is_admin'] = 0;
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                    return response()->json([
+                            'error' => true,
+                            'messages' => $validator->errors(), 
+                        ], 200);
+                    
+            }     
+            User::create($data); // them vo database
+            Toastr::success('Bạn vừa đăng kí thành công ', 'Thông báo: ', ["positionClass" => "toast-top-right"]);
+            return response()->json(['error'=>false]);
+        }     			
     } 
 
     public function getDangNhap()
@@ -76,6 +96,7 @@ class PagesController extends Controller
     public function logOut()
     {
         Auth::logout();
+        Cart::destroy();
         return redirect('trang-chu');
     }
 

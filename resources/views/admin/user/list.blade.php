@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
 <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
+  <script src='js/sweet-alert.min.js'></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 
 {{-- 
@@ -35,6 +37,7 @@
   </div>  
       <div class="row">
         {!! Toastr::message() !!}
+      
         <div class="col-xs-12">
           <form action="{{url('admin/user/search')}}" method="get" id="form-search">
             <div class="form-group">
@@ -126,15 +129,17 @@ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
         $.get('admin/user/delete/'+id, function(data) {
           if(data.status == 'success' ){
-             $('#item-' + id).remove(); 
+             $('#item-' + id).remove();
+              swal("success!", "Bạn đã xóa thành công !", "success"); 
+              
           }else{
             var url = "{{route('index')}}";
             $(location).attr('href', url);
           }
           
-
         });
         $(this).dialog("close");
+  
       },
       Không : function() {
         $(this).dialog("close");
@@ -176,6 +181,8 @@ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
       })
   }
 </script>
+  
+  
 @endsection
 
 

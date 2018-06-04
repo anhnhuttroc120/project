@@ -12,6 +12,7 @@ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 				$.get('admin/product/delete/'+id, function(data) {
 					 console.log(data);
 					$('#item-' + id).remove().slideUp(300);
+					 swal("success!", "Bạn đã xóa thành công !", "success"); 
 
 				});
 				$(this).dialog("close");

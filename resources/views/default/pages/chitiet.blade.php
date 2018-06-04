@@ -49,7 +49,7 @@
 	<?php 
 	if(!empty($product_main->detail->picture)){
 		$pictures = json_decode($product_main->detail->picture,true);
-		$picture_main = $pictures[1];
+		$picture_main = !empty($pictures)   ? reset($pictures) : [] ;
 		$sizes = json_decode($product_main->detail->size,true);
 		$colors = json_decode($product_main->detail->color,true);
 		if($product_main->detail->sale_off > 0 ){
@@ -205,7 +205,7 @@
 							@foreach($products['relate'] as $product)
 								<?php 
 									$pictures = json_decode($product->detail->picture,true);
-									$picture_main = $pictures[1];
+									$picture_main = !empty($pictures)   ? reset($pictures) : [] ;
 									if($product->detail->sale_off > 0){
 										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
 									}
@@ -246,7 +246,7 @@
 								@foreach($products['bestseller'] as $product)
 								<?php
 									$pictures = json_decode($product->detail->picture,true);
-									$picture_main = $pictures[1];
+									$picture_main = !empty($pictures)   ? reset($pictures) : [] ;
 									if($product->detail->sale_off > 0){
 										$price = ((100 - $product->detail->sale_off)*$product->price)/100;
 
@@ -275,7 +275,7 @@
 								@foreach($products['new'] as $product)
 								<?php
 									$pictures = json_decode($product->detail->picture,true);
-									$picture_main = $pictures[1];
+									$picture_main = !empty($pictures)   ? reset($pictures) : [] ;
 									if($product->detail->sale_off > 0){
 										$price = ((100 - $product->detail->sale_off)*$product->price)/100;
 

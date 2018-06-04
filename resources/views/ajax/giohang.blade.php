@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-bordered animated fadeIn">
 							<thead>
 							<tr >
 								<th class="text-center">Sản phẩm</th>

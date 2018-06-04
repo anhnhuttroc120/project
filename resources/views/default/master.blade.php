@@ -17,6 +17,7 @@
 	<link rel="stylesheet" title="style" href="source/assets/dest/css/style.css">
 	<link rel="stylesheet" href="source/assets/dest/css/animate.css">
 	<link rel="stylesheet" title="style" href="source/assets/dest/css/huong-style.css">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 	<link rel="stylesheet" href="css/loading.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>

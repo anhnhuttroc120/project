@@ -1,7 +1,7 @@
 @foreach($products as $product)
 								<?php 
 									$pictures = json_decode($product->detail->picture,true);
-									$picture_main = $pictures[1];
+									$picture_main = reset($pictures);
 									if($product->detail->sale_off > 0){
 										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
 									}

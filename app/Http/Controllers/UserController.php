@@ -61,7 +61,7 @@ class UserController extends Controller
 
 	public function getDangNhap()
 	{
-		if(Auth::check()){
+		if(Auth::check() && Auth::user()->is_admin == 2){
 			return redirect('admin/index');
 		}
 		return view('admin.login');
@@ -72,6 +72,7 @@ class UserController extends Controller
 		if($request->has('username')){
 	 	    $data['username'] = $request->username;
 	 		$data['password'] = $request->password; 
+	 		$data['is_admin'] = 2;
 	 		if(Auth::attempt($data)){ //Auth atthemp  kiem tra du lieu nguoi dung co dung trong databse 
 	 			return redirect()->intended('admin/index');
 	 			

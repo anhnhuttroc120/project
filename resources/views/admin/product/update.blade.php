@@ -1,11 +1,36 @@
 @extends('layout.admin.master')
 @section('css')
+<link rel="stylesheet" href="css/addproduct.css">
 <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 
 @endsection
 @section('content')
+<?php 
+
+           if(!empty($product->detail->color)){
+             $colors=json_decode($product->detail->color,true);
+           }else{
+             $colors=[];  
+
+           }
+
+        
+         if(!empty($product->detail->size)){
+            $sizes=json_decode($product->detail->size,true);
+         }else{
+            $sizes=[];
+         
+           
+         } 
+          
+          $pictures=json_decode($product->detail->picture,true);
+
+            
+               
+           ?>
+
 
 
 <div class="content-wrapper">
@@ -25,294 +50,142 @@
      <section class="content">
       <div class="row">
         <!-- left column -->
-        <div class="col-md-12">
-          <!-- general form elements -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"></h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-          <div>
-       
-            
-      
+
        {!! Toastr::message() !!}
 
-            @if($errors->any())
-       <div class="alert alert-danger">
-        <ul style="list-style-type: none">
-            @foreach ($errors->all() as $error)
-                <li >{{ $error }}</li>
-            @endforeach
-        </ul>
-       
-    </div>
-        @endif
-
-          </div>
-          
-       
-      {!! Form::model($product,['url' => 'admin/product/updated/'.$product->id, 'method' => 'patch','files'=>true]) !!}
-      <?php
-           if(!empty($product->detail->color)){
-             $colors=json_decode($product->detail->color);
-           }else{
-             $colors=[];  
-
-           }
-
-        
-         if(!empty($product->detail->size)){
-            $sizes=json_decode($product->detail->size);
-         }else{
-            $sizes=[];
-         
-           
-         } 
-          
-          $pictures=json_decode($product->detail->picture,true);
-
-            
-               
-           ?>
-              <div class="box-body">
-           <div class="form-group">
-  {!! Form::label('name', 'Tên sản phẩm') !!}
-  <div class="form-controls">
-    {!! Form::text('name', null, ['class' => 'form-control']) !!}
+               @if($errors->any())
+             <div class="alert alert-danger">
+              <ul style="list-style-type: none">
+                  @foreach ($errors->all() as $error)
+                      <li >{{ $error }}</li>
+                  @endforeach
+              </ul>
+             
+            </div>{{-- ALERT --}}
+               @endif
+  <div class="col-md-6">
+          <!-- general form elements -->
+   {!! Form::model($product,['url' => 'admin/product/updated/'.$product->id, 'method' => 'patch','files'=>true]) !!}
+   <div class="form-group">
+        {!! Form::label('name', 'Tên sản phẩm') !!}
+        <div class="form-controls">
+          {!! Form::text('name', null, ['class' => 'form-control']) !!}
+        </div>
   </div>
-</div>
+      
+  <div class="form-group">
+        <label for="exampleInputUserName">Loại sản phẩm</label>
 
-
-
+     {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
+   </div>
 <div class="form-group">
-
-      <label for="exampleInputUserName">Loại sản phẩm</label>
-
-   {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
- </div>
- <div class="form-group">
-  {!! Form::label('name', 'Giá sản phẩm') !!}
-  <div class="form-controls">
-    {!! Form::text('price', null, ['class' => 'form-control']) !!}
-  </div>
+    {!! Form::label('name', 'Giá sản phẩm') !!}
+    <div class="form-controls">
+      {!! Form::text('price', null, ['class' => 'form-control']) !!}
+    </div>
 
 </div>
+
 <div class="form-group">
   {!! Form::label('name', 'Sản phẩm đặc biệt') !!}
   <div class="form-controls">
     {!! Form::select('special',$special, null, ['class' => 'form-control']) !!}
   </div>
 </div>
- <div class="form-group">
 
-  {!! Form::label('name', 'Màu sắc') !!}
-  <div class="form-controls">
-      
+<div class="form-group">
+    {!! Form::label('name', 'Màu sắc') !!}
 
-     {!! Form::label('name', 'Trắng') !!}
 
-     
-      @if(in_array('Trắng',$colors))
-        <input type="checkbox" name="color[]" value="Trắng" checked>
+    <div class="form-controls">  
+  @foreach($Arrcolors as $key =>$color)
+       {!! Form::label('name', $color) !!}
+       @if(!empty($colors[$key]) && in_array($colors[$key] ,$Arrcolors))
+          <input type="checkbox" name="color[{{$key}}]" value="{{$color}}" checked >
        @else
-        <input type="checkbox" name="color[]" value="Trắng">
-            
-        @endif    
- 
-   
-     {!! Form::label('name', 'Đen') !!}
-     
-     @if(in_array('Đen',$colors))
-        <input type="checkbox" name="color[]" value="Đen" checked>
-       @else
-        <input type="checkbox" name="color[]" value="Đen">
+        <input type="checkbox" name="color[{{$key}}]" value="{{$color}}" >
+       @endif       
          
-     
-        @endif    
+          
+  @endforeach
 
-     {!! Form::label('name', 'Hồng') !!}
-  
-  
-  @if(in_array('Hồng',$colors))
-       
-        <input type="checkbox" name="color[]" value="Hồng" checked>
-       @else
-        <input type="checkbox" name="color[]" value="Hồng">
-         
-  
-
-        @endif    
-   
-
-  
-     {!! Form::label('name', 'Xanh') !!}
-
-  @if(in_array('Xanh',$colors))
-       
-            <input type="checkbox" name="color[]" value="Xanh" checked>
-       @else
-        <input type="checkbox" name="color[]" value="Xanh">
-       
-    
-        @endif    
-  
-
-  
-     {!! Form::label('name', 'Tím') !!}
-     
-     
-        @if(in_array('Tím',$colors))
-                 <input type="checkbox" name="color[]" value="Tím" checked>
-       @else
-        <input type="checkbox" name="color[]" value="Tím">
-      
-
-        @endif    
-
-
-  </div>
+    </div>
 </div>
+
 <div class="form-group">
   {!! Form::label('name', 'Giảm giá') !!}
   <div class="form-controls">
     {!! Form::text('sale_off', $product->detail->sale_off, ['class' => 'form-control']) !!}
   </div>
-  <div class="form-group">
+ </div> 
+
+
+ <div class="form-group">
   {!! Form::label('name', 'Kích thước') !!}
   <div class="form-controls">
-      {!! Form::label('name', 'Size S') !!}
-   
-    @if(in_array('S',$sizes))
-
-    {!! Form::checkbox('size[]', 'S',true) !!}
-    @else
-    {!! Form::checkbox('size[]', 'S') !!}
-    @endif
-
-
-  {!! Form::label('name', 'Size M') !!}
- 
-       @if(in_array('M',$sizes))
-
-    {!! Form::checkbox('size[]', 'M',true) !!}
-    @else
-    {!! Form::checkbox('size[]', 'M') !!}
-    @endif
+     
+    @foreach($ArrSize as $key =>$size)
+     {!! Form::label('name', $size) !!}
   
-      {!! Form::label('name', 'Size L') !!}
-       
-     @if(in_array('L',$sizes))
+       @if(!empty($sizes[$key]) && in_array($sizes[$key] ,$ArrSize))
+          <input type="checkbox" name="size[{{$key}}]" value="{{$size}}" checked >
+       @else
+        <input type="checkbox" name="size[{{$key}}]" value="{{$size}}" >
+       @endif  
+  @endforeach
 
-    {!! Form::checkbox('size[]', 'L',true) !!}
-    @else
-    {!! Form::checkbox('size[]', 'L') !!}
-    @endif
-  
-  
-      {!! Form::label('name', 'Size XL') !!}
-    @if(in_array('XL',$sizes))
+    </div>
+ </div>
 
-    {!! Form::checkbox('size[]', 'XL',true) !!}
-    @else
-    {!! Form::checkbox('size[]', 'XL') !!}
-    @endif
-
- 
-  </div>
-   <div class="form-group">
+  <div class="form-group">
                     <label>Nội Dung</label>
                     <textarea name="description" id="demo" class="form-control ckeditor" rows="3" value="{{$product->detail->description}}">{{$product->detail->description}}</textarea>
-                </div>
+       </div>
 
 
-    @if (Session::has('notice'))
-        <div class="alert alert-danger">
-          {{ Session::get('notice') }}
-        </div>
-      @endif 
-     
+
+  
+</div> {{-- col-md-6 --}}
+          
+       
+  <div class="col-md-6 right">
+    <label for="exampleInputFile">Hình ảnh </label>
+  <div class="wraper-picture" style="width: 90%;border: 1px dashed black;padding: 10px;">
+      
+      <input type="hidden" name="imageDelete"  value="">
+      @forelse($pictures as $key => $picture)
+      <span class="item">
+        <img style="width: 100px;height: 100px;margin-top:10px;position: relative !important;"  src="images/product/{{$picture}}" alt="" data-id="{{$key}}">
+        <a style="left: -12px;top:-40px;cursor: pointer;display: none" class="btn-danger glyphicon glyphicon-remove delete"></a>
+      </span>
+      @empty
+      
+      @endforelse
+     <div class="empty" style="display: none"></div>
+      
+  </div>
    <div class="form-group">
-      <label for="exampleInputFile">Hình ảnh 1</label>
-      <input type="file" id="exampleInputFile" name="picture[1]">
-      @if(isset($pictures[1]))
-      <img src="images/product/{{$pictures[1]}}" alt="">
-      
-      
-      @endif
-      
-  </div>
+      <label for="exampleInputFile">Thêm hình ảnh</label>
+      <input type="file" style="display:none" id="upload-input" multiple="multiple" name="picture[]" accept="image/*" class="dropzone">
+                                <div id="upload" class="form-control drop-area" style="height: 350px;">
+                                    <h3 ">Kéo & thả ảnh vào đây ! </h3>
+                                    <button type="button" class="btn btn-primary btn-sm " id="btn_select"> Click vào đây để chọn ảnh !</button>
+                                    <div  id="thumbnail" ></div>
+                                </div>
 
-  <div class="form-group">
-      <label for="exampleInputFile">Hình ảnh 2</label>
-      <input type="file" id="exampleInputFile" name="picture[2]">
-       @if(isset($pictures[2]))
-      <img src="images/product/{{$pictures[2]}}" alt="">
-      
-      
-      @endif
-
-      
-  </div>
-  <div class="form-group">
-      <label for="exampleInputFile">Hình ảnh 3</label>
-      <input type="file" id="exampleInputFile" name="picture[3]">
-     @if(isset($pictures[3]))
-      <img src="images/product/{{$pictures[3]}}" alt="">
-      
-      
-      @endif
-
-      
-  </div>
-  <div class="form-group">
-      <label for="exampleInputFile">Hình ảnh 4</label>
-      <input type="file" id="exampleInputFile" name="picture[4]">
-@if(isset($pictures[4]))
-      <img src="images/product/{{$pictures[4]}}" alt="">
-      
-      
-      @endif
-      
-  </div>
-  <div class="form-group">
-      <label for="exampleInputFile">Hình ảnh 5</label>
-      <input type="file" id="exampleInputFile" name="picture[5]">
-    @if(isset($pictures[5]))
-      <img src="images/product/{{$pictures[5]}}" alt="">
-      
-      
-      @endif
       
   </div>
  
-                
-              </div>
-              <!-- /.box-body -->
+  
 
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Thay đổi thông tin</button>
-              </div>
-            {!! Form::close() !!}
-          </div>
-          <!-- /.box -->
-
-          <!-- Form Element sizes -->
-         
-
-       
-         
-
-        </div>
-        <!--/.col (left) -->
-        <!-- right column -->
-        
+   <button style="margin-left: 250px;" type="submit" class="btn btn-primary">Thay đổi thông tin</button>
+  </div> {{-- col-md-6 right --}}
+    {!! Form::close() !!}      
       </div>
       <!-- /.row -->
     </section>
     <!-- /.content -->
-  </div>
+  </div> {{-- wraper --}}
 @endsection
 @section('script')
 <!-- jQuery 3 -->
@@ -325,6 +198,110 @@
 <script src="AdminLTE-2.4.3/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="AdminLTE-2.4.3/dist/js/demo.js"></script>
-<script src="ckeditor/ckeditor.js"></script>
+<script src="http://cdn.ckeditor.com/4.9.2/full/ckeditor.js"></script>
+ <script>
+  $(document).ready(function(){
+     jQuery(function($){
+            var fileDiv = document.getElementById("upload");
+            var fileInput = document.getElementById("upload-input");
+            var btnSelect = document.getElementById('btn_select');
+            fileInput.addEventListener("change",function(e){
+                var files = this.files
+                console.log(files);
+                showThumbnail(files)
+            },false)
+
+            btnSelect.addEventListener("click",function(e){
+                $(fileInput).show().focus().click().hide();
+                e.preventDefault();
+            },false)
+
+
+            fileDiv.addEventListener("dragenter",function(e){
+                e.stopPropagation();
+                e.preventDefault();
+            },false);
+
+
+            fileDiv.addEventListener("dragover",function(e){
+                e.stopPropagation();
+                e.preventDefault();
+            },false);
+
+            fileDiv.addEventListener("drop",function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                var dt = e.dataTransfer;
+                var files = dt.files;
+                console.log(files);
+                fileInput.files = files;
+                showThumbnail(files)
+            },false);
+
+            function showThumbnail(files){
+                $('.box-image').remove();
+                for(var i=0;i<files.length;i++){
+                    var file = files[i]
+
+                    var container = document.createElement('div');
+                    container.classList.add('box-image');
+
+                    var image = document.createElement("img");
+                    image.classList.add("img-thumbnail");
+                    image.file = file;
+                    container.appendChild(image);
+
+                    var thumbnail = document.getElementById("thumbnail");
+                    thumbnail.appendChild(container);
+
+                    var reader = new FileReader()
+                    reader.onload = (function(aImg){
+                        return function(e){
+                            aImg.src = e.target.result;
+                        };
+                    }(image))
+                    var ret = reader.readAsDataURL(file);
+                    var canvas = document.createElement("canvas");
+                    ctx = canvas.getContext("2d");
+                    image.onload= function(){
+                        ctx.drawImage(image,50,50)
+                    }
+                }
+            };
+        });
+  });
+</script>
+<script>
+  $(document).ready(function(){
+    $('.wraper-picture img').mouseover(function(){
+      $(this).parent('span.item').find('a').show();
+
+    });
+    //   $('div.wraper-picture img').mouseleave(function(){
+    //   $(this).parent('span.item').find('a').hide();
+
+    // });
+    // $('.wrapper-picture a').mouseover(function(){
+    //   $(this).show();
+    // });
+    var item = $('span.item');
+    if (item.length <= 0) {
+        $('.empty').show().html('<h1>Không có ảnh nào đc thêm vào </h1>')
+    } else {
+      $('.empty').hide();
+    }
+    var arrTemp = [];
+   $('a.delete').click(function(){
+    $(this).parent('span.item').remove();
+    var dataId = $(this).parent('span.item').find('img').attr('data-id');
+    arrTemp.push(dataId);
+    var test = $('input[name=imageDelete]').val(arrTemp);
+    
+
+   });
+  });  
+
+
+</script>
 
 @endsection

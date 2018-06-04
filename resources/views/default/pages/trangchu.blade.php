@@ -57,12 +57,12 @@
 								@foreach($products['new'] as $product)
 								<?php 
 									$pictures = json_decode($product->detail->picture,true);
-									$picture_main = $pictures[1];
+									$picture_main = !empty($pictures)   ? reset($pictures) : [] ;
 									if($product->detail->sale_off > 0){
 										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
 									}							
 								?>
-								<div  class="col-sm-3 item">
+								<div  class="col-sm-3 item" >
 									<div  class="single-item">
 									{{-- 	@if($product->detail->sale_off > 0 )
 										<div class="ribbon-wrapper"><div class="ribbon sale">Sale</div></div>
@@ -118,7 +118,7 @@
 									break;
 								}
 								$pictures = json_decode($product->detail->picture,true);
-								$picture_main = $pictures[1];
+								$picture_main = !empty($pictures)   ? reset($pictures) : [] ;
 								if($product->detail->sale_off > 0){
 										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
 									}

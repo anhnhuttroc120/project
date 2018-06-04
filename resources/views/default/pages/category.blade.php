@@ -26,8 +26,8 @@
 			<div class="main-content">
 				<div class="space60">&nbsp;</div>
 				<div class="row">
-					<div class="col-sm-12">
-						<div class="beta-products-list">
+					<div class="col-sm-12 animated fadeIn">
+						<div class="beta-products-list ">
 							<h2 class="product-new" data="{{$category->slug}}">{{$category->name}}</h2>
 							<div style="margin-top:10px;float:right;">
 								<select style="width: 300px;" class="form-control" name="arrange" id="">		
@@ -49,7 +49,7 @@
 								@foreach($products as $product)
 								<?php 
 									$pictures = json_decode($product->detail->picture,true);
-									$picture_main = $pictures[1];
+									$picture_main = reset($pictures);
 									if($product->detail->sale_off > 0){
 										$price_sale = ((100 - $product->detail->sale_off)*$product->price)/100;
 									}

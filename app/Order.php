@@ -29,8 +29,8 @@ class Order extends Model
     public static function statusHTML()
     {
         return [
-        self::$DONE => sprintf('<small style="line-height:25px;"  class="label label-success">Đang xử lý</small>'),
-        self::$PENDING => sprintf('<small style="line-height:25px;"  class="label label-default">Đã xử lý</small>'),
+        self::$DONE => sprintf('<small style="line-height:25px;"  class="label label-success">Đã xử lý</small>'),
+        self::$PENDING => sprintf('<small style="line-height:25px;"  class="label label-default">Đang xử lý</small>'),
         self::$CANCEL => sprintf('<small style="line-height:25px;"  class="label label-danger">Hủy</small>'),
         ];
     }
