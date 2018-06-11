@@ -85,23 +85,24 @@
 			var id = $(this).attr('data');
 			var status = $(this).attr('status');
 			url = "{{url('status')}}";
-			$.ajax({
+			
+			if(status == 2){
+				$.ajax({
 
                     /* the route pointing to the post function */
                     url: url,
                     type: 'get',
                      /* send the csrf-token and the input to the controller */
                    	data: {id:id,status:status},
-                     /* remind that 'data' is the response of the AjaxController */
+                      // remind that 'data' is the response of the AjaxController 
                      success: function (data) { 
 	                     console.log(data);
 	                     $('td.item-'+data.id).html(data.view);
-
-                   	 	
-                   	   
                        
                      }
-           }); 
+          		 }); 
+			}	
+			
 
 		});
 	});

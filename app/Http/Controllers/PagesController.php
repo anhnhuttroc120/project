@@ -13,6 +13,7 @@ use App\Categories;
 use App\province;
 use App\Order;
 use App\Http\Requests\ChangePassRequest;
+use App\Http\Requests\EditUserRequest;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
 use Brian2694\Toastr\Facades\Toastr;
@@ -84,13 +85,19 @@ class PagesController extends Controller
 
     public function postDangNhap(Request $request)
     {
-        $username = $request->username;
-        $password = $request->password;
-        if (Auth::attempt(['password' => $password, 'username'=>$username])){
-            return redirect()->intended('trang-chu');
-        }
+        if ($request->ajax()) {
+             $username = $request->username;
+             $password = $request->password;
+            if (Auth::attempt(['password' => $password, 'username'=>$username])){
+                return response()->json(['status'=>'success'],200);
+            }
+                return response()->json(['status'=>'fail'],200);
 
-     	return redirect()->back()->with('notice','Thông tin đăng nhập không chính xác! Hãy kiểm tra tài khoản và mật khẩu của bạn');	
+
+        }
+       
+     		
+       
     }
 
     public function logOut()
@@ -124,6 +131,20 @@ class PagesController extends Controller
         return view('default.pages.timkiem', compact('keyword', 'products','sort'));   
     }    
 
+    public function autocomplete(Request $request)
+    {
+        if ($request->ajax()) {
+            $keyword = $request->keyword;
+            $products = Product::where('name', 'like' , "%". $keyword . "%")
+                ->orwhereHas('category',function($query) use ($keyword){
+                      $query->where('name', 'like', "%".$keyword . "%");
+                })->limit(5)->get();
+            $products = view('ajax.autocomplete', compact('products'))->render();
+            return response()->json(['products'=>$products], 200);     
+        
+        }
+    }
+
     public function detail($slug)
     {
         $product_main = Product::where('slug', $slug)->first();
@@ -149,7 +170,7 @@ class PagesController extends Controller
     {
         return view('default.pages.order.profile');
     }
-    public function postprofile(Request $request)
+    public function postprofile(EditUserRequest $request, $id)
     {
         $user = User::where('username', $request->username)->first();
         $data = $request->all();

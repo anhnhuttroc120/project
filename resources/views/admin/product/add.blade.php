@@ -1,16 +1,15 @@
 @extends('layout.admin.master')
 @section('css')
-<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+
 <link rel="stylesheet" href="css/addproduct.css">
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 @endsection
 @section('content')
 
-<?php
 
-
- ?>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -63,18 +62,17 @@
 
        
 
-  <div class="col-md-6" style="margin-top:10px;">
+<div class="col-md-6" style="margin-top:10px;">
+   <div class="form-group">
       <div class="form-group">
-         <div class="form-group">
-                    <label>Nội Dung</label>
-                    <textarea name="description"  class="form-control ckeditor" >
-                      {{old('description')}}
-                    </textarea>
-        </div>
-      
+         <label>Nội Dung</label>
+         <textarea name="description"  class="form-control ckeditor" >
+         {{old('description')}}
+         </textarea>
       </div>
-
-  </div> {{-- col-md-6 --}}
+   </div>
+</div>
+{{-- col-md-6 --}}  
    {!! Form::close() !!}
         </div>
             <!-- /.row -->

@@ -1,4 +1,4 @@
-            <table id="example1" class="table table-bordered table-striped animated fadeIn">
+            <table id="example2" class="table table-bordered table-striped animated fadeIn">
                 <thead style="background: #398ebd" >
                 <tr>
                   <th style="width: 13%;">STT</th>

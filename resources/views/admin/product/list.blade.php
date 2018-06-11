@@ -28,57 +28,50 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-       
-
-          <div class="box">
+<section class="content">
+   <div class="row">
+      <div class="col-xs-12">
+         <div class="box">
             <div class="box-header">
-              <h3 class="box-title"><a class="btn" href="{{url('admin/product/add')}}" style="color: white;background: #E3458B;">Thêm Sản Phẩm</a></h3>
+               <h3 class="box-title"><a class="btn" href="{{url('admin/product/add')}}" style="color: white;background: #E3458B;">Thêm Sản Phẩm</a></h3>
             </div>
-
             <!-- /.box-header -->
             <div class="box-body">
-                            <div id="dialog-confirm" title="Thông báo!" style="display: none;">
+               <div id="dialog-confirm" title="Thông báo!" style="display: none;">
                   <p>Bạn có chắc muốn xóa phần tử này hay không?</p>
-              </div>  
-
-              {!!Form::open(['url' => 'admin/product/category', 'method' => 'post','files'=>true,'id'=>'admin-form'])!!}
-                
-              <select name="category" id="category">
-              
-                @foreach($categories as $key => $value)
-                @if(Request::get('category') == $key)
-                <option selected value="{{$key}}">{{$value}}</option>
-                @else
-                <option  value="{{$key}}">{{$value}}</option>
-                @endif
-                @endforeach
-              </select>
-              <select name="sort" id="sort">
-              
-                @foreach($sorts as $key => $value)
-                @if(Request::get('sort') == $key)
-                <option selected value="{{$key}}">{{$value}}</option>
-                @else
-                <option  value="{{$key}}">{{$value}}</option>
-                @endif
-                @endforeach
-              </select>
-              <input  style="width: 200px;"  type="text"  name="keyword" id="search" placeholder="Tìm kiếm theo tên sản phẩm" value="@if(Request::get('keyword')){{Request::get('keyword')}} @endif">
-                <div id="result">
-                    {!! view('ajax.product',compact(['products']))->render() !!}
-                </div>
+               </div>
+               {!!Form::open(['url' => 'admin/product/category', 'method' => 'post','files'=>true,'id'=>'admin-form'])!!}
+               <select name="category" id="category">
+                  @foreach($categories as $key => $value)
+                  @if(Request::get('category') == $key)
+                  <option selected value="{{$key}}">{{$value}}</option>
+                  @else
+                  <option  value="{{$key}}">{{$value}}</option>
+                  @endif
+                  @endforeach
+               </select>
+               <select name="sort" id="sort">
+                  @foreach($sorts as $key => $value)
+                  @if(Request::get('sort') == $key)
+                  <option selected value="{{$key}}">{{$value}}</option>
+                  @else
+                  <option  value="{{$key}}">{{$value}}</option>
+                  @endif
+                  @endforeach
+               </select>
+               <input  style="width: 200px;"  type="text"  name="keyword" id="search" placeholder="Tìm kiếm theo tên sản phẩm" value="@if(Request::get('keyword')){{Request::get('keyword')}} @endif">
+               <div id="result">
+                  {!! view('ajax.product',compact(['products']))->render() !!}
+               </div>
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
+         </div>
+         <!-- /.box -->
       </div>
-      <!-- /.row -->
-    </section>
+      <!-- /.col -->
+    </div>
+   <!-- /.row -->
+</section>
     <!-- /.content -->
   </div>
 @endsection

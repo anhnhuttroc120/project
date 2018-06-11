@@ -263,7 +263,9 @@ $('#myCarousel').carousel({
               })
             })
           </script>
-        
+ <script>
+ 	
+ </script>       
 @endsection
 
 

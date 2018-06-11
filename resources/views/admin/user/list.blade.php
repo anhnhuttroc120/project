@@ -3,9 +3,9 @@
 @section('css')
 <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
 <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
-<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+{{-- <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script> --}}
 <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
-  <script src='js/sweet-alert.min.js'></script>
+<script src='js/sweet-alert.min.js'></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 
 {{-- 
@@ -104,9 +104,9 @@
   $(function () {+
     $('#example1').DataTable()
     $('#example2').DataTable({
-      'paging'      : false,
+      'paging'      : true,
       'lengthChange': false,
-      'searching'   : false,
+      'searching'   : true,
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true
@@ -120,7 +120,6 @@ function deleteItem(id) {
 
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   $("#dialog-confirm").dialog({
-
     resizable : false,
     height : 200,
     modal : true,
@@ -150,22 +149,8 @@ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 }
 </script>
 <script>
-  $(document).ready(function(){
-  
-   
-    $('#role').change(function(){
-     callAjax();
-    });
-     $('#search').on('keyup', function(){
-     callAjax();
-  
-          
-    });
-   
-   });
-</script>
-<script>
   function callAjax(){
+
      var value = $('#search').val();
       var role = $('#role').val();
       var url = "{{route('index')}}";
@@ -178,9 +163,23 @@ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
           console.log(data);
             $('#result').html(data.view);
         }
-      })
+      });
   }
 </script>
+<script>
+  $(document).ready(function(){   
+    $('#role').change(function(){
+     callAjax();
+    });
+     $('#search').on('keyup', function(){
+     callAjax();
+  
+          
+    });
+   
+   });
+</script>
+
   
   
 @endsection

@@ -1,9 +1,11 @@
 @extends('layout.admin.master')
 @section('css')
 
-<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 @endsection
 @section('content')
@@ -12,15 +14,15 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Người dùng
-        <small>Thêm</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li class="active"><a href="{{url('admin/user/list')}}">Người dùng</a></li>
-      </ol>
-    </section>
+   <h1>
+      Người dùng
+      <small>Thêm</small>
+   </h1>
+   <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+      <li class="active"><a href="{{url('admin/user/list')}}">Người dùng</a></li>
+   </ol>
+</section>
 
 
     <!-- Main content -->

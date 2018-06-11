@@ -22,7 +22,17 @@
 				<div style="margin-bottom: 20px;">
 					<a style="border-bottom: 3px solid #FF0000;font-size: 20px;font-weight: bold; ">Thông tin tài khoản</a>
 					</div>
-					<form class="account" action="{{url('profile')}}" method="post" enctype="multipart/form-data">
+					 @if($errors->any())
+           <div style="margin-left: 10px;width: 700px;" class="alert alert-danger">
+            <ul style="list-style-type: none">
+                @foreach ($errors->all() as $error)
+                    <li >{{ $error }}</li>
+                @endforeach
+            </ul>
+           
+           </div>
+        @endif
+					<form class="account" action="{{url('profile/'.Auth::user()->id)}} " method="post" enctype="multipart/form-data">
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 						<input type="hidden" name="username" value="{{Auth::user()->username}}">
@@ -32,7 +42,7 @@
 						</div>
 						<div class="form-group">
 						<label for="">EMAIL:</label>
-						<span>{{Auth::user()->email}}</span>
+						<input type="email" name="email" value="{{Auth::user()->email}}">
 						</div>
 						<div class="form-group">
 						<label for="">ĐỊA CHỈ :</label>

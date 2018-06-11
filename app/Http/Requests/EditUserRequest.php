@@ -27,7 +27,7 @@ class EditUserRequest extends FormRequest
     {
         $id = $request->route('id');
         return [
-           'username'=>'required|unique:users,username,'.$id.',id',
+           'username'=>'unique:users,username,'.$id.',id',
            'fullname'=>'required',
            'email'=>'required|unique:users,email,'.$id.',id',
            'phone'=>'required|min:10|max:11',

@@ -6,7 +6,7 @@
 							 @endif
 
 
-<script>
+{{-- <script>
 	$(document).ready(function(){
 		$('.status').click(function(){
 			var id = $(this).attr('data');
@@ -29,7 +29,7 @@
 
 		});
 	});
-</script>							 
+</script>	 --}}						 
 								
 								
 						

@@ -3285,7 +3285,7 @@ margin:0 1em 0 0
 }
 
 .woocommerce #payment ul.payment_methods li img,.woocommerce-page #payment ul.payment_methods li img {
-vertical-align:middle;
+/*vertical-align:middle;*/
 margin:-2px 0 0 .5em;
 position:relative
 }

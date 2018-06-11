@@ -42,8 +42,8 @@ Route::get('delete-cart/','CartController@delete')->name('delete-cart');
 Route::post('check-out','CartController@checkout')->middleware('checkLogin');
 
 Route::post('comment','ProductController@postComment')->name('comment');
-Route::get('profile','PagesController@profile')->middleware('checkLogin');;
-Route::post('profile','PagesController@postprofile')->middleware('checkLogin');
+Route::get('profile','PagesController@profile')->middleware('auth');;
+Route::post('profile/{id}','PagesController@postprofile')->middleware('auth');
 Route::get('order','PagesController@order');
 Route::get('status','PagesController@status');
 Route::get('changepass','PagesController@changePass');
@@ -53,6 +53,7 @@ Route::post('changepass','PagesController@postchangepass');
 
 Route::get('detail/{id}','PagesController@infoOrder')->middleware('checkLogin');
 Route::get('forgetPass','PagesController@getForgetPassword');
+Route::get('autocomplete','PagesController@autocomplete');
 
 
 

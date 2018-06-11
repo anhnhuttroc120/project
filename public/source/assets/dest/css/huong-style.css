@@ -20,5 +20,48 @@
 	color: #fff;
 	padding: 10px 35px
 }
+div.ajax-search ul{
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+div.ajax-search ul li {
+	background: #f7f3f7;
+	border-bottom: 1px solid black;
+}
+div.ajax-search ul li img {
+	width: 50px !important;
+	height: 50px !important;
+}
+div.ajax-search ul li div.img-search , div.ajax-search ul li div.content-search{
+	display: inline-table;
 
+}
+.content-search span{
+	vertical-align: middle;
+}
+.ajax-search table td img{
+	
+	width: 60px !important;
+	height: 50px !important;
+}
+.ajax-search table td{
+	border: none !important;
+margin: 0px !important;
+padding: 10px;
+
+border-bottom: 1px solid black !important;
+}
+.ajax-search table tr{
+	background: #f7f7f7 !important;
+}
+.price-search{
+	color: #ff7518;
+}
+tr td:nth-child(2) {
+    width: 200px !important;
+}
+tr td:nth-child(1) {
+    width: 15%;
+}
 
