@@ -39,7 +39,7 @@
 					        				<td colspan="2"> <span style="border-bottom: 1px solid black;">Kết quả từ khóa:</span> <span id="key"></span></td>
 					        			</tr>
 					        		</thead>
-					        	<tbody>
+					        	<tbody class="result-search">
 					        		
 
 					        	</tbody>
@@ -120,7 +120,7 @@
                      /* remind that 'data' is the response of the AjaxController */
                      success: function (data) { 
                      	console.log(data.products)
-                     	$('tbody').html(data.products);
+                     	$('tbody.result-search').html(data.products);
                      	result.show();
                        
                      }

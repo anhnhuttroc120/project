@@ -81,6 +81,7 @@
 @section('script')
 <script>
 	$(document).ready(function(){
+
 		$('.status').click(function(){
 			var id = $(this).attr('data');
 			var status = $(this).attr('status');

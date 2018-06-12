@@ -6,7 +6,7 @@
 									<div class="media">
 										
 										<a class="pull-left" href="#"><img src="images/product/{{$item->options->img}}" alt=""></a>
-										<div class="media-body">
+										<div class="media-body" style="width: auto;">
 											<span class="cart-item-title">{{$item->name}}</span>
 										
 											<span class="cart-item-amount">{{$item->qty}} X <span>{{number_format($item->price)}}</span><span> VND</span></span>
